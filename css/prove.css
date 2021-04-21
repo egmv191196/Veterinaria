@@ -1,0 +1,11 @@
+.header {
+    margin-top: 6rem;
+    height: 7rem;
+}
+.col-12{
+    width: auto;
+    height: 9rem;
+    margin: 0 auto;
+    padding-top: .7rem;
+    padding-bottom: 1rem;
+}
