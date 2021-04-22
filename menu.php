@@ -76,7 +76,7 @@
                  <div class="face2"></div>
             </div>
         </a>
-        <a href="proveedores.php" target="_blank">
+        <a href="Proveedor.php" target="_blank">
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-people-carry fa-3x"></i>
                 Proveedores

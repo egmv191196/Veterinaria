@@ -85,8 +85,8 @@
         </div>
           <div class="form-group">
               <label class="label">Existencia</label>
-              <input required autocomplete="off" name="stock" class="form-control"
-                     type="decimal(9,2)" placeholder="Existencia">
+              <input autocomplete="off" name="stock" class="form-control"
+                     type="decimal(9,2)" placeholder="Existencia" readonly>
           </div>
           <button class="btn btn-success">Guardar</button>
           <a class="btn btn-primary" href="{{route("productos.index")}}">Volver al listado</a>
