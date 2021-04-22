@@ -64,26 +64,24 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr style="text-align: center">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>
-                            <a class="btn btn-warning" href="#">
-                                <i class="fa fa-edit"></i>
-                            </a>
-                        </td>
-                        <td>
-                            <form action="#" method="post">
-                                <button type="submit" class="btn btn-danger">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </form>
-                        </td>
-                    </tr>
+                  <?php
+                    require_once('./php/conexion.php');
+                    $result= mysqli_query($conexion, "select * from cliente");
+                    while ($row = mysqli_fetch_array($result)) {
+                        echo '<tr style="text-align: center">';
+                        echo '<td>'.$row['id_Cliente'].'</td>';
+                        echo '<td>'.$row['Nombre'].'</td>';
+                        echo '<td>'.$row['Direccion'].'</td>';
+                        echo '<td>'.$row['Telefono'].'</td>';
+                        echo '<td>'.$row['Email'].'</td>';
+                        echo '<td>'.$row['RFC'].'</td>';
+                        echo '<td> <a class="btn btn-warning" onclick="editCliente(this);"><i class="fa fa-edit"></i></a> </td>';
+                        echo '<td> <form action="#" method="post">';
+                        echo '<button type="submit" class="btn btn-danger" onclick="delCliente(this);"> <i class="fa fa-trash"></i> </button>';
+                        echo '</form></td>';
+                        echo '</tr>';
+                    }
+                    ?>
                 </tbody>
             </table>
         </div>
@@ -95,51 +93,104 @@
                 <h2 class="modal-title">Registrar Cliente</h2>
               </div>
               <div class="modal-body">
-                <form method="POST" action="{{route("productos.store")}}">
+                <form id="addCliente">
           
                   <div class="form-group">
                       <label class="label">Id </label>
-                      <input required autocomplete="off" name="codigo_barras" class="form-control"
-                             type="text" placeholder="Código ">
+                      <input autocomplete="off" name="id_Cliente" class="form-control" 
+                             type="text" placeholder="Código" >
                   </div>
                   <div class="form-group">
                       <label class="label">Nombre</label>
-                      <input required autocomplete="off" name="descripcion" class="form-control"
+                      <input required autocomplete="off" name="Nombre" class="form-control" 
                              type="text" placeholder="Nombre">
                   </div>
                   <div class="form-group">
                     <label class="label">Direccion</label>
-                    <input required autocomplete="off" name="precio_compra" class="form-control"
+                    <input required autocomplete="off" name="Direccion" class="form-control" 
                            type="text" placeholder="Proveedor">
                 </div>
                   <div class="form-group">
                       <label class="label">Telefono</label>
-                      <input required autocomplete="off" name="precio_compra" class="form-control"
+                      <input required autocomplete="off" name="Telefono" class="form-control" 
                              type="decimal(9,2)" placeholder="Precio de compra">
                   </div>
                   <div class="form-group">
                       <label class="label">E-mail</label>
-                      <input required autocomplete="off" name="precio_venta" class="form-control"
+                      <input required autocomplete="off" name="Email" class="form-control" 
                              type="decimal(9,2)" placeholder="Precio de venta normal">
                   </div>
                   <div class="form-group">
                     <label class="label">RFC</label>
-                    <input required autocomplete="off" name="precio_venta" class="form-control"
+                    <input required autocomplete="off" name="RFC" class="form-control" 
                            type="decimal(9,2)" placeholder="Precio de venta medico">
                 </div>
-                  <button class="btn btn-success">Guardar</button>
+                  <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
+                  <button class="btn btn-success" onclick="addCliente();">agregar Cliente</button>
                   <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
               </form>
               </div>
             </div>
           </div>
         </div>
+        <!--Modal actualizar  -->
+        <div class="modal fade" id="VenActualizar">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title">Actualizar Cliente</h2>
+              </div>
+              <div class="modal-body">
+                <form id="upCliente">
+          
+                  <div class="form-group">
+                      <label class="label">Id </label>
+                      <input autocomplete="off" name="id_Cliente" class="form-control" id="id_Cliente"
+                             type="text" placeholder="Código " readonly>
+                  </div>
+                  <div class="form-group">
+                      <label class="label">Nombre</label>
+                      <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
+                             type="text" placeholder="Nombre">
+                  </div>
+                  <div class="form-group">
+                    <label class="label">Direccion</label>
+                    <input required autocomplete="off" name="Direccion" class="form-control" id="Direccion"
+                           type="text" placeholder="Proveedor">
+                </div>
+                  <div class="form-group">
+                      <label class="label">Telefono</label>
+                      <input required autocomplete="off" name="Telefono" class="form-control" id="Telefono"
+                             type="decimal(9,2)" placeholder="Precio de compra">
+                  </div>
+                  <div class="form-group">
+                      <label class="label">E-mail</label>
+                      <input required autocomplete="off" name="Email" class="form-control" id="Email"
+                             type="decimal(9,2)" placeholder="Precio de venta normal">
+                  </div>
+                  <div class="form-group">
+                    <label class="label">RFC</label>
+                    <input required autocomplete="off" name="RFC" class="form-control" id="RFC"
+                           type="decimal(9,2)" placeholder="Precio de venta medico">
+                </div>
+                  <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
+                  <button class="btn btn-success" onclick="updateCliente();">Guardar</button>
+                  <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!--Modal actualizar  -->
     </div>
   </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+    <script src="./js/Funciones.js"></script>
   </body>
 </html>
