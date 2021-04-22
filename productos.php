@@ -79,9 +79,9 @@
                       echo '<td>'.$row['p_VentaMe'].'</td>';
                       echo '<td>'.$row['p_VentaMa'].'</td>';
                       echo '<td>'.$row['Cantidad'].'</td>';
-                      echo '<td> <a class="btn btn-warning" href="#"><i class="fa fa-edit"></i></a> </td>';
+                      echo '<td> <a class="btn btn-warning" onclick="editProducto(this);"><i class="fa fa-edit"></i></a> </td>';
                       echo '<td> <form action="#" method="post">';
-                      echo '<button type="submit" class="btn btn-danger"> <i class="fa fa-trash"></i> </button>';
+                      echo '<button type="submit" class="btn btn-danger" onclick="delProducto(this);"> <i class="fa fa-trash"></i> </button>';
                       echo '</form></td>';
                       echo '</tr>';
                   }
@@ -98,7 +98,7 @@
                 <h2 class="modal-title">Registrar producto</h2>
               </div>
               <div class="modal-body">
-              <form method="POST" action="./php/addProducto.php">
+              <form id="addPro">
           
           <div class="form-group">
               <label class="label">Código </label>
@@ -140,19 +140,80 @@
               <input required autocomplete="off" name="stock" class="form-control"
                      type="decimal(9,2)" placeholder="Existencia">
           </div>
-          <button class="btn btn-success">Guardar</button>
+          <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
+          <button class="btn btn-success" onclick="addProducto();">Guardar</button>
           <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
       </form>
               </div>
             </div>
           </div>
         </div>
-
+      <!-- Optional JavaScript -->
+      <div class="modal fade" id="VenActualizar">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h2 class="modal-title">Actualizar producto</h2>
+              </div>
+              <div class="modal-body">
+              <form id="upPro">
+          
+          <div class="form-group">
+              <label class="label">Código </label>
+              <input autocomplete="off" name="id_Producto" class="form-control" id="id_Producto"
+                     type="text" placeholder="Código " readonly>
+          </div>
+          <div class="form-group">
+              <label class="label">Nombre</label>
+              <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
+                     type="text" placeholder="Nombre">
+          </div>
+          <div class="form-group">
+            <label class="label">Proveedor</label>
+            <input required autocomplete="off" name="Proveedor" class="form-control"
+                   type="text" placeholder="Proveedor">
+        </div>
+          <div class="form-group">
+              <label class="label">Precio de compra</label>
+              <input required autocomplete="off" name="p_Compra" class="form-control" id="p_Compra"
+                     type="decimal(9,2)" placeholder="Precio de compra">
+          </div>
+          <div class="form-group">
+              <label class="label">Precio de venta normal</label>
+              <input required autocomplete="off" name="p_VentaC" class="form-control" id="p_VentaC"
+                     type="decimal(9,2)" placeholder="Precio de venta normal">
+          </div>
+          <div class="form-group">
+            <label class="label">Precio de venta medico</label>
+            <input required autocomplete="off" name="p_VentaM" class="form-control" id="p_VentaM"
+                   type="decimal(9,2)" placeholder="Precio de venta medico">
+        </div>
+        <div class="form-group">
+          <label class="label">Precio de venta mayoreo</label>
+          <input required autocomplete="off" name="p_VentaMa" class="form-control" id="p_VentaMa"
+                 type="decimal(9,2)" placeholder="Precio de venta mayoreo">
+        </div>
+          <div class="form-group">
+              <label class="label">Existencia</label>
+              <input name="stock" class="form-control" id="stock"
+                     type="decimal(9,2)" placeholder="Existencia" readonly>
+          </div>
+          <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
+          <button class="btn btn-success" onclick="updatePro();">Guadar cambios </button>
+          <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+      </form>
+              </div>
+            </div>
+          </div>
+        </div>           
+      <!-- Optional JavaScript -->
   </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+    <script src="./js/Funciones.js"></script>
   </body>
 </html>
