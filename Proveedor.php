@@ -108,22 +108,22 @@
                   <div class="form-group">
                     <label class="label">Direccion</label>
                     <input required autocomplete="off" name="Direccion" class="form-control"
-                           type="text" placeholder="Proveedor">
+                           type="text" placeholder="Direccion">
                 </div>
                   <div class="form-group">
                       <label class="label">Telefono</label>
                       <input required autocomplete="off" name="Telefono" class="form-control"
-                             type="decimal(9,2)" placeholder="Precio de compra">
+                             type="text" placeholder="Tellefono">
                   </div>
                   <div class="form-group">
                       <label class="label">E-mail</label>
                       <input required autocomplete="off" name="Email" class="form-control"
-                             type="decimal(9,2)" placeholder="Precio de venta normal">
+                             type="text" placeholder="E-mail">
                   </div>
                   <div class="form-group">
                     <label class="label">RFC</label>
                     <input required autocomplete="off" name="RFC" class="form-control"
-                           type="decimal(9,2)" placeholder="Precio de venta medico">
+                           type="text" placeholder="RFC>
                 </div>
                   <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
                   <button class="btn btn-success" onclick="addProveedor();">Guardar</button>
