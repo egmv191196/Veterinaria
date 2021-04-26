@@ -44,9 +44,12 @@
           </div>
         </nav>
     </div>	
-    <div class="row">
+    <div class="header">
         <div class="col-12">
             <h1>Nueva venta <i class="fa fa-cart-plus"></i></h1>
+            <a class="btn btn-info" href="menu.php">
+                <i class="fa fa-arrow-left"></i>&nbsp;Volver
+            </a>
             <div class="row">
                 <div class="col-12 col-md-6">
                     <form action="#" method="post">
@@ -57,14 +60,6 @@
                                     <option value="id_cliente">Clino1,2</option>          
                             </select>
                         </div>
-                            <div class="form-group">
-                                <button name="accion" value="terminar" type="submit" class="btn btn-success">Terminar
-                                    venta
-                                </button>
-                                <button name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
-                                    venta
-                                </button>
-                            </div>
                     </form>
                 </div>
                 <div class="col-12 col-md-6">
@@ -94,8 +89,12 @@
                             <tr>
                                 <td></td>
                                 <td></td>
-                                <td></td>
-                                <td></td>
+                                <td>
+                                    <select required class="form-control" name="precio" id="precio">
+                                    <option value="precio">tipo de precio</option>          
+                                    </select>
+                                </td>
+                                <td> <input class="quantity" min="0" name="quantity" value="0" type="number"></td>
                                 <td>
                                     <form action="#">
                                         <input type="hidden" name="indice" >
@@ -107,6 +106,14 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="form-group">
+                    <button name="accion" value="terminar" type="submit" class="btn btn-success">Terminar
+                        venta
+                    </button>
+                    <button name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
+                        venta
+                    </button>
                 </div>
         </div>
     </div>
