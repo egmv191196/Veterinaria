@@ -10,13 +10,13 @@
     <link rel="stylesheet" href=".//css/cabezapie.css">
     <link rel="stylesheet" href=".//css/prove.css">
     <script type="text/javascript" src="./js/Mostrar.js"></script>
-    <title>Menú-Veterinaria Balbi</title>
+    <title>Clientes</title>
   </head>
   <body>
     <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
-          <a class="navbar-brand" href="Index.html"><img src="img/BALBI-sin-fondo.png"></a>
+          <a class="navbar-brand" href="menu.php"><img src="img/BALBI-sin-fondo.png"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <img src="img/Enca/menu.svg" class="img-fluid">
           </button>
@@ -45,9 +45,15 @@
         </nav>
     </div>	
   <div class="header">
-    <div class="col-12">
+    <div class="row">
+      <div class="col-sm">
         <h1>Clientes <i class="fas fa-handshake"></i></h1>
-        <a href="#VenRegistrar" class="btn btn-success mb-2" data-toggle="modal">Agregar</a>
+      </div>
+      <div class="col-sm">
+        <a href="#VenRegistrar" class="btn btn-success mb-2 float-right" data-toggle="modal">Agregar</a>
+      </div>
+    </div>
+    <div class="col-12">
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -86,41 +92,58 @@
             </table>
         </div>
         <div class="modal fade" id="VenRegistrar">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h2 class="modal-title">Registrar Cliente</h2>
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div class="modal-body">
                 <form id="addCliente">
-                  <div class="form-group">
-                      <label class="label">Nombre</label>
-                      <input required autocomplete="off" name="Nombre" class="form-control" 
-                             type="text" placeholder="Nombre">
+                  <div class="row">
+                    <div class="col-8">
+                      <div class="form-group">
+                        <label class="label">Nombre</label>
+                        <input required autocomplete="off" name="Nombre" class="form-control" 
+                              type="text" placeholder="Nombre">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                    <div class="form-group">
+                        <label class="label">Telefono</label>
+                        <input required autocomplete="off" name="Telefono" class="form-control" 
+                              type="text" placeholder="Telefono">
+                      </div>
+                      
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label class="label">Direccion</label>
-                    <input required autocomplete="off" name="Direccion" class="form-control" 
-                           type="text" placeholder="Direccion">
-                </div>
-                  <div class="form-group">
-                      <label class="label">Telefono</label>
-                      <input required autocomplete="off" name="Telefono" class="form-control" 
-                             type="text" placeholder="Telefono">
+                  <div class="row">
+                    <div class="col-8">
+                      <div class="form-group">
+                        <label class="label">Direccion</label>
+                        <input required autocomplete="off" name="Direccion" class="form-control" 
+                              type="text" placeholder="Direccion">
+                      </div>
+                    </div>
+                    <div class="col-4">
+                      <div class="form-group">
+                        <label class="label">E-mail</label>
+                        <input required autocomplete="off" name="Email" class="form-control" 
+                              type="text)" placeholder="E-mail">
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group">
-                      <label class="label">E-mail</label>
-                      <input required autocomplete="off" name="Email" class="form-control" 
-                             type="text)" placeholder="E-mail">
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group">
+                        <label class="label">RFC</label>
+                        <input required autocomplete="off" name="RFC" class="form-control" 
+                              type="text" placeholder="RFC">
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label class="label">RFC</label>
-                    <input required autocomplete="off" name="RFC" class="form-control" 
-                           type="text" placeholder="RFC">
-                </div>
                   <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
-                  <button class="btn btn-success" onclick="addCliente();">agregar Cliente</button>
+                  <button class="btn btn-success" onclick="addCliente();">Agregar Cliente</button>
                   <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
               </form>
               </div>
@@ -129,45 +152,62 @@
         </div>
         <!--Modal actualizar  -->
         <div class="modal fade" id="VenActualizar">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h2 class="modal-title">Actualizar Cliente</h2>
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div class="modal-body">
                 <form id="upCliente">
-          
-                  <div class="form-group">
-                      <label class="label">Id </label>
-                      <input autocomplete="off" name="id_Cliente" class="form-control" id="id_Cliente"
-                             type="text" placeholder="Código " readonly>
-                  </div>
-                  <div class="form-group">
-                      <label class="label">Nombre</label>
-                      <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
-                             type="text" placeholder="Nombre">
-                  </div>
-                  <div class="form-group">
-                    <label class="label">Direccion</label>
-                    <input required autocomplete="off" name="Direccion" class="form-control" id="Direccion"
-                           type="text" placeholder="Proveedor">
-                </div>
-                  <div class="form-group">
-                      <label class="label">Telefono</label>
-                      <input required autocomplete="off" name="Telefono" class="form-control" id="Telefono"
-                             type="decimal(9,2)" placeholder="Precio de compra">
-                  </div>
-                  <div class="form-group">
-                      <label class="label">E-mail</label>
-                      <input required autocomplete="off" name="Email" class="form-control" id="Email"
-                             type="decimal(9,2)" placeholder="Precio de venta normal">
-                  </div>
-                  <div class="form-group">
-                    <label class="label">RFC</label>
-                    <input required autocomplete="off" name="RFC" class="form-control" id="RFC"
-                           type="decimal(9,2)" placeholder="Precio de venta medico">
-                </div>
+                    <div class="row">
+                      <div class="col-2">
+                        <div class="form-group">
+                          <label class="label">Id </label>
+                          <input autocomplete="off" name="id_Cliente" class="form-control" id="id_Cliente"
+                                type="text" placeholder="Código " readonly>
+                        </div>
+                      </div>
+                      <div class="col-7">
+                        <div class="form-group">
+                          <label class="label">Nombre</label>
+                          <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
+                                type="text" placeholder="Nombre">
+                        </div>
+                      </div>
+                      <div class="col-3">
+                        <div class="form-group">
+                          <label class="label">Telefono</label>
+                          <input required autocomplete="off" name="Telefono" class="form-control" id="Telefono"
+                                type="decimal(9,2)" placeholder="Precio de compra">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                      <div class="form-group">
+                        <label class="label">Direccion</label>
+                        <input required autocomplete="off" name="Direccion" class="form-control" id="Direccion"
+                              type="text" placeholder="Proveedor">
+                      </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-group">
+                          <label class="label">E-mail</label>
+                          <input required autocomplete="off" name="Email" class="form-control" id="Email"
+                                type="decimal(9,2)" placeholder="Precio de venta normal">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-5">
+                        <div class="form-group">
+                          <label class="label">RFC</label>
+                          <input required autocomplete="off" name="RFC" class="form-control" id="RFC"
+                                type="decimal(9,2)" placeholder="Precio de venta medico">
+                        </div>
+                      </div>
+                    </div>
                   <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
                   <button class="btn btn-success" onclick="updateCliente();">Guardar</button>
                   <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
