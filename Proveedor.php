@@ -10,13 +10,13 @@
     <link rel="stylesheet" href=".//css/cabezapie.css">
     <link rel="stylesheet" href=".//css/prove.css">
     <script type="text/javascript" src="./js/Mostrar.js"></script>
-    <title>Menú-Veterinaria Balbi</title>
+    <title>Proveedores</title>
   </head>
   <body>
     <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
-          <a class="navbar-brand" href="Index.html"><img src="img/BALBI-sin-fondo.png"></a>
+          <a class="navbar-brand" href="menu.php"><img src="img/BALBI-sin-fondo.png"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <img src="img/Enca/menu.svg" class="img-fluid">
           </button>
@@ -46,8 +46,14 @@
     </div>	
   <div class="header">
     <div class="col-12">
-        <h1>Proveedores <i class="fas fa-people-carry "></i></h1>
-        <a href="#VenRegistrar" class="btn btn-success mb-2" data-toggle="modal">Agregar</a>
+      <div class="row">
+        <div class="col-sm">
+          <h1>Proveedores <i class="fas fa-people-carry "></i></h1>
+        </div>
+        <div class="col-sm">
+          <a href="#VenRegistrar" class="btn btn-success mb-2 float-right" data-toggle="modal">Agregar</a>
+        </div>
+      </div>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -86,44 +92,54 @@
             </table>
         </div>
         <div class="modal fade" id="VenRegistrar">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg" >
             <div class="modal-content">
               <div class="modal-header">
-                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h2 class="modal-title">Registrar Proveedor</h2>
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div class="modal-body">
                 <form id="addProv">
-          
-                  <div class="form-group">
-                      <label class="label">Id </label>
-                      <input required autocomplete="off" name="codigo_barras" class="form-control"
-                             type="text" placeholder="Código ">
-                  </div>
-                  <div class="form-group">
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-group">
                       <label class="label">Nombre</label>
                       <input required autocomplete="off" name="Nombre" class="form-control"
                              type="text" placeholder="Nombre">
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label class="label">Direccion</label>
-                    <input required autocomplete="off" name="Direccion" class="form-control"
-                           type="text" placeholder="Direccion">
                 </div>
-                  <div class="form-group">
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Direccion</label>
+                      <input required autocomplete="off" name="Direccion" class="form-control"
+                           type="text" placeholder="Direccion">
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="form-group">
                       <label class="label">Telefono</label>
                       <input required autocomplete="off" name="Telefono" class="form-control"
                              type="text" placeholder="Tellefono">
+                    </div>
                   </div>
-                  <div class="form-group">
+                </div>
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-group">
                       <label class="label">E-mail</label>
                       <input required autocomplete="off" name="Email" class="form-control"
                              type="text" placeholder="E-mail">
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label class="label">RFC</label>
-                    <input required autocomplete="off" name="RFC" class="form-control"
-                           type="text" placeholder="RFC>
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">RFC</label>
+                      <input required autocomplete="off" name="RFC" class="form-control"
+                           type="text" placeholder="RFC">
+                    </div>
+                  </div>
                 </div>
                   <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
                   <button class="btn btn-success" onclick="addProveedor();">Guardar</button>
@@ -135,45 +151,62 @@
         </div>
 
         <div class="modal fade" id="VenActualizar">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
+                <h2 class="modal-title">Actualizar datos del proveedor</h2>
                 <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h2 class="modal-title">Registrar Proveedor</h2>
               </div>
               <div class="modal-body">
                 <form id="upPro">
-          
-                  <div class="form-group">
-                      <label class="label">Id </label>
-                      <input required autocomplete="off" name="id_Proveedor" class="form-control" id="id_Proveedor"
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Id </label>
+                        <input required autocomplete="off" name="id_Proveedor" class="form-control" id="id_Proveedor"
                              type="text" placeholder="Código " readonly>
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Nombre</label>
+                        <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
+                              type="text" placeholder="Nombre">
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group">
-                      <label class="label">Nombre</label>
-                      <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
-                             type="text" placeholder="Nombre">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Direccion</label>
+                        <input required autocomplete="off" name="Direccion" class="form-control" id="Direccion"
+                            type="text" placeholder="Proveedor">
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Telefono</label>
+                        <input required autocomplete="off" name="Telefono" class="form-control" id="Telefono"
+                              type="decimal(9,2)" placeholder="Precio de compra">
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label class="label">Direccion</label>
-                    <input required autocomplete="off" name="Direccion" class="form-control" id="Direccion"
-                           type="text" placeholder="Proveedor">
-                </div>
-                  <div class="form-group">
-                      <label class="label">Telefono</label>
-                      <input required autocomplete="off" name="Telefono" class="form-control" id="Telefono"
-                             type="decimal(9,2)" placeholder="Precio de compra">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">E-mail</label>
+                        <input required autocomplete="off" name="Email" class="form-control" id="Email"
+                              type="decimal(9,2)" placeholder="Precio de venta normal">
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">RFC</label>
+                        <input required autocomplete="off" name="RFC" class="form-control" id="RFC"
+                              type="decimal(9,2)" placeholder="Precio de venta medico">
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group">
-                      <label class="label">E-mail</label>
-                      <input required autocomplete="off" name="Email" class="form-control" id="Email"
-                             type="decimal(9,2)" placeholder="Precio de venta normal">
-                  </div>
-                  <div class="form-group">
-                    <label class="label">RFC</label>
-                    <input required autocomplete="off" name="RFC" class="form-control" id="RFC"
-                           type="decimal(9,2)" placeholder="Precio de venta medico">
-                </div>
                   <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
                   <button class="btn btn-success" onclick="updateProveedor();">Guardar</button>
                   <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>

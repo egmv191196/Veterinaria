@@ -52,7 +52,7 @@
     <div class="menu-container">
         <div class="hex-wrapper">
           <div class="hex-row shift">
-            <a href="#" target="_blank">
+            <a href="venta.php" target="_blank">
             <div class="hexagon" id="nav-home">
               <i class="fas fa-shopping-cart fa-3x"></i>
               Ventas
@@ -60,7 +60,7 @@
               <div class="face2"></div>
             </div>
             </a>
-            <a href="#" target="_blank">
+            <a href="caja.html" target="_blank">
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-cash-register fa-3x"></i><br>  
                 Caja

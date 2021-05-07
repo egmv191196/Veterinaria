@@ -10,7 +10,7 @@
     <link rel="stylesheet" href=".//css/cabezapie.css">
     <link rel="stylesheet" href=".//css/menu.css">
     <script type="text/javascript" src="./js/Mostrar.js"></script>
-    <title>Menú-Veterinaria Balbi</title>
+    <title>Productos</title>
   </head>
   <body>
     <div id="Home">
@@ -44,10 +44,16 @@
           </div>
         </nav>
     </div>	
+  <div class="col-12">
   <div class="header">
-    <div class="col-12">
-        <h1>Productos <i class="fas fa-box-open"></i></h1>
-        <a href="#VenRegistrar" class="btn btn-success mb-2" data-toggle="modal">Agregar</a>
+    <div class="row">
+      <div class="col-sm">
+      <h1>Productos <i class="fas fa-box-open"></i></h1>
+      </div>
+      <div class="col-sm">
+        <a href="#VenRegistrar" class="btn btn-success mb-2 float-right" data-toggle="modal">Agregar</a>
+      </div>
+    </div>
         <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
@@ -75,7 +81,7 @@
                       echo '<td>'.$row['Nombre'].'</td>';
                       echo '<td></td>';
                       echo '<td>'.$row['p_Compra'].'</td>';
-                      echo '<td>'.$row['p_VentaN'].'</td>';
+                      echo '<td>'.$row['p_ventaN'].'</td>';
                       echo '<td>'.$row['p_VentaMe'].'</td>';
                       echo '<td>'.$row['p_VentaMa'].'</td>';
                       echo '<td>'.$row['Cantidad'].'</td>';
@@ -91,59 +97,82 @@
         </div>
     </div>
     <div class="modal fade" id="VenRegistrar">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h2 class="modal-title">Registrar producto</h2>
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div class="modal-body">
-              <form id="addPro">
-          
-          <div class="form-group">
-              <label class="label">Código </label>
-              <input required autocomplete="off" name="id_Producto" class="form-control"
-                     type="text" placeholder="Código ">
-          </div>
-          <div class="form-group">
-              <label class="label">Nombre</label>
-              <input required autocomplete="off" name="Nombre" class="form-control"
-                     type="text" placeholder="Nombre">
-          </div>
-          <div class="form-group">
-            <label class="label">Proveedor</label>
-            <input required autocomplete="off" name="Proveedor" class="form-control"
-                   type="text" placeholder="Proveedor">
-        </div>
-          <div class="form-group">
-              <label class="label">Precio de compra</label>
-              <input required autocomplete="off" name="p_Compra" class="form-control"
-                     type="decimal(9,2)" placeholder="Precio de compra">
-          </div>
-          <div class="form-group">
-              <label class="label">Precio de venta normal</label>
-              <input required autocomplete="off" name="p_VentaC" class="form-control"
-                     type="decimal(9,2)" placeholder="Precio de venta normal">
-          </div>
-          <div class="form-group">
-            <label class="label">Precio de venta medico</label>
-            <input required autocomplete="off" name="p_VentaM" class="form-control"
-                   type="decimal(9,2)" placeholder="Precio de venta medico">
-        </div>
-        <div class="form-group">
-          <label class="label">Precio de venta mayoreo</label>
-          <input required autocomplete="off" name="p_VentaMa" class="form-control"
-                 type="decimal(9,2)" placeholder="Precio de venta mayoreo">
-        </div>
-          <div class="form-group">
-              <label class="label">Existencia</label>
-              <input required autocomplete="off" name="stock" class="form-control"
-                     type="decimal(9,2)" placeholder="Existencia">
-          </div>
-          <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
-          <button class="btn btn-success" onclick="addProducto();">Guardar</button>
-          <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-      </form>
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Código </label>
+                      <input required autocomplete="off" name="id_Producto" class="form-control" id="id_Pro_reg" autofocus="autofocus"
+                            type="text" placeholder="Código" onchange="verificarCodigo();">
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Nombre</label>
+                      <input required autocomplete="off" name="Nombre" class="form-control" id="nom_Reg"
+                            type="text" placeholder="Nombre">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Proveedor</label>
+                      <input required autocomplete="off" name="Proveedor" class="form-control"
+                            type="text" placeholder="Proveedor">
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Precio de compra</label>
+                      <input required autocomplete="off" name="p_Compra" class="form-control" id="pc_Reg"
+                            type="decimal(9,2)" placeholder="Precio de compra">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Precio de venta normal</label>
+                      <input required autocomplete="off" name="p_VentaC" class="form-control" id="pv_Reg"
+                            type="decimal(9,2)" placeholder="Precio de venta normal">
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Precio de venta medico</label>
+                      <input required autocomplete="off" name="p_VentaM" class="form-control" id="pvm_Reg"
+                            type="decimal(9,2)" placeholder="Precio de venta medico">
+                    </div>
+                  </div>
+                  <div class="col-sm">
+                  <div class="form-group">
+                      <label class="label">Precio de venta mayoreo</label>
+                      <input required autocomplete="off" name="p_VentaMa" class="form-control" id="pvma_Reg"
+                            type="decimal(9,2)" placeholder="Precio de venta mayoreo">
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-4">
+                    <div class="form-group">
+                        <label class="label">Existencia</label>
+                        <input required autocomplete="off" name="stock" class="form-control" id="stock_Reg"
+                              type="decimal(9,2)" placeholder="Existencia">
+                    </div>
+                  </div>
+                </div>
+                  <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
+                  <button class="btn btn-success" onclick="addProducto();">Guardar</button>
+                  <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
               </div>
             </div>
           </div>
@@ -153,56 +182,81 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header">
-                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h2 class="modal-title">Actualizar producto</h2>
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               </div>
               <div class="modal-body">
-              <form id="upPro">
-          
-          <div class="form-group">
-              <label class="label">Código </label>
-              <input autocomplete="off" name="id_Producto" class="form-control" id="id_Producto"
-                     type="text" placeholder="Código " readonly>
-          </div>
-          <div class="form-group">
-              <label class="label">Nombre</label>
-              <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
-                     type="text" placeholder="Nombre">
-          </div>
-          <div class="form-group">
-            <label class="label">Proveedor</label>
-            <input required autocomplete="off" name="Proveedor" class="form-control"
-                   type="text" placeholder="Proveedor">
-        </div>
-          <div class="form-group">
-              <label class="label">Precio de compra</label>
-              <input required autocomplete="off" name="p_Compra" class="form-control" id="p_Compra"
-                     type="decimal(9,2)" placeholder="Precio de compra">
-          </div>
-          <div class="form-group">
-              <label class="label">Precio de venta normal</label>
-              <input required autocomplete="off" name="p_VentaC" class="form-control" id="p_VentaC"
-                     type="decimal(9,2)" placeholder="Precio de venta normal">
-          </div>
-          <div class="form-group">
-            <label class="label">Precio de venta medico</label>
-            <input required autocomplete="off" name="p_VentaM" class="form-control" id="p_VentaM"
-                   type="decimal(9,2)" placeholder="Precio de venta medico">
-        </div>
-        <div class="form-group">
-          <label class="label">Precio de venta mayoreo</label>
-          <input required autocomplete="off" name="p_VentaMa" class="form-control" id="p_VentaMa"
-                 type="decimal(9,2)" placeholder="Precio de venta mayoreo">
-        </div>
-          <div class="form-group">
-              <label class="label">Existencia</label>
-              <input name="stock" class="form-control" id="stock"
-                     type="decimal(9,2)" placeholder="Existencia" readonly>
-          </div>
-          <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
-          <button class="btn btn-success" onclick="updatePro();">Guadar cambios </button>
-          <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
-      </form>
+                <form id="upPro">
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Código </label>
+                        <input required autocomplete="off" name="id_Producto" class="form-control" id="id_Producto"
+                              type="text" placeholder="Código" readonly>
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Nombre</label>
+                        <input required autocomplete="off" name="Nombre" class="form-control" id="Nombre"
+                              type="text" placeholder="Nombre">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Proveedor</label>
+                        <input required autocomplete="off" name="Proveedor" class="form-control"
+                              type="text" placeholder="Proveedor">
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Precio de compra</label>
+                        <input required autocomplete="off" name="p_Compra" class="form-control" id="p_Compra"
+                              type="decimal(9,2)" placeholder="Precio de compra">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Precio de venta normal</label>
+                        <input required autocomplete="off" name="p_VentaC" class="form-control" id="p_VentaC"
+                              type="decimal(9,2)" placeholder="Precio de venta normal">
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Precio de venta medico</label>
+                        <input required autocomplete="off" name="p_VentaM" class="form-control" id="p_VentaM"
+                              type="decimal(9,2)" placeholder="Precio de venta medico">
+                      </div>
+                    </div>
+                    <div class="col-sm">
+                    <div class="form-group">
+                        <label class="label">Precio de venta mayoreo</label>
+                        <input required autocomplete="off" name="p_VentaMa" class="form-control" id="p_VentaMa"
+                              type="decimal(9,2)" placeholder="Precio de venta mayoreo">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="form-group">
+                          <label class="label">Existencia</label>
+                          <input required autocomplete="off" name="stock" class="form-control" id="stock"
+                                type="decimal(9,2)" placeholder="Existencia" readonly>
+                      </div>
+                    </div>
+                  </div>
+                  <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
+                  <button class="btn btn-success" onclick="updatePro();">Guadar cambios </button>
+                  <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+                </form>
               </div>
             </div>
           </div>
