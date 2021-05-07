@@ -10,12 +10,13 @@
       <link rel="stylesheet" href=".//css/cabezapie.css">
     <link rel="stylesheet" href=".//css/prove.css">
     <script type="text/javascript" src="./js/Mostrar.js"></script>
-    <title>Menú-Veterinaria Balbi</title>
+    <title>Venta</title>
   </head>
   <body>
     <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
+          <a class="btn btn-info" href="menu.php" hidden><i class="fa fa-arrow-left"></i>&nbsp;Volver</a>
           <a class="navbar-brand" href="menu.php"><img src="img/BALBI-sin-fondo.png"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <img src="img/Enca/menu.svg" class="img-fluid">
@@ -46,53 +47,44 @@
     </div>	
     <div class="header">
         <div class="col-12">
-            <h1>Nueva venta <i class="fa fa-cart-plus"></i></h1>
-            <a class="btn btn-info" href="menu.php">
-                <i class="fa fa-arrow-left"></i>&nbsp;Volver
-            </a>
+              <h1 class="text-center">Venta<i class="fa fa-cart-plus"></i></h1>
             <div class="row">
-                <div class="col-12 col-md-6">
-                    <form action="#" method="post">
-                        <div class="form-group">
-                            <label for="id_cliente">Cliente</label>
-                            <select required class="form-control" name="id_cliente" id="id_cliente">
-                                    <option >cliente estandar</option>
-                                    <option value="id_cliente">Clino1,2</option>          
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="col-12 col-md-6">
-                    <form action="#">
-                        <div class="form-group">
-                            <label for="codigo">Código de barras</label>
-                            <input id="codigo" autocomplete="off" required autofocus name="codigo" type="text"
-                                   class="form-control"
-                                   placeholder="Código de barras">
-                        </div>
-                    </form>
-                </div>
+                  <label class="col-1" for="id_cliente">Cliente</label>
+                  <select required class="form-control col-2" name="id_cliente" id="id_cliente">
+                          <option value="">cliente estandar</option>   
+                            <?php
+                              require_once('./php/conexion.php');
+                              $result= mysqli_query($conexion, "select * from cliente");
+                              while ($row = mysqli_fetch_array($result)) {
+                                  echo '<option value="1" >'.$row['Nombre'].'</option>';
+                              }
+                            ?>      
+                  </select>
+                  <label class="col-1" for="cantidad">Cantidad</label>
+                  <input id="cantidad" autocomplete="off" name="cantidad" type="number" value=1
+                          class="form-control col-2" placeholder="Cantidad de productos">
+                  <label class="col-2" for="codigo">Código de barras</label>
+                  <input id="codigo" autocomplete="off" required name="codigo" type="text"
+                          class="form-control col-3" onchange="leer();"
+                          placeholder="Código de barras">
             </div>
                 <h2>Total: </h2>
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="Productos">
                         <thead>
                         <tr>
-                            <th>Código de barras</th>
-                            <th>Descripción</th>
-                            <th>Precio</th>
-                            <th>Cantidad</th>
-                            <th>Quitar</th>
+                            <th width=20%>Código de barras</th>
+                            <th width=40%>Descripción</th>
+                            <th width=15%>Precio</th>
+                            <th width=5%>Cantidad</th>
+                            <th width=10%>Quitar</th>
                         </tr>
                         </thead>
                         <tbody>
                             <tr>
+                                <!--<td></td>
                                 <td></td>
-                                <td></td>
-                                <td>
-                                    <select required class="form-control" name="precio" id="precio">
-                                    <option value="precio">tipo de precio</option>          
-                                    </select>
+                                <td><label ></label>
                                 </td>
                                 <td> <input class="quantity" min="0" name="quantity" value="0" type="number"></td>
                                 <td>
@@ -102,7 +94,7 @@
                                             <i class="fa fa-trash"></i>
                                         </button>
                                     </form>
-                                </td>
+                                </td>-->
                             </tr>
                         </tbody>
                     </table>
@@ -119,8 +111,9 @@
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+    <script src="./js/venta.js"></script>
   </body>
 </html>

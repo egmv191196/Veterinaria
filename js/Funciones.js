@@ -16,12 +16,38 @@ function signIn(){
         alert("Hubo un error en el server, reintentelo de nuevo");
     });
 }
-function mostrarModal(){
-    
-}
 //--------Producto--------
+function verificarCodigo(){
+    var datos = {
+        "Operacion" : 'Verificar',
+        id_Producto : document.getElementById("id_Pro_reg").value
+    };
+    $.ajax({
+        type: "POST",
+        url: "./php/Producto.php",
+        data: datos,
+    }).done(function(response){ 
+        if(response == 0 ){
+        }else{
+            alert("Producto ya esta registrado, esta asignado al producto "+response);
+            $('#id_Pro_reg').val(null);
+        }  
+    }).fail(function(response){
+        alert("Hubo un error en el server, reintentelo de nuevo");
+    });
+}
+
 function addProducto(){
-    var datos=$('#addPro').serialize();
+    var datos = {
+        "Operacion" : 'Insertar',
+        id_Producto : document.getElementById("id_Pro_reg").value,
+        Nombre : document.getElementById("nom_Reg").value,
+        p_Compra : document.getElementById("pc_Reg").value,
+        p_VentaC : document.getElementById("pv_Reg").value,
+        p_VentaM : document.getElementById("pvm_Reg").value,
+        p_VentaMa : document.getElementById("pvma_Reg").value,
+        stock : document.getElementById("stock_Reg").value
+    };
     $.ajax({
         type: "POST",
         url: "./php/Producto.php",
@@ -36,8 +62,11 @@ function addProducto(){
     }).fail(function(response){
         alert("Hubo un error en el server, reintentelo de nuevo");
     });
+    return false;
 
 }
+
+
 function delProducto(id){
     var datos = {
             "Operacion" : 'Eliminar',
@@ -99,7 +128,6 @@ function addProveedor(){
     }).fail(function(response){
         alert("Hubo un error en el server, reintentelo de nuevo");
     });
-
 }
 function delProveedor(id){
     var datos = {
@@ -206,3 +234,9 @@ function editCliente(id) {
     $('#RFC').val($(id).parents("tr").find("td")[5].innerHTML);
     $("#VenActualizar").modal();
 }
+// Funciones con document ready
+  $(document).ready(function() {
+    $('#VenRegistrar').on('shown.bs.modal', function() {
+      $('#id_Pro_reg').trigger('focus');
+    });
+  });
