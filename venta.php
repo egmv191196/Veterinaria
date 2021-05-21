@@ -50,13 +50,14 @@
               <h1 class="text-center">Venta<i class="fa fa-cart-plus"></i></h1>
             <div class="row">
                   <label class="col-1" for="id_cliente">Cliente</label>
-                  <select required class="form-control col-2" name="id_cliente" id="id_cliente">
-                          <option value="">cliente estandar</option>   
+                  <input type="hidden" id="Descuento" value="0">
+                  <select required class="form-control col-2" name="id_cliente" id="id_cliente" onchange="Descuento();">
+                          <option value="">cliente general</option>   
                             <?php
                               require_once('./php/conexion.php');
                               $result= mysqli_query($conexion, "select * from cliente");
                               while ($row = mysqli_fetch_array($result)) {
-                                  echo '<option value="1" >'.$row['Nombre'].'</option>';
+                                  echo '<option value="'.$row['id_Cliente'].'" >'.$row['Nombre'].' - '.$row['Telefono'].'</option>';
                               }
                             ?>      
                   </select>
@@ -74,27 +75,16 @@
                         <thead>
                         <tr>
                             <th width=20%>Código de barras</th>
-                            <th width=40%>Descripción</th>
-                            <th width=15%>Precio</th>
+                            <th width=35%>Descripción</th>
+                            <th width=15%>Precio unitario</th>
                             <th width=5%>Cantidad</th>
+                            <th width=5%>Subtotal</th>
                             <th width=10%>Quitar</th>
                         </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <!--<td></td>
-                                <td></td>
-                                <td><label ></label>
-                                </td>
-                                <td> <input class="quantity" min="0" name="quantity" value="0" type="number"></td>
-                                <td>
-                                    <form action="#">
-                                        <input type="hidden" name="indice" >
-                                        <button type="submit" class="btn btn-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>-->
+
                             </tr>
                         </tbody>
                     </table>
