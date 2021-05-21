@@ -77,8 +77,8 @@
                         echo '<tr style="text-align: center">';
                         echo '<td>'.$row['id_Cliente'].'</td>';
                         echo '<td>'.$row['Nombre'].'</td>';
-                        echo '<td>'.$row['Direccion'].'</td>';
                         echo '<td>'.$row['Telefono'].'</td>';
+                        echo '<td>'.$row['Direccion'].'</td>';
                         echo '<td>'.$row['Email'].'</td>';
                         echo '<td>'.$row['RFC'].'</td>';
                         echo '<td> <a class="btn btn-warning" onclick="editCliente(this);"><i class="fa fa-edit"></i></a> </td>';
@@ -141,9 +141,18 @@
                               type="text" placeholder="RFC">
                       </div>
                     </div>
+                    <div class="col-6">
+                    <label class="label">Tipo de cliente</label>
+                      <select required class="form-control " name="t_Cliente">
+                        <option value="">Selecciona el tipo de cliente</option> 
+                        <option value="0">Cliente estandar</option>  
+                        <option value="1">Cliente Medico</option>
+                        <option value="2">Cliente Mayoreo</option>     
+                      </select>
+                    </div>
                   </div>
                   <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
-                  <button class="btn btn-success" onclick="addCliente();">Agregar Cliente</button>
+                  <input type="button" class="btn btn-success" onclick="addCliente();" value="Agregar Cliente">
                   <button type="button"class="btn btn-primary" data-dismiss="modal">Cerrar</button>
               </form>
               </div>
@@ -165,7 +174,7 @@
                         <div class="form-group">
                           <label class="label">Id </label>
                           <input autocomplete="off" name="id_Cliente" class="form-control" id="id_Cliente"
-                                type="text" placeholder="Código " readonly>
+                                type="text" placeholder="Código" readonly>
                         </div>
                       </div>
                       <div class="col-7">
@@ -188,14 +197,14 @@
                       <div class="form-group">
                         <label class="label">Direccion</label>
                         <input required autocomplete="off" name="Direccion" class="form-control" id="Direccion"
-                              type="text" placeholder="Proveedor">
+                              type="text" placeholder="Direccion">
                       </div>
                       </div>
                       <div class="col-4">
                         <div class="form-group">
                           <label class="label">E-mail</label>
                           <input required autocomplete="off" name="Email" class="form-control" id="Email"
-                                type="decimal(9,2)" placeholder="Precio de venta normal">
+                                type="decimal(9,2)" placeholder="Email">
                         </div>
                       </div>
                     </div>
@@ -204,8 +213,17 @@
                         <div class="form-group">
                           <label class="label">RFC</label>
                           <input required autocomplete="off" name="RFC" class="form-control" id="RFC"
-                                type="decimal(9,2)" placeholder="Precio de venta medico">
+                                type="decimal(9,2)" placeholder="RFC">
                         </div>
+                      </div>
+                      <div class="col-6">
+                      <label class="label">Tipo de cliente</label>
+                          <select required class="form-control" name="t_Cliente" id="t_Cliente">
+                            <option value="">Selecciona el tipo de cliente</option> 
+                            <option value="0">Cliente estandar</option>  
+                            <option value="1">Cliente Medico</option>
+                            <option value="2">Cliente Mayoreo</option>     
+                          </select>
                       </div>
                     </div>
                   <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />

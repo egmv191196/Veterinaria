@@ -28,6 +28,7 @@ function verificarCodigo(){
         data: datos,
     }).done(function(response){ 
         if(response == 0 ){
+            $('#nom_Reg').trigger('focus');
         }else{
             alert("Producto ya esta registrado, esta asignado al producto "+response);
             $('#id_Pro_reg').val(null);
@@ -181,7 +182,7 @@ function addCliente(){
         data: datos,
     }).done(function(response){   
         if(response == 1 ){
-            alert("Proveedor agregado correctamente");
+            alert("Cliente agregado correctamente");
             location.href ="./Clientes.php";
         }else{
             alert("Error al agregar el proveedor");
@@ -193,19 +194,48 @@ function addCliente(){
 }
 function delCliente(id){
     var datos = {
-            "Operacion" : 'Eliminar',
-            "id_Cliente" : $(id).parents("tr").find("td")[0].innerHTML
-        };
-        $.ajax({
-            type: "POST",
-            url: "./php/Cliente.php",
-            data: datos,
-        }).done(function(response){      
-            alert("El Cliente fue eliminado correctamente");
-            location.reload();
-        }).fail(function(response){
-            alert("Hubo un error en el server, reintentelo de nuevo");
-        });
+        "Operacion" : 'Eliminar',
+        "id_Cliente" : $(id).parents("tr").find("td")[0].innerHTML
+    };
+    $.ajax({
+        type: "POST",
+        url: "./php/Cliente.php",
+        data: datos,
+    }).done(function(response){      
+        alert("El Cliente fue eliminado correctamente");
+        location.reload();
+    }).fail(function(response){
+        alert("Hubo un error en el server, reintentelo de nuevo");
+    });
+}
+
+function editCliente(id){
+    var datos = {
+        "Operacion" : 'c_Descuento',
+        "id_Cliente" : $(id).parents("tr").find("td")[0].innerHTML
+    };
+    $.ajax({
+        type: "POST",
+        url: "./php/Cliente.php",
+        data: datos,
+    }).done(function(response){      
+        if(response==0){
+            $('#t_Cliente').val(0);
+        }else if(response==1){
+            $('#t_Cliente').val(1);
+        }else if(response==2){;
+            $('#t_Cliente').val(2);
+        }
+    }).fail(function(response){
+        alert("Hubo un error en el server, reintentelo de nuevo");
+    });
+    $('#id_Cliente').val($(id).parents("tr").find("td")[0].innerHTML);  
+    $('#Nombre').val($(id).parents("tr").find("td")[1].innerHTML); 
+    $('#Direccion').val($(id).parents("tr").find("td")[3].innerHTML); 
+    $('#Telefono').val($(id).parents("tr").find("td")[2].innerHTML); 
+    $('#Email').val($(id).parents("tr").find("td")[4].innerHTML);  
+    $('#RFC').val($(id).parents("tr").find("td")[5].innerHTML);
+    $("#VenActualizar").modal();
 }
 function updateCliente(){
     var datos=$('#upCliente').serialize();
@@ -225,18 +255,11 @@ function updateCliente(){
     });
 
 }
-function editCliente(id) {
-    $('#id_Cliente').val($(id).parents("tr").find("td")[0].innerHTML);  
-    $('#Nombre').val($(id).parents("tr").find("td")[1].innerHTML); 
-    $('#Direccion').val($(id).parents("tr").find("td")[2].innerHTML); 
-    $('#Telefono').val($(id).parents("tr").find("td")[3].innerHTML); 
-    $('#Email').val($(id).parents("tr").find("td")[4].innerHTML);  
-    $('#RFC').val($(id).parents("tr").find("td")[5].innerHTML);
-    $("#VenActualizar").modal();
-}
+
 // Funciones con document ready
   $(document).ready(function() {
     $('#VenRegistrar').on('shown.bs.modal', function() {
       $('#id_Pro_reg').trigger('focus');
     });
+    $('#user').trigger('focus');
   });

@@ -124,9 +124,9 @@
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-group">
-                      <label class="label">Proveedor</label>
-                      <input required autocomplete="off" name="Proveedor" class="form-control"
-                            type="text" placeholder="Proveedor">
+                      <label class="label">Existencia</label>
+                      <input required autocomplete="off" name="stock" class="form-control" id="stock_Reg"
+                            type="decimal(9,2)" placeholder="Existencia">
                     </div>
                   </div>
                   <div class="col-sm">
@@ -158,15 +158,6 @@
                       <label class="label">Precio de venta mayoreo</label>
                       <input required autocomplete="off" name="p_VentaMa" class="form-control" id="pvma_Reg"
                             type="decimal(9,2)" placeholder="Precio de venta mayoreo">
-                    </div>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-4">
-                    <div class="form-group">
-                        <label class="label">Existencia</label>
-                        <input required autocomplete="off" name="stock" class="form-control" id="stock_Reg"
-                              type="decimal(9,2)" placeholder="Existencia">
                     </div>
                   </div>
                 </div>
@@ -207,9 +198,9 @@
                   <div class="row">
                     <div class="col-sm">
                       <div class="form-group">
-                        <label class="label">Proveedor</label>
-                        <input required autocomplete="off" name="Proveedor" class="form-control"
-                              type="text" placeholder="Proveedor">
+                          <label class="label">Existencia</label>
+                          <input required autocomplete="off" name="stock" class="form-control" id="stock"
+                                type="decimal(9,2)" placeholder="Existencia" readonly>
                       </div>
                     </div>
                     <div class="col-sm">
@@ -241,15 +232,6 @@
                         <label class="label">Precio de venta mayoreo</label>
                         <input required autocomplete="off" name="p_VentaMa" class="form-control" id="p_VentaMa"
                               type="decimal(9,2)" placeholder="Precio de venta mayoreo">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-4">
-                      <div class="form-group">
-                          <label class="label">Existencia</label>
-                          <input required autocomplete="off" name="stock" class="form-control" id="stock"
-                                type="decimal(9,2)" placeholder="Existencia" readonly>
                       </div>
                     </div>
                   </div>
