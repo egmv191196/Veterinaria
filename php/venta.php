@@ -52,5 +52,40 @@
         }else {
             echo 0;
         }
+    }else if($Operacion=="Pago"){
+        $Total = $_POST['Total'];
+        $Efectivo = number_format($_POST['Efectivo'], 2, '.', '');
+        $Cambio = $_POST['Cambio'];
+        $date=date('Y-m-d H:i:s');
+        $usuario=1;
+        $cliente=2;
+        $data = $_POST['Productos'];
+        $consulta= "INSERT INTO venta(id_Venta, fecha_Hora, id_User, id_Cliente, Total, Pago, Cambio) VALUES 
+        (NULL,'$date',$usuario,$cliente,$Total,$Efectivo,$Cambio)"; 
+        $res= mysqli_query($conexion,$consulta);
+        if($res==1){
+            $consulta = "SELECT id_Venta FROM venta WHERE id_User=$usuario AND id_Cliente=$cliente AND Total=$Total";
+            $res=mysqli_query($conexion,$consulta);
+            $datos = mysqli_fetch_array($res);
+            $id_Venta=$datos[0];
+            for ($i=0; $i <count($data); $i++) { 
+                $cod=$data[$i][0];
+                $p_Unitario=$data[$i][1];
+                $Cant=$data[$i][2];
+                $p_Total=$data[$i][3];
+                $consulta = "INSERT INTO productos_venta(id_Venta, id_Producto, Cantidad, precio_Unitario, precio_Total) VALUES 
+                ($id_Venta,$cod,$Cant,$p_Unitario,$p_Total)";
+                $res=mysqli_query($conexion,$consulta);
+                if($res==1){
+                    echo "Correcto al registrar un producto".$i;
+                }else{
+                    echo "Error al registrar producto";
+                } 
+            }
+            usleep ( 200000 );
+
+        }else {
+            echo "No se registro la venta";
+        }
     }
 ?> 
