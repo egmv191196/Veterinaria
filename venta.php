@@ -69,36 +69,81 @@
                           class="form-control col-3" onchange="leer();"
                           placeholder="Código de barras">
             </div>
-                <h2>Total: </h2>
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="Productos">
-                        <thead>
-                        <tr>
-                            <th width=20%>Código de barras</th>
-                            <th width=35%>Descripción</th>
-                            <th width=15%>Precio unitario</th>
-                            <th width=5%>Cantidad</th>
-                            <th width=5%>Subtotal</th>
-                            <th width=10%>Quitar</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="form-group">
-                    <button name="accion" value="terminar" type="submit" class="btn btn-success">Terminar
-                        venta
-                    </button>
-                    <button name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
-                        venta
-                    </button>
-                </div>
+            <div class="table-responsive mt-4 ">
+                <table class="table table-bordered" id="Productos">
+                    <thead>
+                    <tr>
+                        <th width=20%>Código de barras</th>
+                        <th width=35%>Descripción</th>
+                        <th width=15%>Precio unitario</th>
+                        <th width=5%>Cantidad</th>
+                        <th width=5%>Subtotal</th>
+                        <th width=10%>Quitar</th>
+                    </tr>
+                    </thead>
+                    <tbody >
+                    </tbody>
+                </table>
+            </div>
+            <div class="row p-2 m-2">
+              <div class="col-10 text-right">
+                <label >Total: $ </label>
+              </div>
+              <div class="col-2">
+              <input id="Total" class="form-control" type="text" value="0.0">
+              </div>
+            </div>
+            <div class="form-group float-right">
+              <button name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
+                    venta
+                </button>
+                <button class="btn btn-success mb-2 ml-2 mr-2 float-right" onclick="pagar_modal();" >Pagar</button>               
+            </div>
         </div>
     </div>
+    <div class="modal fade" id="Pagar">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title ">Cobrar</h2>
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              </div>
+              <div class="modal-body">
+                <form id="Pago1" >
+                  <div class="row">
+                    <div class="col-5 text-right">
+                      <label class="label ">Total a pagar: $</label>
+                    </div>
+                    <div class="col-7">
+                      <input autocomplete="off" name="Total" class="form-control col-sm" id="modal_Total" type="text" readonly>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-right">
+                      <label class="label">Efectivo: $</label>
+                    </div>
+                    <div class="col-7">
+                    <input required autocomplete="off" onkeyup="calcular_cambio();" name="modal_Pago" class="form-control" id="modal_Pago" type="decimal(9,2)" placeholder="Ingresa el monto entregado" autofocus>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-5 text-right">
+                    <label class="label">Cambio: $</label>
+                    </div>
+                    <div class="col-7">
+                    <input required autocomplete="off" name="modal_Cambio" class="form-control" id="modal_Cambio" type="decimal(9,2)" placeholder="0.00" readonly>                    </div>
+                  </div>
+                  <div class="form-group m-2">
+                    <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
+                    <button type="button" class="btn btn-success float-right m-2" onclick="pago();">Pagar</button>
+                    <button type="button"class="btn btn-danger float-right m-2" data-dismiss="modal">Cerrar</button>
+                  </div>
+                </form>
+              </div> 
+              </div>
+            </div>
+          </div> 
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
