@@ -13,12 +13,11 @@
     <title>Menú-Veterinaria Balbi</title>
   </head>
   <body>
-    <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
           <a class="navbar-brand" href="menu.php"><img src="img/BALBI-sin-fondo.png"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <img src="img/Enca/menu.svg" class="img-fluid">
+            <img src="img/Enca/menu.svg" class="img-fluid ">
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -42,8 +41,7 @@
                   </li>
           </ul>
           </div>
-        </nav>
-    </div>	
+        </nav>	
     <div class="header">
         <div class="encabezado">
             <h1>Bienvenido</h1>
@@ -52,7 +50,7 @@
     <div class="menu-container">
         <div class="hex-wrapper">
           <div class="hex-row shift">
-            <a href="venta.php" target="_blank">
+            <a href="venta.php" >
             <div class="hexagon" id="nav-home">
               <i class="fas fa-shopping-cart fa-3x"></i>
               Ventas
@@ -60,7 +58,7 @@
               <div class="face2"></div>
             </div>
             </a>
-            <a href="caja.html" target="_blank">
+            <a href="caja.html" >
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-cash-register fa-3x"></i><br>  
                 Caja
@@ -68,7 +66,7 @@
                  <div class="face2"></div>
             </div>
            </a> 
-            <a href="productos.php"  target="_blank">
+            <a href="productos.php"  >
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-box-open fa-3x"></i>
                 Productos
@@ -76,7 +74,7 @@
                  <div class="face2"></div>
             </div>
         </a>
-        <a href="Proveedor.php" target="_blank">
+        <a href="Proveedor.php" >
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-people-carry fa-3x"></i>
                 Proveedores
@@ -86,7 +84,7 @@
             </a>
           </div>
           <div class="hex-row">
-          <a href="Clientes.php" target="_blank">
+          <a href="Clientes.php" >
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-handshake fa-3x"></i>
              Clientes
@@ -94,7 +92,7 @@
               <div class="face2"></div>
             </div>
           </a>
-          <a href="#" target="_blank">
+          <a href="#" >
             <div class="hexagon" id="nav-work">
                 <i class="fas fa-hand-holding-usd fa-3x"></i>
               Creditos
@@ -102,7 +100,7 @@
               <div class="face2"></div>
             </div>
             </a>
-            <a href="#" target="_blank">
+            <a href="#" >
             <div class="hexagon" id="nav-contact">
                 <i class="fas fa-clipboard fa-3x"></i>
               Reportes
@@ -110,7 +108,7 @@
               <div class="face2"></div>
             </div>
             </a>
-            <a href="#" target="_blank">
+            <a href="#" >
             <div class="hexagon" id="nav-contact">
                 <i class="fas fa-users-cog fa-3x"></i>
                 Administrar

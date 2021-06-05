@@ -45,7 +45,7 @@
         </nav>
     </div>	
   <div class="col-12">
-  <div class="header">
+  <div class="header1">
     <div class="row">
       <div class="col-sm">
       <h1>Productos <i class="fas fa-box-open"></i></h1>
