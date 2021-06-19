@@ -1,4 +1,6 @@
 <?php
+    session_start();
+    $empleado=$_SESSION['id_Empleado'];
     require_once('./conexion.php'); 
     $Operacion=$_POST['Operacion'];
     if($Operacion=="Venta"){
@@ -57,35 +59,41 @@
         $Efectivo = number_format($_POST['Efectivo'], 2, '.', '');
         $Cambio = $_POST['Cambio'];
         $date=date('Y-m-d H:i:s');
-        $usuario=1;
-        $cliente=2;
+        $cliente=$_POST['Cliente'];
         $data = $_POST['Productos'];
         $consulta= "INSERT INTO venta(id_Venta, fecha_Hora, id_User, id_Cliente, Total, Pago, Cambio) VALUES 
-        (NULL,'$date',$usuario,$cliente,$Total,$Efectivo,$Cambio)"; 
+        (NULL,'$date',$empleado,$cliente,$Total,$Efectivo,$Cambio)"; 
         $res= mysqli_query($conexion,$consulta);
         if($res==1){
-            $consulta = "SELECT id_Venta FROM venta WHERE id_User=$usuario AND id_Cliente=$cliente AND Total=$Total";
+            $consulta = "SELECT id_Venta FROM venta WHERE id_User=$empleado AND id_Cliente=$cliente AND Total=$Total";
             $res=mysqli_query($conexion,$consulta);
             $datos = mysqli_fetch_array($res);
             $id_Venta=$datos[0];
+            //$consulta="INSERT INTO productos_venta (id_Venta, id_Producto, Cantidad, precio_Unitario, precio_Total) VALUES ";
+            $consulta="INSERT INTO productos_venta (id_Venta, id_Producto,Nombre, Cantidad, precio_Unitario, precio_Total) VALUES ";
             for ($i=0; $i <count($data); $i++) { 
                 $cod=$data[$i][0];
-                $p_Unitario=$data[$i][1];
-                $Cant=$data[$i][2];
-                $p_Total=$data[$i][3];
-                $consulta = "INSERT INTO productos_venta(id_Venta, id_Producto, Cantidad, precio_Unitario, precio_Total) VALUES 
-                ($id_Venta,$cod,$Cant,$p_Unitario,$p_Total)";
-                $res=mysqli_query($conexion,$consulta);
-                if($res==1){
-                    echo "Correcto al registrar un producto".$i;
+                $Nombre=$data[$i][1];
+                $p_Unitario=$data[$i][2];
+                $Cant=$data[$i][3];
+                $p_Total=$data[$i][4];
+                if($i==0){
+                    //$consulta =$consulta."({$id_Venta},{$cod},{$Cant},{$p_Unitario},{$p_Total})";
+                    $consulta =$consulta."({$id_Venta},{$cod},'{$Nombre}',{$Cant},{$p_Unitario},{$p_Total})";
                 }else{
-                    echo "Error al registrar producto";
-                } 
+                    //$consulta =$consulta.",({$id_Venta},{$cod},{$Cant},{$p_Unitario},{$p_Total})";
+                    $consulta =$consulta.",({$id_Venta},{$cod},'{$Nombre}',{$Cant},{$p_Unitario},{$p_Total})";
+                }
             }
-            usleep ( 200000 );
-
+            //echo $consulta;
+            $res=mysqli_query($conexion,$consulta);
+            if($res==1){
+                echo $id_Venta;
+            }else{
+                echo 0;
+            }
         }else {
-            echo "No se registro la venta";
+            echo 0;
         }
     }
 ?> 

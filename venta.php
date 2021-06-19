@@ -13,6 +13,11 @@
     <title>Venta</title>
   </head>
   <body>
+    <?php 
+      session_start();
+      $Nombre=$_SESSION['k_user'];
+    ?>  
+
     <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
@@ -28,20 +33,21 @@
               </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                  <li class="nav-item">
-                    <div id="hora"><script type="text/javascript">Mostrar();</script></div>
-                  </li>
-                  <li class="nav-item">
-                    <a href="" class="nav-link">
-                      <i class="fa fa-user fa-2x" aria-hidden="true"></i>
-                    </a>
-                </li>
-                  <li class="nav-item">
-                      <a href="" class="nav-link">
-                        <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
-                      </a>
-                  </li>
-          </ul>
+              <li class="nav-item">
+                <h3 id="hora" ></h3>
+                <script type="text/javascript">Mostrar();</script>
+              </li>
+              <li class="nav-item">
+                <a href="" class="nav-link"><?php echo $Nombre;?>
+                  <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                </a>
+              </li>
+              <li class="nav-item">
+                  <a href="./php/logout.php" class="nav-link">
+                    <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+                  </a>
+              </li>
+            </ul>
           </div>
         </nav>
     </div>	
@@ -52,10 +58,11 @@
                   <label class="col-1" for="id_cliente">Cliente</label>
                   <input type="hidden" id="Descuento" value="0">
                   <select required class="form-control col-2" name="id_cliente" id="id_cliente" onchange="Descuento();">
-                          <option value="">cliente general</option>   
+                          <option value="1">cliente general</option>   
                             <?php
                               require_once('./php/conexion.php');
                               $result= mysqli_query($conexion, "select * from cliente");
+                              $row = mysqli_fetch_array($result);
                               while ($row = mysqli_fetch_array($result)) {
                                   echo '<option value="'.$row['id_Cliente'].'" >'.$row['Nombre'].' - '.$row['Telefono'].'</option>';
                               }
@@ -123,7 +130,7 @@
                       <label class="label">Efectivo: $</label>
                     </div>
                     <div class="col-7">
-                    <input required autocomplete="off" onkeyup="calcular_cambio();" name="modal_Pago" class="form-control" id="modal_Pago" type="decimal(9,2)" placeholder="Ingresa el monto entregado" autofocus>
+                    <input required autocomplete="off" onkeyup="calcular_cambio();" onchange="pago();" name="modal_Pago" class="form-control" id="modal_Pago" type="decimal(9,2)" placeholder="Ingresa el monto entregado" autofocus>
                     </div>
                   </div>
                   <div class="row">
