@@ -16,7 +16,7 @@ function leer(){
         url: "./php/venta.php",
         data: datos,
     }).done(function(response){ 
-        //alert(response);
+        alert(response);
         if(response==2){
             alert("No se puede vender ese articulo, ya no hay piezas en el sistema, favor de revisar el inventario");
             $('#codigo').val(""); 
@@ -109,40 +109,53 @@ function pagar_modal(){
 function pago(){
     var producto=[];
     var list_Productos=[];
-    var resume_table = document.getElementById("Productos");
-    for (var i = 1, row; row = resume_table.rows[i]; i++) {
-        id_Pro = row.cells[0];
-        p_Unit = row.cells[2];
-        Cant = row.cells[3];
-        p_total = row.cells[4];
-        producto=[`${id_Pro.innerText}`,`${p_Unit.innerText}`,`${Cant.innerText}`,`${p_total.innerText}`];
-        list_Productos.push(producto);        
+    var Total=document.getElementById("modal_Total").value;
+    var Efectivo=document.getElementById("modal_Pago").value;
+    var cambio=Efectivo-Total;
+    if (cambio>=0) {
+        alert("se puede cobrar");
+        var resume_table = document.getElementById("Productos");
+        for (var i = 1, row; row = resume_table.rows[i]; i++) {
+            id_Pro = row.cells[0];
+            Nombre= row.cells[1];//Nombre
+            p_Unit = row.cells[2];
+            Cant = row.cells[3];
+            p_total = row.cells[4];
+            //producto=[`${id_Pro.innerText}`,`${p_Unit.innerText}`,`${Cant.innerText}`,`${p_total.innerText}`];
+            producto=[`${id_Pro.innerText}`,`${Nombre.innerText}`,`${p_Unit.innerText}`,`${Cant.innerText}`,`${p_total.innerText}`];
+            list_Productos.push(producto);        
+        }
+        //alert(list_Productos);
+        datos={
+            "Operacion": 'Pago',
+            Productos: list_Productos,
+            Total : document.getElementById("modal_Total").value,
+            Efectivo : document.getElementById("modal_Pago").value,
+            Cambio : document.getElementById("modal_Cambio").value,
+            Cliente : document.getElementById("id_cliente").value
+        };
+        $.ajax({
+            type: "POST",
+            url: "./php/venta.php",
+            data: datos,
+        }).done(function(response){
+            alert(response);
+            if(response!=0){
+                window.open('./php/ticketv.php?id_Venta='+response, '_blank');
+                location.reload();
+            }else{
+                alert("Error"+response);
+            }
+            
+        }).fail(function(response){
+            console.log("error"+response);
+        });
+        console.log(list_Productos);
+    }else{
+        alert("Verifica el monto pagado");
     }
-    datos={
-        "Operacion": 'Pago',
-        Productos: list_Productos,
-        Total : document.getElementById("modal_Total").value,
-        Efectivo : document.getElementById("modal_Pago").value,
-        Cambio : document.getElementById("modal_Cambio").value
-    };
-    $.ajax({
-        type: "POST",
-        url: "./php/venta.php",
-        data: datos,
-    }).done(function(response){
-        alert(response);
-        location.reload();
-        /*if(response==1){
-            alert("Todo bien");
-            location.reload();
-        }else{
-            alert("Error"+response);
-        }*/
-        
-    }).fail(function(response){
-        console.log("error"+response);
-    });
-    console.log(list_Productos);
+    /*
+    */
 }
 function calcular_cambio(){
     var total=parseFloat($('#modal_Total').val()).toFixed(2);

@@ -1,4 +1,4 @@
-﻿CREATE TABLE `Producto`
+﻿  CREATE TABLE `Producto`
 (
   `id_Producto` Bigint NOT NULL,
   `Nombre` Varchar(50) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE `Usuario`
   `id_User` Int NOT NULL,
   `Usuario` Varchar(20) NOT NULL,
   `Password` Varchar(30) NOT NULL,
-  `Nombre` Char(50) NOT NULL,
+  `Nombre` Varchar(50) NOT NULL,
   `Puesto` Varchar(20) NOT NULL,
   `Telefono` Int NOT NULL,
   `Email` Varchar(30) NOT NULL
@@ -70,6 +70,9 @@ CREATE TABLE `Venta`
   `fecha_Hora` Datetime NOT NULL,
   `id_User` Int NOT NULL,
   `id_Cliente` Int,
+  `Total` Float NOT NULL,
+  `Pago` Float NOT NULL,
+  `Cambio` Float NOT NULL,
   PRIMARY KEY (`id_Venta`)
 )
 ;
@@ -130,12 +133,14 @@ CREATE TABLE `productos_Venta`
 (
   `id_Venta` Int NOT NULL,
   `id_Producto` Bigint NOT NULL,
+  `Nombre` Varchar(50) NOT NULL,
   `Cantidad` Int NOT NULL,
-  `precio_Venta` Double NOT NULL
+  `precio_Unitario` Double NOT NULL,
+  `precio_Total` Float NOT NULL
 )
 ;
 
-ALTER TABLE `productos_Venta` ADD PRIMARY KEY (`id_Venta`,`id_Producto`)
+ALTER TABLE `productos_Venta` 
 ;
 
 -- Table productos_Compra
@@ -149,14 +154,14 @@ CREATE TABLE `productos_Compra`
 )
 ;
 
-ALTER TABLE `productos_Compra` ADD PRIMARY KEY (`id_Compra`,`id_Producto`)
+ALTER TABLE `productos_Compra` ADD PRIMARY KEY (`id_Compra`)
 ;
 
 -- Table Caja
 
 CREATE TABLE `Caja`
 (
-  `id_Caja` Char(20) NOT NULL,
+  `id_Caja` Int NOT NULL,
   `id_User` Int,
   `Fondo` Double NOT NULL,
   `Fecha` Date NOT NULL,
@@ -179,7 +184,7 @@ CREATE TABLE `retiroParcial`
   `fecha_Hora` Datetime NOT NULL,
   `Monto` Double NOT NULL,
   `id_User` Int,
-  `id_Caja` Char(20),
+  `id_Caja` Int,
   PRIMARY KEY (`Id_Retiro`)
 )
 ;
@@ -207,7 +212,7 @@ ALTER TABLE `Credito` ADD CONSTRAINT `PuedeSer` FOREIGN KEY (`id_Venta`) REFEREN
 ALTER TABLE `productos_Venta` ADD CONSTRAINT `Contiene` FOREIGN KEY (`id_Venta`) REFERENCES `Venta` (`id_Venta`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ;
 
-ALTER TABLE `productos_Venta` ADD CONSTRAINT `Relationship13` FOREIGN KEY (`id_Producto`) REFERENCES `Producto` (`id_Producto`) ON DELETE RESTRICT ON UPDATE RESTRICT
+ALTER TABLE `productos_Venta` ADD CONSTRAINT `seVende` FOREIGN KEY (`id_Producto`) REFERENCES `Producto` (`id_Producto`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ;
 
 ALTER TABLE `compra_Produ` ADD CONSTRAINT `Vende` FOREIGN KEY (`id_Proveedor`) REFERENCES `Proveedor` (`id_Proveedor`) ON DELETE RESTRICT ON UPDATE RESTRICT
