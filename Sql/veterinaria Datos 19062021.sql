@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-06-2021 a las 16:07:38
+-- Tiempo de generación: 19-06-2021 a las 09:02:16
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.3
 
@@ -41,7 +41,7 @@ CREATE TABLE `abono_credito` (
 --
 
 CREATE TABLE `caja` (
-  `id_Caja` char(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `id_Caja` int(11) NOT NULL,
   `id_User` int(11) DEFAULT NULL,
   `Fondo` double NOT NULL,
   `Fecha` date NOT NULL,
@@ -70,9 +70,10 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`id_Cliente`, `Nombre`, `Direccion`, `Telefono`, `Email`, `RFC`, `Descuento`) VALUES
-(1, 'Edgar', '', 123456, '', '', 0),
+(1, 'Cliente general', '', 0, '', '', 0),
 (2, 'Luis', '', 48949, '', '', 1),
-(3, 'Juan', '', 25461, '', '', 2);
+(3, 'Juan', '', 25461, '', '', 2),
+(4, 'Edgar', '', 2147483647, '', '', 2);
 
 -- --------------------------------------------------------
 
@@ -83,8 +84,24 @@ INSERT INTO `cliente` (`id_Cliente`, `Nombre`, `Direccion`, `Telefono`, `Email`,
 CREATE TABLE `compra_produ` (
   `id_Compra` int(11) NOT NULL,
   `fecha_Hora` datetime NOT NULL,
+  `num_Ticket` bigint(20) NOT NULL,
+  `Total` float NOT NULL,
   `id_Proveedor` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `compra_produ`
+--
+
+INSERT INTO `compra_produ` (`id_Compra`, `fecha_Hora`, `num_Ticket`, `Total`, `id_Proveedor`) VALUES
+(1, '2021-06-19 08:27:45', 105780562, 200, 1),
+(2, '2021-06-19 08:44:05', 5615613156, 1230, 2),
+(3, '2021-06-19 08:45:09', 5615613156, 1230, 2),
+(4, '2021-06-19 08:48:07', 53453453, 200, 1),
+(5, '2021-06-19 08:50:57', 51615616, 250, 2),
+(6, '2021-06-19 08:54:05', 51615616, 250, 2),
+(7, '2021-06-19 08:54:23', 51615616, 250, 2),
+(8, '2021-06-19 08:55:22', 5616551651, 400, 1);
 
 -- --------------------------------------------------------
 
@@ -125,12 +142,14 @@ INSERT INTO `producto` (`id_Producto`, `Nombre`, `Cantidad`, `p_Compra`, `p_vent
 (738545010610, 'Salsa botanera', 10, 35, 45, 44, 43),
 (759684154058, 'Vaselina', 9, 10, 25, 20, 17),
 (7501000264773, 'Papas chips jalapeño', 5, 10, 15, 14, 13),
-(7501040305320, 'Silicon', 0, 12.5, 17.5, 17, 16.5),
+(7501040305320, 'Silicon', 69, 12.5, 17.5, 17, 16.5),
 (7501055303786, 'Fresca 600 ml', 10, 10, 15, 14, 13),
 (7501072204226, 'Alimento campeon 800 gramas', 3, 45, 60, 55, 50),
-(7501130525102, 'Colorante mariposa ', 40, 10, 10, 10, 10),
-(7501310011067, 'Resina epoxica', 7, 12.5, 25.5, 20, 17.56),
-(7501791657693, 'Rastillos', 7, 10, 17.5, 17, 13.5),
+(7501072211927, 'Gatina 2 Kg sabor salmon para chachorros', 8, 50, 85, 80, 75),
+(7501130525102, 'Colorante mariposa ', 178, 16, 100, 10, 10),
+(7501310011067, 'Resina epoxica', 140, 20, 25.5, 20, 17.56),
+(7501791657693, 'Rastillos', 325, 10, 17.5, 17, 13.5),
+(7502212484676, 'hojas blancoas ', 10, 15.5, 50.5, 35.5, 30),
 (7622210833792, 'Galletas oreo', 4, 10, 10, 10, 10),
 (7702031311218, 'Crema Lubriderm', 1, 80, 120, 110, 100);
 
@@ -143,9 +162,27 @@ INSERT INTO `producto` (`id_Producto`, `Nombre`, `Cantidad`, `p_Compra`, `p_vent
 CREATE TABLE `productos_compra` (
   `id_Compra` int(11) NOT NULL,
   `id_Producto` bigint(20) NOT NULL,
+  `Nombre` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Cantidad` int(11) NOT NULL,
-  `precio_Compra` double NOT NULL
+  `precio_Compra` double NOT NULL,
+  `p_Total` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `productos_compra`
+--
+
+INSERT INTO `productos_compra` (`id_Compra`, `id_Producto`, `Nombre`, `Cantidad`, `precio_Compra`, `p_Total`) VALUES
+(1, 7501791657693, 'Rastillos', 10, 20, 200),
+(4, 7501310011067, 'Resina epoxica', 10, 20, 200),
+(5, 7501310011067, 'Resina epoxica', 10, 20, 200),
+(5, 7501791657693, 'Rastillos', 5, 10, 50),
+(5, 7501310011067, 'Resina epoxica', 10, 20, 200),
+(5, 7501791657693, 'Rastillos', 5, 10, 50),
+(5, 7501310011067, 'Resina epoxica', 10, 20, 200),
+(5, 7501791657693, 'Rastillos', 5, 10, 50),
+(8, 7501310011067, 'Resina epoxica', 10, 20, 200),
+(8, 7501791657693, 'Rastillos', 20, 10, 200);
 
 -- --------------------------------------------------------
 
@@ -156,8 +193,9 @@ CREATE TABLE `productos_compra` (
 CREATE TABLE `productos_venta` (
   `id_Venta` int(11) NOT NULL,
   `id_Producto` bigint(20) NOT NULL,
+  `Nombre` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Cantidad` int(11) NOT NULL,
-  `precio_Unitario` float NOT NULL,
+  `precio_Unitario` double NOT NULL,
   `precio_Total` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
@@ -165,17 +203,17 @@ CREATE TABLE `productos_venta` (
 -- Volcado de datos para la tabla `productos_venta`
 --
 
-INSERT INTO `productos_venta` (`id_Venta`, `id_Producto`, `Cantidad`, `precio_Unitario`, `precio_Total`) VALUES
-(5, 7501130525102, 1, 10, 10),
-(5, 7501310011067, 1, 25.5, 25.5),
-(6, 7501130525102, 1, 10, 10),
-(6, 7501310011067, 1, 25.5, 25.5),
-(7, 7501310011067, 1, 25.5, 25.5),
-(8, 7501310011067, 1, 25.5, 25.5),
-(10, 7501310011067, 1, 25.5, 25.5),
-(11, 7501310011067, 1, 25.5, 25.5),
-(12, 7501310011067, 1, 25.5, 25.5),
-(12, 7501791657693, 1, 17.5, 17.5);
+INSERT INTO `productos_venta` (`id_Venta`, `id_Producto`, `Nombre`, `Cantidad`, `precio_Unitario`, `precio_Total`) VALUES
+(1, 7501310011067, 'Resina epoxica', 1, 25.5, 25.5),
+(1, 7501310011067, 'Resina epoxica', 1, 25.5, 25.5),
+(1, 7501310011067, 'Resina epoxica', 1, 25.5, 25.5),
+(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
+(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
+(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
+(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
+(3, 7501310011067, 'Resina epoxica', 1, 20, 20),
+(3, 7501040305320, 'Silicon', 1, 17, 17),
+(3, 7501130525102, 'Colorante mariposa', 1, 10, 10);
 
 -- --------------------------------------------------------
 
@@ -192,6 +230,14 @@ CREATE TABLE `proveedor` (
   `RFC` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `proveedor`
+--
+
+INSERT INTO `proveedor` (`id_Proveedor`, `Nombre`, `Direccion`, `Telefono`, `Email`, `RFC`) VALUES
+(1, 'Bodega del perro', 'sdadasd12312fsd asadasd dasd a', 2147483647, 'editedlook@hotmail.com', 'sadasdasdas12312'),
+(2, 'sadasfa', '312312assd', 12312231, 'ssdfsdsd@dfad123.com', '312312ssdfdd');
+
 -- --------------------------------------------------------
 
 --
@@ -203,7 +249,7 @@ CREATE TABLE `retiroparcial` (
   `fecha_Hora` datetime NOT NULL,
   `Monto` double NOT NULL,
   `id_User` int(11) DEFAULT NULL,
-  `id_Caja` char(20) COLLATE utf8mb4_spanish2_ci DEFAULT NULL
+  `id_Caja` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 -- --------------------------------------------------------
@@ -216,7 +262,7 @@ CREATE TABLE `usuario` (
   `id_User` int(11) NOT NULL,
   `Usuario` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Password` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `Nombre` char(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `Nombre` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Puesto` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Telefono` int(11) NOT NULL,
   `Email` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL
@@ -240,9 +286,9 @@ CREATE TABLE `venta` (
   `fecha_Hora` datetime NOT NULL,
   `id_User` int(11) NOT NULL,
   `id_Cliente` int(11) DEFAULT NULL,
-  `Total` float NOT NULL,
-  `Pago` float NOT NULL,
-  `Cambio` float NOT NULL
+  `Total` double NOT NULL,
+  `Pago` double NOT NULL,
+  `Cambio` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
@@ -250,19 +296,9 @@ CREATE TABLE `venta` (
 --
 
 INSERT INTO `venta` (`id_Venta`, `fecha_Hora`, `id_User`, `id_Cliente`, `Total`, `Pago`, `Cambio`) VALUES
-(1, '2021-06-05 15:35:51', 1, 2, 10, 10, 0),
-(2, '2021-06-05 15:43:48', 1, 2, 17.5, 50, 32.5),
-(3, '2021-06-05 15:44:26', 1, 2, 17.5, 50, 32.5),
-(4, '2021-06-05 15:54:26', 1, 2, 27.5, 50, 22.5),
-(5, '2021-06-05 15:57:50', 1, 2, 35.5, 50, 14.5),
-(6, '2021-06-05 15:59:05', 1, 2, 112, 150, 38),
-(7, '2021-06-05 16:00:32', 1, 2, 76.5, 150, 73.5),
-(8, '2021-06-05 16:02:04', 1, 2, 102, 200, 98),
-(9, '2021-06-05 16:02:41', 1, 2, 102, 150, 48),
-(10, '2021-06-05 16:03:36', 1, 2, 25.5, 50, 24.5),
-(11, '2021-06-05 16:03:45', 1, 2, 51, 100, 49),
-(12, '2021-06-05 16:04:04', 1, 2, 68.5, 100, 31.5),
-(13, '2021-06-05 16:04:38', 1, 2, 76.5, 100, 23.5);
+(1, '2021-06-10 12:11:58', 1, 1, 76.5, 100, 23.5),
+(2, '2021-06-10 12:12:24', 1, 3, 70.24, 100, 29.76),
+(3, '2021-06-10 12:14:26', 1, 2, 47, 50, 3);
 
 --
 -- Índices para tablas volcadas
@@ -313,15 +349,14 @@ ALTER TABLE `producto`
 -- Indices de la tabla `productos_compra`
 --
 ALTER TABLE `productos_compra`
-  ADD PRIMARY KEY (`id_Compra`,`id_Producto`),
   ADD KEY `ADDInventario` (`id_Producto`);
 
 --
 -- Indices de la tabla `productos_venta`
 --
 ALTER TABLE `productos_venta`
-  ADD PRIMARY KEY (`id_Venta`,`id_Producto`),
-  ADD KEY `Relationship13` (`id_Producto`);
+  ADD KEY `Contiene` (`id_Venta`),
+  ADD KEY `seVende` (`id_Producto`);
 
 --
 -- Indices de la tabla `proveedor`
@@ -366,13 +401,13 @@ ALTER TABLE `abono_credito`
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id_Cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_Cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `compra_produ`
 --
 ALTER TABLE `compra_produ`
-  MODIFY `id_Compra` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `credito`
@@ -384,7 +419,7 @@ ALTER TABLE `credito`
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id_Proveedor` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `retiroparcial`
@@ -396,7 +431,7 @@ ALTER TABLE `retiroparcial`
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `id_Venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_Venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas
@@ -431,15 +466,14 @@ ALTER TABLE `credito`
 -- Filtros para la tabla `productos_compra`
 --
 ALTER TABLE `productos_compra`
-  ADD CONSTRAINT `ADDInventario` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`),
-  ADD CONSTRAINT `Agrega` FOREIGN KEY (`id_Compra`) REFERENCES `compra_produ` (`id_Compra`);
+  ADD CONSTRAINT `ADDInventario` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`);
 
 --
 -- Filtros para la tabla `productos_venta`
 --
 ALTER TABLE `productos_venta`
   ADD CONSTRAINT `Contiene` FOREIGN KEY (`id_Venta`) REFERENCES `venta` (`id_Venta`),
-  ADD CONSTRAINT `Relationship13` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`);
+  ADD CONSTRAINT `seVende` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`);
 
 --
 -- Filtros para la tabla `retiroparcial`

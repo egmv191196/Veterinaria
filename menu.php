@@ -27,7 +27,8 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                   <li class="nav-item">
-                    <div id="hora"><script type="text/javascript">Mostrar();</script></div>
+                    <h3 id="hora" ></h3>
+                    <script type="text/javascript">Mostrar();</script>
                   </li>
                   <li class="nav-item">
                     <a href="" class="nav-link">
@@ -35,7 +36,7 @@
                     </a>
                 </li>
                   <li class="nav-item">
-                      <a href="" class="nav-link">
+                      <a href="./php/logout.php" class="nav-link">
                         <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
                       </a>
                   </li>
@@ -49,8 +50,8 @@
     </div>
     <div class="menu-container">
         <div class="hex-wrapper">
-          <div class="hex-row shift">
-            <a href="venta.php" >
+          <div class="hex-row ">
+          <a href="venta.php" >
             <div class="hexagon" id="nav-home">
               <i class="fas fa-shopping-cart fa-3x"></i>
               Ventas
@@ -58,7 +59,15 @@
               <div class="face2"></div>
             </div>
             </a>
-            <a href="caja.html" >
+            <a href="Compra.php" >
+            <div class="hexagon" id="nav-home">
+            <i class="fas fa-cart-plus fa-3x" ></i>
+              Compras
+              <div class="face1"></div>
+              <div class="face2"></div>
+            </div>
+            </a>
+            <a href="caja.php" >
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-cash-register fa-3x"></i><br>  
                 Caja
@@ -83,7 +92,7 @@
             </div>
             </a>
           </div>
-          <div class="hex-row">
+          <div class="hex-row shift">
           <a href="Clientes.php" >
             <div class="hexagon" id="nav-about">
                 <i class="fas fa-handshake fa-3x"></i>

@@ -41,6 +41,9 @@
   .shift {
       margin-left: 98px;
   }
+  .shift1{
+    margin-right: 98px;
+  }
   .hexagon {
     float: left;
     position: relative;

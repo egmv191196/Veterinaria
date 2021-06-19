@@ -22,7 +22,7 @@ body{
     border-radius: 8px;
 }
 .form-group::before{
-    font-family: "Font Awesome\ 5 Free";
+    font-family: "Font Awesome 5 Free";
     position: absolute;
     left: 28px;
     font-size: 22px;
@@ -32,7 +32,7 @@ body{
     content: "\f007";
 }
 .form-group#pass-group::before{
-    content: "\f30d";
+    content: "\f39f";
 }
 button{
     width: 60%;

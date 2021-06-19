@@ -36,7 +36,7 @@
                     </a>
                 </li>
                   <li class="nav-item">
-                      <a href="" class="nav-link">
+                      <a href="./php/logout.php" class="nav-link">
                         <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
                       </a>
                   </li>

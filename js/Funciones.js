@@ -66,8 +66,6 @@ function addProducto(){
     return false;
 
 }
-
-
 function delProducto(id){
     var datos = {
             "Operacion" : 'Eliminar',
@@ -122,7 +120,7 @@ function addProveedor(){
     }).done(function(response){   
         if(response == 1 ){
             alert("Proveedor agregado correctamente");
-            location.href ="./Proveedor.php";
+            location.reload();
         }else{
             alert("Error al agregar el proveedor");
         }  
