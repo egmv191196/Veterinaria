@@ -16,7 +16,7 @@ function leer(){
         url: "./php/venta.php",
         data: datos,
     }).done(function(response){ 
-        alert(response);
+        //alert(response);
         if(response==2){
             alert("No se puede vender ese articulo, ya no hay piezas en el sistema, favor de revisar el inventario");
             $('#codigo').val(""); 
@@ -106,14 +106,14 @@ function pagar_modal(){
     $('#modal_Cambio').val((0.00).toFixed(2)); 
     $("#Pagar").modal();       
 }
-function pago(){
+function pagoEfectivo(){
     var producto=[];
     var list_Productos=[];
     var Total=document.getElementById("modal_Total").value;
     var Efectivo=document.getElementById("modal_Pago").value;
     var cambio=Efectivo-Total;
     if (cambio>=0) {
-        alert("se puede cobrar");
+        //alert("se puede cobrar");
         var resume_table = document.getElementById("Productos");
         for (var i = 1, row; row = resume_table.rows[i]; i++) {
             id_Pro = row.cells[0];
@@ -127,7 +127,7 @@ function pago(){
         }
         //alert(list_Productos);
         datos={
-            "Operacion": 'Pago',
+            "Operacion": 'PagoEfectivo',
             Productos: list_Productos,
             Total : document.getElementById("modal_Total").value,
             Efectivo : document.getElementById("modal_Pago").value,
@@ -139,7 +139,7 @@ function pago(){
             url: "./php/venta.php",
             data: datos,
         }).done(function(response){
-            alert(response);
+            //alert(response);
             if(response!=0){
                 window.open('./php/ticketv.php?id_Venta='+response, '_blank');
                 location.reload();
@@ -154,8 +154,47 @@ function pago(){
     }else{
         alert("Verifica el monto pagado");
     }
-    /*
-    */
+}
+function pagoCredito(){
+    if(document.getElementById("id_cliente").value!=1){
+        //alert("Se cobrara con credito");
+        var producto=[];
+        var list_Productos=[];
+        var resume_table = document.getElementById("Productos");
+        for (var i = 1, row; row = resume_table.rows[i]; i++) {
+            id_Pro = row.cells[0];
+            Nombre= row.cells[1];
+            p_Unit = row.cells[2];
+            Cant = row.cells[3];
+            p_total = row.cells[4];
+            producto=[`${id_Pro.innerText}`,`${Nombre.innerText}`,`${p_Unit.innerText}`,`${Cant.innerText}`,`${p_total.innerText}`];
+            list_Productos.push(producto);        
+        }
+        datos={
+            "Operacion": 'PagoCredito',
+            Productos: list_Productos,
+            Total : document.getElementById("modal_Total").value,
+            Cliente : document.getElementById("id_cliente").value
+        };
+        $.ajax({
+            type: "POST",
+            url: "./php/venta.php",
+            data: datos,
+        }).done(function(response){
+            //alert(response);
+            if(response!=0){
+                window.open('./php/ticketv.php?id_Venta='+response, '_blank');
+                location.reload();
+            }else{
+                alert("Error"+response);
+            }
+            
+        }).fail(function(response){
+            console.log("error"+response);
+        });
+    }else{
+        alert("No se puede ofrecer un credito a un cliente general");
+    }
 }
 function calcular_cambio(){
     var total=parseFloat($('#modal_Total').val()).toFixed(2);

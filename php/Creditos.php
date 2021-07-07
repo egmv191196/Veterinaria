@@ -80,8 +80,10 @@
                 $Cant=$data[$i][3];
                 $p_Total=$data[$i][4];
                 if($i==0){
+                    //$consulta =$consulta."({$id_Compra},{$cod},{$Cant},{$p_Unitario},{$p_Total})";
                     $consulta =$consulta."({$id_Compra},{$cod},'{$Nombre}',{$Cant},{$p_Unitario},{$p_Total})";
                 }else{
+                    //$consulta =$consulta.",({$id_Venta},{$cod},{$Cant},{$p_Unitario},{$p_Total})";
                     $consulta =$consulta.",({$id_Compra},{$cod},'{$Nombre}',{$Cant},{$p_Unitario},{$p_Total})";
                 }
             }
@@ -92,6 +94,53 @@
             }else{
                 echo 0;
             }
+        }else {
+            echo 0;
+        }
+    }else if ($Operacion=="Abono") {
+        $fecha=date('Y-m-d');
+        $hora=date('H:i:s');
+        $Monto = $_POST['Monto'];
+        $Efectivo=$_POST['Efectivo'];
+        $Cambio=$_POST['Cambio'];
+        $id_Credito = $_POST['id_Credito'];
+        $restante = $_POST['restante'];
+        $consulta= "INSERT INTO operacion_credito(id_Abono, Fecha, Hora, Monto, Efectivo, Cambio, id_Credito, id_User) VALUES
+        (NULL,'$fecha','$hora',$Monto, $Efectivo,$Cambio,$id_Credito,$empleado)"; 
+        $res= mysqli_query($conexion,$consulta);
+        if($res==1){
+            $consulta = "SELECT id_Abono FROM operacion_credito WHERE id_Credito=$id_Credito ORDER BY id_Abono DESC";
+            $res=mysqli_query($conexion,$consulta);
+            $datos = mysqli_fetch_array($res);
+            $id_Abono=$datos[0];
+            if ($restante==0) {
+                $consulta = "SELECT monto_Credito FROM credito WHERE id_Credito=$id_Credito";
+                $res=mysqli_query($conexion,$consulta);
+                $datos = mysqli_fetch_array($res);
+                $Monto_Pagado=$datos[0];
+                $consulta = "UPDATE credito SET monto_Abonado=$Monto_Pagado, Estado=0 WHERE id_Credito=$id_Credito";
+                $res=mysqli_query($conexion,$consulta);
+                if ($res==1) {
+                    echo $id_Abono;
+                }else{
+                    echo 0;
+                }   
+            }else {
+                $consulta = "SELECT monto_Abonado FROM credito WHERE id_Credito=$id_Credito";
+                $res=mysqli_query($conexion,$consulta);
+                $datos = mysqli_fetch_array($res);
+                $Monto_Abonado=$datos[0];
+                $Nuevo_MAbonado=$Monto_Abonado+$Monto;
+                $consulta = "UPDATE credito SET monto_Abonado=$Nuevo_MAbonado WHERE id_Credito=$id_Credito";
+                //echo $consulta;
+                $res=mysqli_query($conexion,$consulta);
+                if ($res==1) {
+                    echo $id_Abono;
+                }else{
+                    echo 0;
+                } 
+            }
+            //echo $consulta;
         }else {
             echo 0;
         }

@@ -13,6 +13,10 @@
     <title>Menú-Veterinaria Balbi</title>
   </head>
   <body>
+    <?php 
+      session_start();
+      $Nombre=$_SESSION['k_user'];
+    ?> 
     <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
@@ -31,7 +35,7 @@
                     <div id="hora"><script type="text/javascript">Mostrar();</script></div>
                   </li>
                   <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="" class="nav-link"><?php echo $Nombre;?>
                       <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                     </a>
                 </li>

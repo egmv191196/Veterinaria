@@ -104,44 +104,52 @@ function devolucionProducto(id){
 
 }
 function Compra(){
-    var producto=[];
-    var list_Productos=[];
-    var resume_table = document.getElementById("Productos");
-    for (var i = 1, row; row = resume_table.rows[i]; i++) {
-        id_Pro = row.cells[0];
-        Nombre= row.cells[1];//Nombre
-        Cant = row.cells[2];
-        p_Unit = row.cells[3];
-        p_total = row.cells[4];
-        producto=[`${id_Pro.innerText}`,`${Nombre.innerText}`,`${p_Unit.innerText}`,`${Cant.innerText}`,`${p_total.innerText}`];
-        list_Productos.push(producto);        
+    if ($('#id_Proveedor').val().length == 0 ) {
+        alert("Falta el proveedor ");
+        $('#id_Proveedor').trigger('focus');
+    }else if ( $('#num_Ticket').val().length == 0){
+        alert("Falta numero de ticket");
+        $('#num_Ticket').trigger('focus');
+    }else{
+        //alert("Procede pago")
+        var producto=[];
+        var list_Productos=[];
+        var resume_table = document.getElementById("Productos");
+        for (var i = 1, row; row = resume_table.rows[i]; i++) {
+            id_Pro = row.cells[0];
+            Nombre= row.cells[1];//Nombre
+            Cant = row.cells[2];
+            p_Unit = row.cells[3];
+            p_total = row.cells[4];
+            producto=[`${id_Pro.innerText}`,`${Nombre.innerText}`,`${p_Unit.innerText}`,`${Cant.innerText}`,`${p_total.innerText}`];
+            list_Productos.push(producto);        
+        }
+        //alert(list_Productos);
+        datos={
+            "Operacion": 'Pago',
+            Productos: list_Productos,
+            Total : document.getElementById("Total").value,
+            numTicket : document.getElementById("num_Ticket").value,
+            Proveedor : document.getElementById("id_Proveedor").value
+        };
+        $.ajax({
+            type: "POST",
+            url: "./php/Compra.php",
+            data: datos,
+        }).done(function(response){
+            //alert(response);
+            if(response!=0){
+                window.open('./php/ticketC.php?id_Compra='+response, '_blank');
+                location.reload();
+            }else{
+                alert("Error"+response);
+            }
+            
+        }).fail(function(response){
+            console.log("error"+response);
+        });
     }
-    //alert(list_Productos);
-    datos={
-        "Operacion": 'Pago',
-        Productos: list_Productos,
-        Total : document.getElementById("Total").value,
-        numTicket : document.getElementById("num_Ticket").value,
-        Proveedor : document.getElementById("id_Proveedor").value
-    };
-    $.ajax({
-        type: "POST",
-        url: "./php/Compra.php",
-        data: datos,
-    }).done(function(response){
-        alert(response);
-        location.reload();
-        /*if(response!=0){
-            window.open('./php/ticketC.php?id_Compra='+response, '_blank');
-            location.reload();
-        }else{
-            alert("Error"+response);
-        }*/
         
-    }).fail(function(response){
-        console.log("error"+response);
-    });
-    console.log(list_Productos);
 }
 function recorrerTabla(){
     var resume_table = document.getElementById("rwd-table-id");

@@ -16,15 +16,30 @@
     <?php 
       session_start();
       $Nombre=$_SESSION['k_user'];
+      require_once('./php/conexion.php');
+      $empleado=$_SESSION['id_Empleado'];
+      $Fecha=date('Y-m-d');
+      $consulta="SELECT * FROM caja WHERE id_User=$empleado AND Fecha='$Fecha'";
+      if($res = mysqli_query($conexion,$consulta)){
+        $numRows=mysqli_num_rows($res);
+        if($numRows>0){
+          $datos = mysqli_fetch_array($res);
+          $Estado=$datos['Estado'];
+          if ($Estado!=0) {
+          }else{
+            header("Location:menu.php");
+          }
+        }else{
+          header("Location:menu.php");
+        }
+      } 
     ?>  
-
     <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
           <a class="btn btn-info" href="menu.php" hidden><i class="fa fa-arrow-left"></i>&nbsp;Volver</a>
           <a class="navbar-brand" href="menu.php"><img src="img/BALBI-sin-fondo.png"></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <img src="img/Enca/menu.svg" class="img-fluid">
           </button>
           <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
@@ -35,7 +50,6 @@
             <ul class="navbar-nav ml-auto">
               <li class="nav-item">
                 <h3 id="hora" ></h3>
-                <script type="text/javascript">Mostrar();</script>
               </li>
               <li class="nav-item">
                 <a href="" class="nav-link"><?php echo $Nombre;?>
@@ -101,10 +115,7 @@
               </div>
             </div>
             <div class="form-group float-right">
-              <button name="accion" value="cancelar" type="submit" class="btn btn-danger">Cancelar
-                    venta
-                </button>
-                <button class="btn btn-success mb-2 ml-2 mr-2 float-right" onclick="pagar_modal();" >Pagar</button>               
+              <button class="btn btn-success mb-2 ml-2 mr-2 float-right" onclick="pagar_modal();" >Pagar</button>               
             </div>
         </div>
     </div>
@@ -142,7 +153,8 @@
                   </div>
                   <div class="form-group m-2">
                     <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
-                    <button type="button" class="btn btn-success float-right m-2" onclick="pago();">Pagar</button>
+                    <button type="button" class="btn btn-success float-right m-2" onclick="pagoEfectivo();">Pago efectivo</button>
+                    <button type="button" class="btn btn-secondary float-right m-2" onclick="pagoCredito();">Pago Credito</button>
                     <button type="button"class="btn btn-danger float-right m-2" data-dismiss="modal">Cerrar</button>
                   </div>
                 </form>

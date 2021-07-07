@@ -13,6 +13,14 @@
     <title>Productos</title>
   </head>
   <body>
+    <?php 
+      session_start();
+      $Nombre=$_SESSION['k_user'];
+      $cargo=$_SESSION['cargo'];
+      if ($cargo==3) {
+        header("Location:menu.php");
+      }
+    ?> 
     <div id="Home">
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
@@ -28,10 +36,10 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                   <li class="nav-item">
-                    <div id="hora"><script type="text/javascript">Mostrar();</script></div>
+                    <div id="hora"></div>
                   </li>
                   <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="" class="nav-link"><?php echo $Nombre;?>
                       <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                     </a>
                 </li>
@@ -73,27 +81,61 @@
                 </thead>
                 <tbody>
                   <?php
-                  require_once('./php/conexion.php');
-                  $result= mysqli_query($conexion, "select * from producto");
-                  while ($row = mysqli_fetch_array($result)) {
-                      echo '<tr style="text-align: center">';
-                      echo '<td>'.$row['id_Producto'].'</td>';
-                      echo '<td>'.$row['Nombre'].'</td>';
-                      echo '<td></td>';
-                      echo '<td>'.$row['p_Compra'].'</td>';
-                      echo '<td>'.$row['p_ventaN'].'</td>';
-                      echo '<td>'.$row['p_VentaMe'].'</td>';
-                      echo '<td>'.$row['p_VentaMa'].'</td>';
-                      echo '<td>'.$row['Cantidad'].'</td>';
-                      echo '<td> <a class="btn btn-warning" onclick="editProducto(this);"><i class="fa fa-edit"></i></a> </td>';
-                      echo '<td> <form action="#" method="post">';
-                      echo '<button type="submit" class="btn btn-danger" onclick="delProducto(this);"> <i class="fa fa-trash"></i> </button>';
-                      echo '</form></td>';
-                      echo '</tr>';
-                  }
+                    require_once('./php/conexion.php');
+                    $result= mysqli_query($conexion, "SELECT COUNT(*) AS Total FROM producto");
+                    $row = mysqli_fetch_array($result);
+                    $totalProductos=$row[0];
+                    $porPagina=10;
+                    if(empty($_GET['pagina'])){
+                      $pagina=1;
+                    }else{
+                      $pagina=$_GET['pagina'];
+                    }
+                    $desde=($pagina-1)*$porPagina;
+                    $totalPaginas=ceil($totalProductos/$porPagina);
+                    $result= mysqli_query($conexion, "SELECT * FROM producto LIMIT $desde,$porPagina");
+                    while ($row = mysqli_fetch_array($result)) {
+                        echo '<tr style="text-align: center">';
+                        echo '<td>'.$row['id_Producto'].'</td>';
+                        echo '<td>'.$row['Nombre'].'</td>';
+                        echo '<td></td>';
+                        echo '<td>'.$row['p_Compra'].'</td>';
+                        echo '<td>'.$row['p_ventaN'].'</td>';
+                        echo '<td>'.$row['p_VentaMe'].'</td>';
+                        echo '<td>'.$row['p_VentaMa'].'</td>';
+                        echo '<td>'.$row['Cantidad'].'</td>';
+                        echo '<td> <a class="btn btn-warning" onclick="editProducto(this);"><i class="fa fa-edit"></i></a> </td>';
+                        echo '<td> <form action="#" method="post">';
+                        echo '<button type="submit" class="btn btn-danger" onclick="delProducto(this);"> <i class="fa fa-trash"></i> </button>';
+                        echo '</form></td>';
+                        echo '</tr>';
+                    }
                   ?>
                 </tbody>
             </table>
+            <div class="paginador">
+              <ul>
+                <?php
+                  if ($pagina!=1) 
+                  {
+                 
+                echo '<li><a href="?pagina=1"><i class="fas fa-step-backward"></i> </a> </li>';
+                echo '<li><a href="?pagina='.($pagina-1).'"><i class="fas fa-backward"></i> </a> </li>';
+                  }
+                  for ($i=1; $i<=$totalPaginas;$i++) { 
+                    if ($i==$pagina) {
+                      echo '<li class="liselected">'.$i.'</li>';
+                    }else{
+                      echo '<li><a href="?pagina='.$i.'">'.$i.'</a></li>';
+                    }
+                  }
+                  if ($pagina!=$totalPaginas) {
+                    echo '<li><a href="?pagina='.($pagina+1).'"><i class="fas fa-forward"></i> </a> </li>';
+                    echo '<li><a href="?pagina='.$totalPaginas.'"><i class="fas fa-step-forward"></i> </a> </li>';
+                  }
+                ?>
+              </ul>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="VenRegistrar">

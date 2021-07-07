@@ -16,6 +16,10 @@
     <?php 
       session_start();
       $Nombre=$_SESSION['k_user'];
+      $Puesto=$_SESSION['cargo'];
+      if ($Puesto!=1) {
+        header("Location:menu.php");
+      }
     ?>  
 
     <div id="Home">
@@ -78,14 +82,14 @@
             <div class="table-responsive mt-4 ">
                 <table class="table table-bordered" id="Productos">
                     <thead>
-                    <tr>
-                        <th width=20%>Código de barras</th>
-                        <th width=30%>Descripción</th>
-                        <th width=10%>Cantidad</th>
-                        <th width=15%>Precio de compra</th>
-                        <th width=5%>Subtotal</th>
-                        <th width=10%>Quitar</th>
-                    </tr>
+                      <tr>
+                          <th width=20%>Código de barras</th>
+                          <th width=30%>Descripción</th>
+                          <th width=10%>Cantidad</th>
+                          <th width=15%>Precio de compra</th>
+                          <th width=5%>Subtotal</th>
+                          <th width=10%>Quitar</th>
+                      </tr>
                     </thead>
                     <tbody >
                     </tbody>

@@ -8,18 +8,20 @@ $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $numProductos=$row[0];
 //Valores necesarios
-$consulta = "SELECT venta.fecha_Hora, usuario.Nombre, cliente.Nombre, venta.Total, venta.Pago, venta.Cambio
+$consulta = "SELECT venta.Fecha, venta.Hora, usuario.Nombre, cliente.Nombre, venta.Total, venta.Pago, venta.Cambio, venta.forma_Pago
 FROM venta JOIN cliente JOIN usuario WHERE 
 id_Venta=$id_Venta AND venta.id_User=usuario.id_User AND venta.id_Cliente=cliente.id_Cliente";
 $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $fecha=$row[0];
-$cajero=$row[1];
-$cliente=$row[2];
-$Total=$row[3];
-$Pago=$row[4];
-$cambiO=$row[5];
-$alto=89+($numProductos*4);
+$hora=$row[1];
+$cajero=$row[2];
+$cliente=$row[3];
+$Total=$row[4];
+$Pago=$row[5];
+$cambiO=$row[6];
+$forma_Pago=$row[7];
+$alto=92+($numProductos*4);
 $pdf = new FPDF('P','mm',array(80,$alto)); // Tamaño tickt 80mm x 150 mm (largo aprox)
 $pdf->AddPage();
 $pdf->SetMargins(2, 5, 2);
@@ -36,10 +38,15 @@ $pdf->Cell(75,4,'Correo: vetbalbi@hotmail.com',0,1,'C');
  
 // DATOS FACTURA        
 $pdf->Ln(2);
-$pdf->Cell(60,3,'Fecha y hora de compra: '.$fecha,0,1,'');
+$pdf->Cell(60,3,'Fecha y hora de compra: '.$fecha.' '. $hora,0,1,'');
 $pdf->Cell(10,3,'No Nota: '.$id_Venta,0,1,'');
 $pdf->Cell(10,3,'Vendedor: '.$cajero,0,1,'');
 $pdf->Cell(10,3,'Cliente: '.$cliente,0,1,'');
+if ($forma_Pago==0) {
+    $pdf->Cell(10,3,'Forma de pago: Efectivo',0,1,'');
+}else {
+    $pdf->Cell(10,3,'Forma de pago: Credito',0,1,'');
+}
 // COLUMNAS
 $pdf->SetFont('Helvetica', 'B', 7);
 $pdf->Cell(20, 10, 'Codigo', 0);
@@ -65,18 +72,36 @@ $pdf->Ln(4);
 }
 
 // SUMATORIO DE LOS PRODUCTOS Y EL IVA
-$pdf->Ln(3);
-$pdf->Cell(75,0,'','T');
-$pdf->Ln(1);        
-$pdf->Cell(65, 3, 'TOTAL: ', 0,0,'R');    
-$pdf->Cell(10, 3,'$'.number_format($Total, 2, '.', ''),0,'L');
-$pdf->Ln(1);
-$pdf->Cell(65, 3, 'Efectivo: ', 0,0,'R');    
-$pdf->Cell(10, 3,'$'.number_format($Pago, 2, '.', ''),0,'L');
-$pdf->Ln(1);
-$pdf->Cell(65, 3, 'Cambio: ', 0,0,'R');    
-$pdf->Cell(10, 3,'$'.number_format($cambiO, 2, '.', ''),0,'L');
-$pdf->Ln(1);
+if ($forma_Pago==0) {
+    $pdf->Ln(3);
+    $pdf->Cell(75,0,'','T');
+    $pdf->Ln(1);        
+    $pdf->Cell(65, 3, 'TOTAL: ', 0,0,'R');    
+    $pdf->Cell(10, 3,'$'.number_format($Total, 2, '.', ''),0,'L');
+    $pdf->Ln(1);
+    $pdf->Cell(65, 3, 'Efectivo: ', 0,0,'R');    
+    $pdf->Cell(10, 3,'$'.number_format($Pago, 2, '.', ''),0,'L');
+    $pdf->Ln(1);
+    $pdf->Cell(65, 3, 'Cambio: ', 0,0,'R');    
+    $pdf->Cell(10, 3,'$'.number_format($cambiO, 2, '.', ''),0,'L');
+    $pdf->Ln(1);
+}else {
+    $consulta = "SELECT id_Credito FROM credito WHERE id_Venta=$id_Venta";
+    $res = mysqli_query($conexion,$consulta);
+    $row = mysqli_fetch_array($res);
+    $id_Credito=$row[0];
+    $pdf->Ln(3);
+    $pdf->Cell(75,0,'','T');
+    $pdf->Ln(1);        
+    $pdf->Cell(65, 3, 'TOTAL: ', 0,0,'R');    
+    $pdf->Cell(10, 3,'$'.number_format($Total, 2, '.', ''),0,'L');
+    $pdf->Ln(1);
+    $pdf->Cell(75, 3, 'Folio de credito asignado: '.$id_Credito, 0,0,'R');    
+    $pdf->Ln(3);
+    $pdf->Cell(75, 3, 'Monto de su credito: $'.number_format($Total, 2, '.', ''), 0,0,'R');    
+    $pdf->Ln(5);
+}
+
 // PIE DE PAGINA
 $pdf->Cell(75,0,'Gracias por su compra ',0,1,'C');
 
