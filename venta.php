@@ -194,6 +194,9 @@
                   <th>Codigo</th>
                   <th>Nombre</th>
                   <th>Existencias</th>
+                  <th>Precio Cliente</th>
+                  <th>Precio Medico</th>
+                  <th>Precio Mayoreo</th>
                 </tr>
               </thead>
               <tbody id="cuerpo">

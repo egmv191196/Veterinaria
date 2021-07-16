@@ -223,7 +223,7 @@ function BusquedaNombre(){
         var datos=JSON.parse(response);
         for ( i = 0; i < datos.length; i++) {
             document.getElementById("cuerpo").insertRow(i).innerHTML = '<tr><td>'+datos[i][0]+'</td> <td>'+
-            datos[i][1]+'</td> <td>'+datos[i][2]+'</td><tr>';
+            datos[i][1]+'</td> <td>'+datos[i][2]+'</td> <td>'+datos[i][3]+'</td> <td>'+datos[i][4]+'</td> <td>'+datos[i][5]+'</td><tr>';
         }
         $('#Nombre').val(''); 
         $("#listaBusqueda").modal(); 

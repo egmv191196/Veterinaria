@@ -147,7 +147,7 @@
         $res= mysqli_query($conexion,$consulta);
         $Resultados=array();
         while ($row = mysqli_fetch_array($res)){
-            $valores=[$row[0], $row[1], $row[2]];
+            $valores=[$row[0], $row[1], $row[2],$row[4],$row[5],$row[6]];
             array_push($Resultados,$valores);
         }
         echo json_encode($Resultados);
