@@ -141,5 +141,79 @@
         }else {
             echo 0;
         }
+    }else if ($Operacion=="BuscarPornombre") {
+        $texto = $_POST['texto'];
+        $consulta= "SELECT * FROM producto WHERE Nombre LIKE '%$texto%'"; 
+        $res= mysqli_query($conexion,$consulta);
+        $Resultados=array();
+        while ($row = mysqli_fetch_array($res)){
+            $valores=[$row[0], $row[1], $row[2]];
+            array_push($Resultados,$valores);
+        }
+        echo json_encode($Resultados);
+    }else if ($Operacion=="suspenderVenta") {
+        $data = $_POST['Productos'];
+        $cliente = $_POST['cliente'];
+        $id_Cliente = $_POST['id_Cliente'];
+        $Descuento = $_POST['Descuento'];
+        $Total = $_POST['Total'];
+        $Fecha=date('Y-m-d');
+        $Hora=date('H:i:s');
+        $consulta= "INSERT INTO venta_suspendida(id_Venta, nombreCliente, id_Cliente, Descuento, Total, Fecha, Hora, id_User, Estado) VALUES 
+        (NULL, '$cliente', $id_Cliente, $Descuento, $Total, '$Fecha', '$Hora', $empleado,1)"; 
+        $res= mysqli_query($conexion,$consulta);
+        if($res==1){
+            $consulta = "SELECT id_Venta FROM venta_suspendida WHERE id_User=$empleado AND id_Cliente=$id_Cliente ORDER BY id_Venta DESC";
+            $res=mysqli_query($conexion,$consulta);
+            $datos = mysqli_fetch_array($res);
+            $id_Venta=$datos[0];
+            $consulta="INSERT INTO productos_vsuspendida (id_Venta, id_Producto, Nombre, p_Unitario, Cantidad, Subtotal) VALUES ";
+            for ($i=0; $i <count($data); $i++) { 
+                $cod=$data[$i][0];
+                $Nombre=$data[$i][1];
+                $p_Unitario=$data[$i][2];
+                $Cant=$data[$i][3];
+                $p_Total=$data[$i][4];
+                if($i==0){
+                    $consulta =$consulta."({$id_Venta},{$cod},'{$Nombre}',{$p_Unitario},{$Cant},{$p_Total})";
+                }else{
+                    $consulta =$consulta.",({$id_Venta},{$cod},'{$Nombre}',{$p_Unitario},{$Cant},{$p_Total})";
+                }
+            }
+            $res=mysqli_query($conexion,$consulta);
+            if($res==1){
+                echo $id_Venta;
+            }else{
+                echo 0;
+            }
+        }else {
+            echo 0;
+        }
+    }else if ($Operacion=="recuperarVenta") {
+        $consulta= "SELECT * FROM venta_suspendida WHERE Estado=1"; 
+        $res= mysqli_query($conexion,$consulta);
+        $Resultados=array();
+        while ($row = mysqli_fetch_array($res)){
+            $valores=[$row[0], $row[1], $row[2]];
+            array_push($Resultados,$valores);
+        }
+        echo json_encode($Resultados);
+    }else if ($Operacion=="datosvSuspendida") {
+        $id_Ticket = $_POST['id_Ticket'];
+        $Resultados=array();
+        $consulta= "UPDATE venta_suspendida SET Estado=0 WHERE id_Venta=$id_Ticket";
+        $res= mysqli_query($conexion,$consulta);
+        $consulta= "SELECT * FROM venta_suspendida WHERE id_Venta=$id_Ticket";
+        $res= mysqli_query($conexion,$consulta);
+        $row = mysqli_fetch_array($res);
+        $cliente=[$row[2], $row[3], $row[4],$row[8]];
+        array_push($Resultados,$cliente); 
+        $consulta= "SELECT * FROM productos_vsuspendida WHERE id_Venta=$id_Ticket";
+        $res= mysqli_query($conexion,$consulta);
+        while ($row = mysqli_fetch_array($res)){
+            $valores=[$row[1], $row[2], $row[3],$row[4], $row[5]];
+            array_push($Resultados,$valores);
+        }
+        echo json_encode($Resultados);
     }
 ?> 

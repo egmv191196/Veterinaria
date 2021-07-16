@@ -26,11 +26,12 @@
           $datos = mysqli_fetch_array($res);
           $Estado=$datos['Estado'];
           if ($Estado!=0) {
+            $Cobrar=1;
           }else{
-            header("Location:menu.php");
+            $Cobrar=0;
           }
         }else{
-          header("Location:menu.php");
+          $Cobrar=0;
         }
       } 
     ?>  
@@ -69,26 +70,34 @@
         <div class="col-12">
               <h1 class="text-center">Venta<i class="fa fa-cart-plus"></i></h1>
             <div class="row">
-                  <label class="col-1" for="id_cliente">Cliente</label>
-                  <input type="hidden" id="Descuento" value="0">
-                  <select required class="form-control col-2" name="id_cliente" id="id_cliente" onchange="Descuento();">
-                          <option value="1">cliente general</option>   
-                            <?php
-                              require_once('./php/conexion.php');
-                              $result= mysqli_query($conexion, "select * from cliente");
-                              $row = mysqli_fetch_array($result);
-                              while ($row = mysqli_fetch_array($result)) {
-                                  echo '<option value="'.$row['id_Cliente'].'" >'.$row['Nombre'].' - '.$row['Telefono'].'</option>';
-                              }
-                            ?>      
-                  </select>
-                  <label class="col-1" for="cantidad">Cantidad</label>
-                  <input id="cantidad" autocomplete="off" name="cantidad" type="number" value=1
-                          class="form-control col-2" placeholder="Cantidad de productos">
-                  <label class="col-2" for="codigo">Código de barras</label>
-                  <input id="codigo" autocomplete="off" required name="codigo" type="text"
-                          class="form-control col-3" onchange="leer();"
-                          placeholder="Código de barras">
+              <label class="col-1" for="id_cliente">Cliente</label>
+              <!-- Optional JavaScript -->
+              <input type="hidden" id="tP_idCliente" value="0">
+              <input type="hidden" id="tP_Total" value="0">
+              <!-- Optional JavaScript -->
+              <input type="hidden" id="Descuento" value="0">
+
+              <select required class="form-control col-2" name="id_cliente" id="id_cliente" onchange="Descuento();" >
+                      <option value="1">cliente general</option>   
+                        <?php
+                          require_once('./php/conexion.php');
+                          $result= mysqli_query($conexion, "select * from cliente");
+                          $row = mysqli_fetch_array($result);
+                          while ($row = mysqli_fetch_array($result)) {
+                              echo '<option value="'.$row['id_Cliente'].'" >'.$row['Nombre'].' - '.$row['Telefono'].'</option>';
+                          }
+                        ?>      
+              </select>
+              <label class="col-1" for="cantidad">Cantidad</label>
+              <input id="cantidad" autocomplete="off" name="cantidad" type="number" value=1
+                      class="form-control col-1" placeholder="Cantidad de productos">
+              <label class="col-1" for="codigo">Código</label>
+              <input id="codigo" autocomplete="off" required name="codigo" type="text"
+                      class="form-control col-2" onchange="leer();"
+                      placeholder="Código">
+              <label class="col-1" for="Nombre">Nombre</label>
+              <input id="Nombre" autocomplete="off" name="codigo" type="text"
+                      class="form-control col-2" placeholder="Nombre" onchange="BusquedaNombre();">
             </div>
             <div class="table-responsive mt-4 ">
                 <table class="table table-bordered" id="Productos">
@@ -102,7 +111,7 @@
                         <th width=10%>Quitar</th>
                     </tr>
                     </thead>
-                    <tbody >
+                    <tbody id="Productos2">
                     </tbody>
                 </table>
             </div>
@@ -111,57 +120,129 @@
                 <label >Total: $ </label>
               </div>
               <div class="col-2">
-              <input id="Total" class="form-control" type="text" value="0.0">
+              <input id="Total" class="form-control" type="text" value="0.0" disabled>
               </div>
             </div>
             <div class="form-group float-right">
-              <button class="btn btn-success mb-2 ml-2 mr-2 float-right" onclick="pagar_modal();" >Pagar</button>               
+            <?php 
+              if ($Cobrar==1) {
+                echo '<button class="btn btn-secondary mb-2 ml-2 mr-2 float-right" onclick="mostrarPendientes();" >Tickets por cobrar</button>';
+                echo '<button class="btn btn-success mb-2 ml-2 mr-2 float-right" onclick="pagar_modal();" >Pagar</button>';
+              }
+              else{
+                echo '<button class="btn btn-secondary mb-2 ml-2 mr-2 float-right" onclick="modalNombrePendiente();" >Enviar compra a caja</button>';
+              } 
+            ?>                  
             </div>
         </div>
     </div>
     <div class="modal fade" id="Pagar">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h2 class="modal-title ">Cobrar</h2>
-                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title ">Cobrar</h2>
+            <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <form id="Pago1" >
+              <div class="row">
+                <div class="col-5 text-right">
+                  <label class="label ">Total a pagar: $</label>
+                </div>
+                <div class="col-7">
+                  <input autocomplete="off" name="Total" class="form-control col-sm" id="modal_Total" type="text" readonly>
+                </div>
               </div>
-              <div class="modal-body">
-                <form id="Pago1" >
-                  <div class="row">
-                    <div class="col-5 text-right">
-                      <label class="label ">Total a pagar: $</label>
-                    </div>
-                    <div class="col-7">
-                      <input autocomplete="off" name="Total" class="form-control col-sm" id="modal_Total" type="text" readonly>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-5 text-right">
-                      <label class="label">Efectivo: $</label>
-                    </div>
-                    <div class="col-7">
-                    <input required autocomplete="off" onkeyup="calcular_cambio();" onchange="pago();" name="modal_Pago" class="form-control" id="modal_Pago" type="decimal(9,2)" placeholder="Ingresa el monto entregado" autofocus>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-5 text-right">
-                    <label class="label">Cambio: $</label>
-                    </div>
-                    <div class="col-7">
-                    <input required autocomplete="off" name="modal_Cambio" class="form-control" id="modal_Cambio" type="decimal(9,2)" placeholder="0.00" readonly>                    </div>
-                  </div>
-                  <div class="form-group m-2">
-                    <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
-                    <button type="button" class="btn btn-success float-right m-2" onclick="pagoEfectivo();">Pago efectivo</button>
-                    <button type="button" class="btn btn-secondary float-right m-2" onclick="pagoCredito();">Pago Credito</button>
-                    <button type="button"class="btn btn-danger float-right m-2" data-dismiss="modal">Cerrar</button>
-                  </div>
-                </form>
-              </div> 
+              <div class="row">
+                <div class="col-5 text-right">
+                  <label class="label">Efectivo: $</label>
+                </div>
+                <div class="col-7">
+                <input required autocomplete="off" onkeyup="calcular_cambio();" onchange="pago();" name="modal_Pago" class="form-control" id="modal_Pago" type="decimal(9,2)" placeholder="Ingresa el monto entregado" autofocus>
+                </div>
               </div>
-            </div>
+              <div class="row">
+                <div class="col-5 text-right">
+                <label class="label">Cambio: $</label>
+                </div>
+                <div class="col-7">
+                <input required autocomplete="off" name="modal_Cambio" class="form-control" id="modal_Cambio" type="decimal(9,2)" placeholder="0.00" readonly>                    </div>
+              </div>
+              <div class="form-group m-2">
+                <input type="hidden" name="Operacion" id="Operacion" value="Modificar" />
+                <button type="button" class="btn btn-success float-right m-2" onclick="pagoEfectivo();">Pago efectivo</button>
+                <button type="button" class="btn btn-secondary float-right m-2" onclick="pagoCredito();">Pago Credito</button>
+                <button type="button"class="btn btn-danger float-right m-2" data-dismiss="modal">Cerrar</button>
+              </div>
+            </form>
           </div> 
+          </div>
+        </div>
+      </div> 
+
+    <div class="modal fade" id="listaBusqueda">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title ">Lista de productos</h2>
+            <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Nombre</th>
+                  <th>Existencias</th>
+                </tr>
+              </thead>
+              <tbody id="cuerpo">
+              </tbody>
+            </table>
+          </div> 
+          </div>
+        </div>
+      </div>
+
+    <div class="modal fade" id="TicketsPendientes">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title ">Pendientes por cobrar</h2>
+            <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Id Venta pendiente</th>
+                  <th>Nombre cliente</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody id="cuerpoPendientes">
+              </tbody>
+            </table>
+          </div> 
+          </div>
+        </div>
+      </div> 
+
+      <div class="modal fade" id="ticketPendiente">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h2 class="modal-title ">Enviar a caja</h2>
+              <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+              <label class="label">Nombre</label>
+              <input required autocomplete="off" class="form-control" id="nombre_tPendiente" type="text" onchange="guardarPendiente();">
+              <button class="btn btn-success float-right mt-2" onclick="guardarPendiente();">Enviar a Caja</button>
+            </div> 
+          </div>
+        </div>
+      </div> 
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
