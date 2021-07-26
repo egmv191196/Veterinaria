@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-06-2021 a las 09:02:16
+-- Tiempo de generación: 15-07-2021 a las 21:18:50
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.3
 
@@ -24,30 +24,32 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `abono_credito`
---
-
-CREATE TABLE `abono_credito` (
-  `id_Abono` int(11) NOT NULL,
-  `monto_Abono` double NOT NULL,
-  `fecha_Hora` datetime NOT NULL,
-  `id_Credito` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `caja`
 --
 
 CREATE TABLE `caja` (
   `id_Caja` int(11) NOT NULL,
-  `id_User` int(11) DEFAULT NULL,
-  `Fondo` double NOT NULL,
+  `id_User` int(11) NOT NULL,
   `Fecha` date NOT NULL,
-  `Ingreso` double NOT NULL,
-  `Corte` double NOT NULL
+  `Hora` time NOT NULL,
+  `Fondo` double NOT NULL,
+  `total_Ingreso` double NOT NULL DEFAULT 0,
+  `totalDia` double NOT NULL,
+  `Corte` double NOT NULL DEFAULT 0,
+  `horaCorte` time DEFAULT NULL,
+  `Diferencia` double NOT NULL DEFAULT 0,
+  `Estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `caja`
+--
+
+INSERT INTO `caja` (`id_Caja`, `id_User`, `Fecha`, `Hora`, `Fondo`, `total_Ingreso`, `totalDia`, `Corte`, `horaCorte`, `Diferencia`, `Estado`) VALUES
+(1, 5, '2021-07-06', '09:47:01', 100, 708.18, 808.18, 809, '22:14:53', 0.82, 0),
+(2, 3, '2021-07-07', '09:13:00', 100, 0, 0, 0, NULL, 0, 1),
+(3, 5, '2021-07-12', '12:28:39', 150, 0, 0, 0, NULL, 0, 1),
+(4, 2, '2021-07-15', '09:23:07', 150, 0, 0, 0, NULL, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -78,30 +80,17 @@ INSERT INTO `cliente` (`id_Cliente`, `Nombre`, `Direccion`, `Telefono`, `Email`,
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `compra_produ`
+-- Estructura de tabla para la tabla `compra`
 --
 
-CREATE TABLE `compra_produ` (
+CREATE TABLE `compra` (
   `id_Compra` int(11) NOT NULL,
-  `fecha_Hora` datetime NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
   `num_Ticket` bigint(20) NOT NULL,
   `Total` float NOT NULL,
-  `id_Proveedor` int(11) DEFAULT NULL
+  `id_Proveedor` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
-
---
--- Volcado de datos para la tabla `compra_produ`
---
-
-INSERT INTO `compra_produ` (`id_Compra`, `fecha_Hora`, `num_Ticket`, `Total`, `id_Proveedor`) VALUES
-(1, '2021-06-19 08:27:45', 105780562, 200, 1),
-(2, '2021-06-19 08:44:05', 5615613156, 1230, 2),
-(3, '2021-06-19 08:45:09', 5615613156, 1230, 2),
-(4, '2021-06-19 08:48:07', 53453453, 200, 1),
-(5, '2021-06-19 08:50:57', 51615616, 250, 2),
-(6, '2021-06-19 08:54:05', 51615616, 250, 2),
-(7, '2021-06-19 08:54:23', 51615616, 250, 2),
-(8, '2021-06-19 08:55:22', 5616551651, 400, 1);
 
 -- --------------------------------------------------------
 
@@ -111,10 +100,61 @@ INSERT INTO `compra_produ` (`id_Compra`, `fecha_Hora`, `num_Ticket`, `Total`, `i
 
 CREATE TABLE `credito` (
   `id_Credito` int(11) NOT NULL,
-  `monto_Credito` double NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
+  `monto_Credito` float NOT NULL,
+  `monto_Abonado` float NOT NULL,
+  `Estado` int(11) NOT NULL,
   `id_Cliente` int(11) DEFAULT NULL,
   `id_Venta` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `credito`
+--
+
+INSERT INTO `credito` (`id_Credito`, `Fecha`, `Hora`, `monto_Credito`, `monto_Abonado`, `Estado`, `id_Cliente`, `id_Venta`) VALUES
+(3, '2021-07-12', '12:29:40', 60, 30, 1, 3, 8);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `operacion_caja`
+--
+
+CREATE TABLE `operacion_caja` (
+  `Id_Operacion` int(11) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
+  `Monto` double NOT NULL,
+  `Tipo` int(11) NOT NULL,
+  `id_User` int(11) NOT NULL,
+  `id_Caja` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `operacion_credito`
+--
+
+CREATE TABLE `operacion_credito` (
+  `id_Abono` int(11) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
+  `Monto` double NOT NULL,
+  `Efectivo` double NOT NULL,
+  `Cambio` double NOT NULL,
+  `id_Credito` int(11) NOT NULL,
+  `id_User` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `operacion_credito`
+--
+
+INSERT INTO `operacion_credito` (`id_Abono`, `Fecha`, `Hora`, `Monto`, `Efectivo`, `Cambio`, `id_Credito`, `id_User`) VALUES
+(8, '2021-07-12', '12:30:28', 30, 50, 20, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -140,16 +180,16 @@ INSERT INTO `producto` (`id_Producto`, `Nombre`, `Cantidad`, `p_Compra`, `p_vent
 (75052478, 'Desodorante rexona', 25, 25, 45, 40, 35),
 (75065959, 'Libreta profesional new Wave', 15, 10, 10, 10, 10),
 (738545010610, 'Salsa botanera', 10, 35, 45, 44, 43),
-(759684154058, 'Vaselina', 9, 10, 25, 20, 17),
+(759684154058, 'Vaselina', 8, 10, 25, 20, 17),
 (7501000264773, 'Papas chips jalapeño', 5, 10, 15, 14, 13),
-(7501040305320, 'Silicon', 69, 12.5, 17.5, 17, 16.5),
+(7501040305320, 'Silicon', 81, 15, 17.5, 17, 16.5),
 (7501055303786, 'Fresca 600 ml', 10, 10, 15, 14, 13),
 (7501072204226, 'Alimento campeon 800 gramas', 3, 45, 60, 55, 50),
 (7501072211927, 'Gatina 2 Kg sabor salmon para chachorros', 8, 50, 85, 80, 75),
-(7501130525102, 'Colorante mariposa ', 178, 16, 100, 10, 10),
-(7501310011067, 'Resina epoxica', 140, 20, 25.5, 20, 17.56),
-(7501791657693, 'Rastillos', 325, 10, 17.5, 17, 13.5),
-(7502212484676, 'hojas blancoas ', 10, 15.5, 50.5, 35.5, 30),
+(7501130525102, 'Colorante mariposa ', 168, 16, 100, 10, 10),
+(7501310011067, 'Resina epoxica', 226, 13, 25.5, 20, 17.56),
+(7501791657693, 'Rastillos', 322, 15, 17.5, 17, 13.5),
+(7502212484676, 'hojas blancoas ', 7, 15.5, 50.5, 35.5, 30),
 (7622210833792, 'Galletas oreo', 4, 10, 10, 10, 10),
 (7702031311218, 'Crema Lubriderm', 1, 80, 120, 110, 100);
 
@@ -167,22 +207,6 @@ CREATE TABLE `productos_compra` (
   `precio_Compra` double NOT NULL,
   `p_Total` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
-
---
--- Volcado de datos para la tabla `productos_compra`
---
-
-INSERT INTO `productos_compra` (`id_Compra`, `id_Producto`, `Nombre`, `Cantidad`, `precio_Compra`, `p_Total`) VALUES
-(1, 7501791657693, 'Rastillos', 10, 20, 200),
-(4, 7501310011067, 'Resina epoxica', 10, 20, 200),
-(5, 7501310011067, 'Resina epoxica', 10, 20, 200),
-(5, 7501791657693, 'Rastillos', 5, 10, 50),
-(5, 7501310011067, 'Resina epoxica', 10, 20, 200),
-(5, 7501791657693, 'Rastillos', 5, 10, 50),
-(5, 7501310011067, 'Resina epoxica', 10, 20, 200),
-(5, 7501791657693, 'Rastillos', 5, 10, 50),
-(8, 7501310011067, 'Resina epoxica', 10, 20, 200),
-(8, 7501791657693, 'Rastillos', 20, 10, 200);
 
 -- --------------------------------------------------------
 
@@ -204,16 +228,8 @@ CREATE TABLE `productos_venta` (
 --
 
 INSERT INTO `productos_venta` (`id_Venta`, `id_Producto`, `Nombre`, `Cantidad`, `precio_Unitario`, `precio_Total`) VALUES
-(1, 7501310011067, 'Resina epoxica', 1, 25.5, 25.5),
-(1, 7501310011067, 'Resina epoxica', 1, 25.5, 25.5),
-(1, 7501310011067, 'Resina epoxica', 1, 25.5, 25.5),
-(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
-(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
-(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
-(2, 7501310011067, 'Resina epoxica', 1, 17.56, 17.56),
-(3, 7501310011067, 'Resina epoxica', 1, 20, 20),
-(3, 7501040305320, 'Silicon', 1, 17, 17),
-(3, 7501130525102, 'Colorante mariposa', 1, 10, 10);
+(7, 7502212484676, 'hojas blancoas', 1, 50.5, 50.5),
+(8, 7502212484676, 'hojas blancoas', 2, 30, 60);
 
 -- --------------------------------------------------------
 
@@ -224,8 +240,8 @@ INSERT INTO `productos_venta` (`id_Venta`, `id_Producto`, `Nombre`, `Cantidad`, 
 CREATE TABLE `proveedor` (
   `id_Proveedor` int(11) NOT NULL,
   `Nombre` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `Direccion` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `Telefono` int(11) NOT NULL,
+  `Direccion` varchar(100) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `Telefono` bigint(11) NOT NULL,
   `Email` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `RFC` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
@@ -235,22 +251,8 @@ CREATE TABLE `proveedor` (
 --
 
 INSERT INTO `proveedor` (`id_Proveedor`, `Nombre`, `Direccion`, `Telefono`, `Email`, `RFC`) VALUES
-(1, 'Bodega del perro', 'sdadasd12312fsd asadasd dasd a', 2147483647, 'editedlook@hotmail.com', 'sadasdasdas12312'),
+(1, 'Bodega del perro', 'Rivera del atoyac #2102', 225189926, 'editedlook@hotmail.com', 'sadasdasdas12312'),
 (2, 'sadasfa', '312312assd', 12312231, 'ssdfsdsd@dfad123.com', '312312ssdfdd');
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `retiroparcial`
---
-
-CREATE TABLE `retiroparcial` (
-  `Id_Retiro` int(11) NOT NULL,
-  `fecha_Hora` datetime NOT NULL,
-  `Monto` double NOT NULL,
-  `id_User` int(11) DEFAULT NULL,
-  `id_Caja` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 -- --------------------------------------------------------
 
@@ -263,17 +265,23 @@ CREATE TABLE `usuario` (
   `Usuario` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Password` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Nombre` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
-  `Puesto` varchar(20) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `Puesto` int(11) NOT NULL,
   `Telefono` int(11) NOT NULL,
-  `Email` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL
+  `Email` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `Estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_User`, `Usuario`, `Password`, `Nombre`, `Puesto`, `Telefono`, `Email`) VALUES
-(1, 'Edgar', '123456', 'Edgar Gabriel', 'Admin', 265189, 'saasfsaf@gmail.com');
+INSERT INTO `usuario` (`id_User`, `Usuario`, `Password`, `Nombre`, `Puesto`, `Telefono`, `Email`, `Estado`) VALUES
+(1, 'Edgar', '123456', 'Edgar Gabriel', 1, 265189, 'saasfsaf@gmail.com', 1),
+(2, 'Carmen', '123456', 'Carmen', 3, 2147483647, 'carmen@gmail.com', 1),
+(3, 'Juan', '123456', 'Juan Perez', 2, 1231556, '  asd@gmail.com', 1),
+(4, 'Pedro', '123456', 'Pedro Rodriguez', 3, 21516232, '    dsada@gmail.com', 1),
+(5, 'Luis', '123456', 'Luis Fernandez', 3, 222222, 'asdasd@gmail.com', 1),
+(6, 'Felipe', '123456', 'Felipe Lopez Perez', 3, 2147483647, 'fel@gmail.com', 1);
 
 -- --------------------------------------------------------
 
@@ -283,33 +291,33 @@ INSERT INTO `usuario` (`id_User`, `Usuario`, `Password`, `Nombre`, `Puesto`, `Te
 
 CREATE TABLE `venta` (
   `id_Venta` int(11) NOT NULL,
-  `fecha_Hora` datetime NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
   `id_User` int(11) NOT NULL,
-  `id_Cliente` int(11) DEFAULT NULL,
-  `Total` double NOT NULL,
-  `Pago` double NOT NULL,
-  `Cambio` double NOT NULL
+  `id_Cliente` int(11) NOT NULL,
+  `Total` float NOT NULL,
+  `Pago` float NOT NULL,
+  `Cambio` float NOT NULL,
+  `forma_Pago` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `venta`
 --
 
-INSERT INTO `venta` (`id_Venta`, `fecha_Hora`, `id_User`, `id_Cliente`, `Total`, `Pago`, `Cambio`) VALUES
-(1, '2021-06-10 12:11:58', 1, 1, 76.5, 100, 23.5),
-(2, '2021-06-10 12:12:24', 1, 3, 70.24, 100, 29.76),
-(3, '2021-06-10 12:14:26', 1, 2, 47, 50, 3);
+INSERT INTO `venta` (`id_Venta`, `Fecha`, `Hora`, `id_User`, `id_Cliente`, `Total`, `Pago`, `Cambio`, `forma_Pago`) VALUES
+(1, '2021-07-05', '09:49:08', 5, 1, 117.5, 120, 2.5, 0),
+(2, '2021-07-06', '09:49:42', 5, 3, 41.06, 0, 0, 1),
+(3, '2021-07-06', '09:50:19', 5, 1, 255, 300, 45, 0),
+(4, '2021-07-06', '09:51:25', 5, 1, 160.5, 170, 9.5, 0),
+(5, '2021-07-06', '09:57:43', 5, 1, 200, 200, 0, 0),
+(6, '2021-07-06', '11:44:33', 5, 4, 61.62, 0, 0, 1),
+(7, '2021-07-12', '12:29:12', 5, 1, 50.5, 100, 49.5, 0),
+(8, '2021-07-12', '12:29:40', 5, 3, 60, 0, 0, 1);
 
 --
 -- Índices para tablas volcadas
 --
-
---
--- Indices de la tabla `abono_credito`
---
-ALTER TABLE `abono_credito`
-  ADD PRIMARY KEY (`id_Abono`,`id_Credito`),
-  ADD KEY `Necesita` (`id_Credito`);
 
 --
 -- Indices de la tabla `caja`
@@ -325,9 +333,9 @@ ALTER TABLE `cliente`
   ADD PRIMARY KEY (`id_Cliente`);
 
 --
--- Indices de la tabla `compra_produ`
+-- Indices de la tabla `compra`
 --
-ALTER TABLE `compra_produ`
+ALTER TABLE `compra`
   ADD PRIMARY KEY (`id_Compra`),
   ADD KEY `IX_Relationship14` (`id_Proveedor`);
 
@@ -340,6 +348,22 @@ ALTER TABLE `credito`
   ADD KEY `IX_Relationship11` (`id_Venta`);
 
 --
+-- Indices de la tabla `operacion_caja`
+--
+ALTER TABLE `operacion_caja`
+  ADD PRIMARY KEY (`Id_Operacion`),
+  ADD KEY `IX_Relationship21` (`id_User`),
+  ADD KEY `IX_Relationship22` (`id_Caja`);
+
+--
+-- Indices de la tabla `operacion_credito`
+--
+ALTER TABLE `operacion_credito`
+  ADD PRIMARY KEY (`id_Abono`),
+  ADD KEY `IX_Relationship1` (`id_User`),
+  ADD KEY `Tiene` (`id_Credito`);
+
+--
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
@@ -349,6 +373,7 @@ ALTER TABLE `producto`
 -- Indices de la tabla `productos_compra`
 --
 ALTER TABLE `productos_compra`
+  ADD KEY `Agrega` (`id_Compra`),
   ADD KEY `ADDInventario` (`id_Producto`);
 
 --
@@ -363,14 +388,6 @@ ALTER TABLE `productos_venta`
 --
 ALTER TABLE `proveedor`
   ADD PRIMARY KEY (`id_Proveedor`);
-
---
--- Indices de la tabla `retiroparcial`
---
-ALTER TABLE `retiroparcial`
-  ADD PRIMARY KEY (`Id_Retiro`),
-  ADD KEY `IX_Relationship21` (`id_User`),
-  ADD KEY `IX_Relationship22` (`id_Caja`);
 
 --
 -- Indices de la tabla `usuario`
@@ -392,10 +409,10 @@ ALTER TABLE `venta`
 --
 
 --
--- AUTO_INCREMENT de la tabla `abono_credito`
+-- AUTO_INCREMENT de la tabla `caja`
 --
-ALTER TABLE `abono_credito`
-  MODIFY `id_Abono` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `caja`
+  MODIFY `id_Caja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
@@ -404,16 +421,28 @@ ALTER TABLE `cliente`
   MODIFY `id_Cliente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT de la tabla `compra_produ`
+-- AUTO_INCREMENT de la tabla `compra`
 --
-ALTER TABLE `compra_produ`
-  MODIFY `id_Compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+ALTER TABLE `compra`
+  MODIFY `id_Compra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `credito`
 --
 ALTER TABLE `credito`
-  MODIFY `id_Credito` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Credito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `operacion_caja`
+--
+ALTER TABLE `operacion_caja`
+  MODIFY `Id_Operacion` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `operacion_credito`
+--
+ALTER TABLE `operacion_credito`
+  MODIFY `id_Abono` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
@@ -422,51 +451,60 @@ ALTER TABLE `proveedor`
   MODIFY `id_Proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de la tabla `retiroparcial`
+-- AUTO_INCREMENT de la tabla `usuario`
 --
-ALTER TABLE `retiroparcial`
-  MODIFY `Id_Retiro` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `usuario`
+  MODIFY `id_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `id_Venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_Venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Restricciones para tablas volcadas
 --
 
 --
--- Filtros para la tabla `abono_credito`
---
-ALTER TABLE `abono_credito`
-  ADD CONSTRAINT `Necesita` FOREIGN KEY (`id_Credito`) REFERENCES `credito` (`id_Credito`);
-
---
 -- Filtros para la tabla `caja`
 --
 ALTER TABLE `caja`
-  ADD CONSTRAINT `Relationship19` FOREIGN KEY (`id_User`) REFERENCES `usuario` (`id_User`);
+  ADD CONSTRAINT `Tiene_su` FOREIGN KEY (`id_User`) REFERENCES `usuario` (`id_User`);
 
 --
--- Filtros para la tabla `compra_produ`
+-- Filtros para la tabla `compra`
 --
-ALTER TABLE `compra_produ`
+ALTER TABLE `compra`
   ADD CONSTRAINT `Vende` FOREIGN KEY (`id_Proveedor`) REFERENCES `proveedor` (`id_Proveedor`);
 
 --
 -- Filtros para la tabla `credito`
 --
 ALTER TABLE `credito`
-  ADD CONSTRAINT `PuedeSer` FOREIGN KEY (`id_Venta`) REFERENCES `venta` (`id_Venta`),
+  ADD CONSTRAINT `Pago` FOREIGN KEY (`id_Venta`) REFERENCES `venta` (`id_Venta`),
   ADD CONSTRAINT `puedeTener` FOREIGN KEY (`id_Cliente`) REFERENCES `cliente` (`id_Cliente`);
+
+--
+-- Filtros para la tabla `operacion_caja`
+--
+ALTER TABLE `operacion_caja`
+  ADD CONSTRAINT `Puede_realizar` FOREIGN KEY (`id_User`) REFERENCES `usuario` (`id_User`),
+  ADD CONSTRAINT `Tiene_Op` FOREIGN KEY (`id_Caja`) REFERENCES `caja` (`id_Caja`);
+
+--
+-- Filtros para la tabla `operacion_credito`
+--
+ALTER TABLE `operacion_credito`
+  ADD CONSTRAINT `Realiz` FOREIGN KEY (`id_User`) REFERENCES `usuario` (`id_User`),
+  ADD CONSTRAINT `Tiene` FOREIGN KEY (`id_Credito`) REFERENCES `credito` (`id_Credito`);
 
 --
 -- Filtros para la tabla `productos_compra`
 --
 ALTER TABLE `productos_compra`
-  ADD CONSTRAINT `ADDInventario` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`);
+  ADD CONSTRAINT `ADDInventario` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`),
+  ADD CONSTRAINT `Agrega` FOREIGN KEY (`id_Compra`) REFERENCES `compra` (`id_Compra`);
 
 --
 -- Filtros para la tabla `productos_venta`
@@ -474,13 +512,6 @@ ALTER TABLE `productos_compra`
 ALTER TABLE `productos_venta`
   ADD CONSTRAINT `Contiene` FOREIGN KEY (`id_Venta`) REFERENCES `venta` (`id_Venta`),
   ADD CONSTRAINT `seVende` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`);
-
---
--- Filtros para la tabla `retiroparcial`
---
-ALTER TABLE `retiroparcial`
-  ADD CONSTRAINT `Relationship21` FOREIGN KEY (`id_User`) REFERENCES `usuario` (`id_User`),
-  ADD CONSTRAINT `seRetira` FOREIGN KEY (`id_Caja`) REFERENCES `caja` (`id_Caja`);
 
 --
 -- Filtros para la tabla `venta`

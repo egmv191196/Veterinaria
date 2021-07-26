@@ -13,6 +13,10 @@
     <title>Menú-Veterinaria Balbi</title>
   </head>
   <body>
+    <?php 
+      session_start();
+      $Nombre=$_SESSION['k_user'];
+    ?> 
       <!---- Navigation -->
         <nav class="navbar navbar-expand-md navbar-black fixed-top">
           <a class="navbar-brand" href="menu.php"><img src="img/BALBI-sin-fondo.png"></a>
@@ -28,10 +32,9 @@
             <ul class="navbar-nav ml-auto">
                   <li class="nav-item">
                     <h3 id="hora" ></h3>
-                    <script type="text/javascript">Mostrar();</script>
                   </li>
                   <li class="nav-item">
-                    <a href="" class="nav-link">
+                    <a href="" class="nav-link"><?php echo $Nombre;?>
                       <i class="fa fa-user fa-2x" aria-hidden="true"></i>
                     </a>
                 </li>
@@ -69,8 +72,8 @@
             </a>
             <a href="caja.php" >
             <div class="hexagon" id="nav-about">
-                <i class="fas fa-cash-register fa-3x"></i><br>  
-                Caja
+                <i class="fas fa-ticket-alt fa-3x"></i><br>  
+                Tickets
                  <div class="face1"></div>
                  <div class="face2"></div>
             </div>
@@ -101,7 +104,7 @@
               <div class="face2"></div>
             </div>
           </a>
-          <a href="#" >
+          <a href="Creditos.php" >
             <div class="hexagon" id="nav-work">
                 <i class="fas fa-hand-holding-usd fa-3x"></i>
               Creditos
@@ -109,15 +112,15 @@
               <div class="face2"></div>
             </div>
             </a>
-            <a href="#" >
+            <a href="Reportes.php" >
             <div class="hexagon" id="nav-contact">
                 <i class="fas fa-clipboard fa-3x"></i>
-              Reportes
+              Reportes y caja
               <div class="face1"></div>
               <div class="face2"></div>
             </div>
             </a>
-            <a href="#" >
+            <a href="Administrar.php" >
             <div class="hexagon" id="nav-contact">
                 <i class="fas fa-users-cog fa-3x"></i>
                 Administrar
