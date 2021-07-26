@@ -101,4 +101,24 @@
     transform-origin: right top;
     transform: rotate(60deg) translate(110px, 0);
   }
+  .paginador {
+    text-align: center;
+}
+  ul {
+    display: inline-block;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    float: none;
+  }
+  
+  li {
+    padding-left: 5px;
+    padding-left: 5px;
+    float: left;
+  }
+  .liselected {
+    background-color: #888;
+  }
 

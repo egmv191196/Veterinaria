@@ -16,6 +16,10 @@
     <?php 
       session_start();
       $Nombre=$_SESSION['k_user'];
+      $Puesto=$_SESSION['cargo'];
+      if ($Puesto!=1) {
+        header("Location:menu.php");
+      }
     ?>  
 
     <div id="Home">
@@ -35,7 +39,6 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <h3 id="hora" ></h3>
-                    <!---<script type="text/javascript">Mostrar();</script>--->
                 </li>
                 <li class="nav-item">
                     <a href="" class="nav-link"><?php echo $Nombre;?>
@@ -55,9 +58,9 @@
         <div class="col-12">
               <h1 class="text-center">Compra<i class="fa fa-cart-plus"></i></h1>
             <div class="row">
-                  <label class="col-1" for="id_cliente">Proveedor</label>
+                  <label class="col-1" for="id_cliente">Elije proveedor</label>
                   <input type="hidden" id="Descuento" value="0">
-                  <select required class="form-control col-3" name="id_Proveedor" id="id_Proveedor" required>
+                  <select required class="form-control col-2" name="id_Proveedor" id="id_Proveedor" required>
                           <option value="">Selecciona un proveedor</option>   
                             <?php
                               require_once('./php/conexion.php');
@@ -67,25 +70,28 @@
                               }
                             ?>      
                   </select>
-                  <label class="col-2" for="codigo">Numero de ticket</label>
+                  <label class="col-1" for="codigo">Numero de ticket</label>
                   <input id="num_Ticket" autocomplete="off" required name="num_Ticket" type="text"
                           class="form-control col-2" placeholder="Código de ticket" required>
-                  <label class="col-2" for="codigo">Código de barras</label>
+                  <label class="col-1" for="codigo">Código </label>
                   <input id="codigo" autocomplete="off" required name="codigo" type="text"
                           class="form-control col-2" onchange="leerCodigo();"
                           placeholder="Código de barras">
+                  <label class="col-1" for="Nombre">Nombre</label>
+                  <input id="Nombre" autocomplete="off" name="codigo" type="text"
+                      class="form-control col-2" placeholder="Nombre" onchange="BusquedaNombre();">        
             </div>
             <div class="table-responsive mt-4 ">
                 <table class="table table-bordered" id="Productos">
                     <thead>
-                    <tr>
-                        <th width=20%>Código de barras</th>
-                        <th width=30%>Descripción</th>
-                        <th width=10%>Cantidad</th>
-                        <th width=15%>Precio de compra</th>
-                        <th width=5%>Subtotal</th>
-                        <th width=10%>Quitar</th>
-                    </tr>
+                      <tr>
+                          <th width=20%>Código de barras</th>
+                          <th width=30%>Descripción</th>
+                          <th width=10%>Cantidad</th>
+                          <th width=15%>Precio de compra</th>
+                          <th width=5%>Subtotal</th>
+                          <th width=10%>Quitar</th>
+                      </tr>
                     </thead>
                     <tbody >
                     </tbody>
@@ -172,9 +178,34 @@
             </div>
           </div>
         </div>
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+      <div class="modal fade" id="listaBusqueda">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title ">Lista de productos</h2>
+            <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Nombre</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody id="cuerpo">
+              </tbody>
+            </table>
+          </div> 
+          </div>
+        </div>
+      </div>
+    
+    
+        <!-- Optional JavaScript -->
+    
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>

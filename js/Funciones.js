@@ -9,8 +9,18 @@ function signIn(){
             location.href ="./menu.php";
         }else if(response==2){
             alert("La contraseña es incorrecta");
+            $('#passwd').val("");
+            $('#passwd').trigger('focus');
         }else if(response==3){
             alert("El usuario no existe en la base de datos");
+            $('#user').val("");
+            $('#passwd').val("");
+            $('#user').trigger('focus');
+        }else if (response==4) {
+            alert("El usuario no esta activo para entrar al servidor");
+            $('#user').val("");
+            $('#passwd').val("");
+            $('#user').trigger('focus');
         }    
     }).fail(function(response){
         alert("Hubo un error en el server, reintentelo de nuevo");
@@ -44,6 +54,7 @@ function addProducto(){
         id_Producto : document.getElementById("id_Pro_reg").value,
         Nombre : document.getElementById("nom_Reg").value,
         p_Compra : document.getElementById("pc_Reg").value,
+        p_Lista : document.getElementById("pl_Reg").value,
         p_VentaC : document.getElementById("pv_Reg").value,
         p_VentaM : document.getElementById("pvm_Reg").value,
         p_VentaMa : document.getElementById("pvma_Reg").value,
@@ -103,7 +114,8 @@ function updatePro(){
 function editProducto(id) {
     $('#id_Producto').val($(id).parents("tr").find("td")[0].innerHTML);  
     $('#Nombre').val($(id).parents("tr").find("td")[1].innerHTML); 
-    $('#p_Compra').val($(id).parents("tr").find("td")[3].innerHTML); 
+    $('#p_Compra').val($(id).parents("tr").find("td")[2].innerHTML);
+    $('#p_Lista').val($(id).parents("tr").find("td")[3].innerHTML);  
     $('#p_VentaC').val($(id).parents("tr").find("td")[4].innerHTML); 
     $('#p_VentaM').val($(id).parents("tr").find("td")[5].innerHTML);  
     $('#p_VentaMa').val($(id).parents("tr").find("td")[6].innerHTML);
@@ -229,8 +241,8 @@ function editCliente(id){
     });
     $('#id_Cliente').val($(id).parents("tr").find("td")[0].innerHTML);  
     $('#Nombre').val($(id).parents("tr").find("td")[1].innerHTML); 
-    $('#Direccion').val($(id).parents("tr").find("td")[3].innerHTML); 
-    $('#Telefono').val($(id).parents("tr").find("td")[2].innerHTML); 
+    $('#Direccion').val($(id).parents("tr").find("td")[2].innerHTML); 
+    $('#Telefono').val($(id).parents("tr").find("td")[3].innerHTML); 
     $('#Email').val($(id).parents("tr").find("td")[4].innerHTML);  
     $('#RFC').val($(id).parents("tr").find("td")[5].innerHTML);
     $("#VenActualizar").modal();
@@ -252,6 +264,11 @@ function updateCliente(){
         alert("Hubo un error en el server, reintentelo de nuevo");
     });
 
+}
+//Reimprimir ticket
+function reimprimirTicket(id){
+    id_Ticket= $(id).parents("tr").find("td")[0].innerHTML;
+    window.open('./php/ticketv.php?id_Venta='+id_Ticket, '_blank');
 }
 
 // Funciones con document ready

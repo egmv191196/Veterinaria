@@ -8,15 +8,16 @@ $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $numProductos=$row[0];
 //Valores necesarios
-$consulta = "SELECT compra_produ.fecha_Hora, compra_produ.num_Ticket, Proveedor.Nombre, compra_produ.Total
-FROM compra_produ JOIN proveedor WHERE 
-id_Compra=$id_Compra AND compra_produ.id_Proveedor=proveedor.id_Proveedor";
+$consulta = "SELECT compra.Fecha, compra.Hora, compra.num_Ticket, Proveedor.Nombre, compra.Total
+FROM compra JOIN proveedor WHERE 
+id_Compra=$id_Compra AND compra.id_Proveedor=proveedor.id_Proveedor";
 $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $fecha=$row[0];
-$numticket=$row[1];
-$proveedor=$row[2];
-$Total=$row[3];
+$hora=$row[1];
+$numticket=$row[2];
+$proveedor=$row[3];
+$Total=$row[4];
 $alto=78+($numProductos*4);
 $pdf = new FPDF('P','mm',array(80,$alto)); // Tamaño tickt 80mm x 150 mm (largo aprox)
 $pdf->AddPage();
@@ -34,7 +35,7 @@ $pdf->Cell(75,4,'Correo: vetbalbi@hotmail.com',0,1,'C');
  
 // DATOS FACTURA        
 $pdf->Ln(2);
-$pdf->Cell(60,3,'Fecha y hora de compra: '.$fecha,0,1,'');
+$pdf->Cell(60,3,'Fecha y hora de compra: '.$fecha.' '.$hora,0,1,'');
 $pdf->Cell(10,3,'No Nota: '.$id_Compra,0,1,'');
 $pdf->Cell(10,3,'Proveedor: '.$proveedor,0,1,'');
 // COLUMNAS
