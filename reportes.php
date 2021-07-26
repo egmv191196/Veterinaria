@@ -60,21 +60,22 @@
                 <div class="col-4 text-center">
                     <h3>Fondo y corte</h3>
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action mt-1" onclick="asignarFondoModal();">Asignar fondo</a>
-                        <a class="list-group-item list-group-item-action mt-1" onclick="corteModal();">Corte de empleado</a>
+                        <a href="" class="list-group-item list-group-item-action mt-1" onclick="asignarFondoModal();">Asignar fondo</a>
+                        <a href="" class="list-group-item list-group-item-action mt-1" onclick="corteModal();">Corte de empleado</a>
                     </div>
                 </div>
                 <div class="col-4 text-center">
                     <h3>Venta</h3>
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action mt-1" onclick="corteDia();">Corte del dia</a>
+                        <a href="" class="list-group-item list-group-item-action mt-1" onclick="corteDia();">Corte del dia</a>
                     </div>
                 </div>
                 <div class="col-4 text-center">
                     <h3>Productos</h3>
                     <div class="list-group">
-                        <a class="list-group-item list-group-item-action mt-1"onclick="bajoStock();";>Productos con bajo stock</a>
-                        <a class="list-group-item list-group-item-action mt-1"onclick="historialCompraModal();";>Ver precios de compra</a>
+                        <a href="" class="list-group-item list-group-item-action mt-1"onclick="bajoStock();";>Productos con bajo stock</a>
+                        <a href="" class="list-group-item list-group-item-action mt-1"onclick="historialCompraModal();";>Ver precios de compra</a>
+                        <a href="" class="list-group-item list-group-item-action mt-1"onclick="ProductosVendidos();";>Lista de productos vendidos hoy</a>
                     </div>
                 </div>
             </div>

@@ -16,11 +16,11 @@
                 $stockReal= $datos['Cantidad'];
                 if($stockReal>=$cantidad){
                     if($Des==0){
-                        $precio= $datos['p_ventaN'];
+                        $precio= $datos[5];
                     }else if($Des==1){
-                        $precio= $datos['p_VentaMe'];
+                        $precio= $datos[6];
                     }else if($Des==2){
-                        $precio= $datos['p_VentaMa'];
+                        $precio= $datos[7];
                     }         
                     $stockFinal=$stockReal-$cantidad;
                     $update = "UPDATE producto SET Cantidad=$stockFinal WHERE id_Producto=$id_Producto";
@@ -147,7 +147,7 @@
         $res= mysqli_query($conexion,$consulta);
         $Resultados=array();
         while ($row = mysqli_fetch_array($res)){
-            $valores=[$row[0], $row[1], $row[2],$row[4],$row[5],$row[6]];
+            $valores=[$row[0], $row[1], $row[2],$row[4],$row[5],$row[6],$row[7]];
             array_push($Resultados,$valores);
         }
         echo json_encode($Resultados);

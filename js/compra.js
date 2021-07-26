@@ -151,6 +151,34 @@ function Compra(){
     }
         
 }
+function BusquedaNombre(){
+    var datos = {
+        "Operacion" : 'BuscarPornombre',
+        texto : document.getElementById("Nombre").value
+    };
+    $.ajax({
+        type: "POST",
+        url: "./php/venta.php",
+        data: datos,
+    }).done(function(response){
+        $("#cuerpo tr").remove(); 
+        var datos=JSON.parse(response);
+        for ( i = 0; i < datos.length; i++) {
+            document.getElementById("cuerpo").insertRow(i).innerHTML = '<tr><td>'+datos[i][0]+'</td> <td>'+
+            datos[i][1]+'</td>  <td><button class="btn btn-success mb-2 ml-2 mr-2" onclick="selectArticulo(this);">Seleccionar</button> </td> <tr>';
+        }
+        $('#Nombre').val(''); 
+        $("#listaBusqueda").modal(); 
+    }).fail(function(response){
+        alert("Hubo un error en el server, reintentelo de nuevo");
+    });
+}
+function selectArticulo(id){
+    id_Producto = $(id).parents("tr").find("td")[0].innerHTML;
+    $(codigo).val(id_Producto);
+    $("#listaBusqueda").modal("hide");
+    leerCodigo()
+}
 function recorrerTabla(){
     var resume_table = document.getElementById("rwd-table-id");
     for (var i = 1, row; row = resume_table.rows[i]; i++) {

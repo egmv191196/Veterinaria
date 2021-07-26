@@ -111,6 +111,10 @@ function realizarCorte(){
         });
     } 
 }
+function ProductosVendidos(){
+    window.open('./php/productosVendidos.php', '_blank');
+    location.reload();
+}
 function corteDia(){
     window.open('./php/reporteCajaDia.php', '_blank');
     location.reload();

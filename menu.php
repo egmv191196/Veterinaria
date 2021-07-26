@@ -72,8 +72,8 @@
             </a>
             <a href="caja.php" >
             <div class="hexagon" id="nav-about">
-                <i class="fas fa-cash-register fa-3x"></i><br>  
-                Caja
+                <i class="fas fa-ticket-alt fa-3x"></i><br>  
+                Tickets
                  <div class="face1"></div>
                  <div class="face2"></div>
             </div>
@@ -115,7 +115,7 @@
             <a href="Reportes.php" >
             <div class="hexagon" id="nav-contact">
                 <i class="fas fa-clipboard fa-3x"></i>
-              Reportes
+              Reportes y caja
               <div class="face1"></div>
               <div class="face2"></div>
             </div>

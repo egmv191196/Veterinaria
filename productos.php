@@ -68,13 +68,12 @@
                 <tr style="text-align: center">
                     <th>Código </th>
                     <th>Nombre</th>
-                    <th>Proveedor</th>
                     <th>Precio de compra</th>
-                    <th>Precio de venta normal</th>
-                    <th>Precio de venta medico</th>
-                    <th>Precio de venta mayoreo</th>
+                    <th>Precio lista</th>
+                    <th>Precio publico</th>
+                    <th>Precio medio mayoreo</th>
+                    <th>Precio mayoreo</th>
                     <th>Existencia</th>
-
                     <th>Editar</th>
                     <th>Eliminar</th>
                 </tr>
@@ -96,14 +95,14 @@
                     $result= mysqli_query($conexion, "SELECT * FROM producto LIMIT $desde,$porPagina");
                     while ($row = mysqli_fetch_array($result)) {
                         echo '<tr style="text-align: center">';
-                        echo '<td>'.$row['id_Producto'].'</td>';
-                        echo '<td>'.$row['Nombre'].'</td>';
-                        echo '<td></td>';
-                        echo '<td>'.$row['p_Compra'].'</td>';
-                        echo '<td>'.$row['p_ventaN'].'</td>';
-                        echo '<td>'.$row['p_VentaMe'].'</td>';
-                        echo '<td>'.$row['p_VentaMa'].'</td>';
-                        echo '<td>'.$row['Cantidad'].'</td>';
+                        echo '<td>'.$row[0].'</td>';
+                        echo '<td>'.$row[1].'</td>';
+                        echo '<td>'.$row[3].'</td>';
+                        echo '<td>'.$row[4].'</td>';
+                        echo '<td>'.$row[5].'</td>';
+                        echo '<td>'.$row[6].'</td>';
+                        echo '<td>'.$row[7].'</td>';
+                        echo '<td>'.$row[2].'</td>';
                         echo '<td> <a class="btn btn-warning" onclick="editProducto(this);"><i class="fa fa-edit"></i></a> </td>';
                         echo '<td> <form action="#" method="post">';
                         echo '<button type="submit" class="btn btn-danger" onclick="delProducto(this);"> <i class="fa fa-trash"></i> </button>';
@@ -178,28 +177,35 @@
                             type="decimal(9,2)" placeholder="Precio de compra">
                     </div>
                   </div>
+                  <div class="col-sm">
+                    <div class="form-group">
+                      <label class="label">Precio lista</label>
+                      <input required autocomplete="off" name="p_Compra" class="form-control" id="pl_Reg"
+                            type="decimal(9,2)" placeholder="Precio de lista">
+                    </div>
+                  </div>
                 </div>
 
                 <div class="row">
                   <div class="col-sm">
                     <div class="form-group">
-                      <label class="label">Precio de venta normal</label>
+                      <label class="label">Precio publico</label>
                       <input required autocomplete="off" name="p_VentaC" class="form-control" id="pv_Reg"
-                            type="decimal(9,2)" placeholder="Precio de venta normal">
+                            type="decimal(9,2)" placeholder="Precio publico">
                     </div>
                   </div>
                   <div class="col-sm">
                     <div class="form-group">
-                      <label class="label">Precio de venta medico</label>
+                      <label class="label">Precio medio mayoreo</label>
                       <input required autocomplete="off" name="p_VentaM" class="form-control" id="pvm_Reg"
-                            type="decimal(9,2)" placeholder="Precio de venta medico">
+                            type="decimal(9,2)" placeholder="Precio medio mayoreo">
                     </div>
                   </div>
                   <div class="col-sm">
                   <div class="form-group">
-                      <label class="label">Precio de venta mayoreo</label>
+                      <label class="label">Precio mayoreo</label>
                       <input required autocomplete="off" name="p_VentaMa" class="form-control" id="pvma_Reg"
-                            type="decimal(9,2)" placeholder="Precio de venta mayoreo">
+                            type="decimal(9,2)" placeholder="Precio mayoreo">
                     </div>
                   </div>
                 </div>
@@ -212,7 +218,7 @@
         </div>
       <!-- Optional JavaScript -->
       <div class="modal fade" id="VenActualizar">
-          <div class="modal-dialog">
+          <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h2 class="modal-title">Actualizar producto</h2>
@@ -252,26 +258,33 @@
                               type="decimal(9,2)" placeholder="Precio de compra">
                       </div>
                     </div>
+                    <div class="col-sm">
+                      <div class="form-group">
+                        <label class="label">Precio lista</label>
+                        <input required autocomplete="off" name="p_Compra" class="form-control" id="p_Lista"
+                              type="decimal(9,2)" placeholder="Precio de compra">
+                      </div>
+                    </div>
                   </div>
 
                   <div class="row">
                     <div class="col-sm">
                       <div class="form-group">
-                        <label class="label">Precio de venta normal</label>
+                        <label class="label">Precio publico</label>
                         <input required autocomplete="off" name="p_VentaC" class="form-control" id="p_VentaC"
                               type="decimal(9,2)" placeholder="Precio de venta normal">
                       </div>
                     </div>
                     <div class="col-sm">
                       <div class="form-group">
-                        <label class="label">Precio de venta medico</label>
+                        <label class="label">Precio medio mayoreo</label>
                         <input required autocomplete="off" name="p_VentaM" class="form-control" id="p_VentaM"
                               type="decimal(9,2)" placeholder="Precio de venta medico">
                       </div>
                     </div>
                     <div class="col-sm">
                     <div class="form-group">
-                        <label class="label">Precio de venta mayoreo</label>
+                        <label class="label">Precio mayoreo</label>
                         <input required autocomplete="off" name="p_VentaMa" class="form-control" id="p_VentaMa"
                               type="decimal(9,2)" placeholder="Precio de venta mayoreo">
                       </div>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 23-06-2021 a las 15:46:06
+-- Tiempo de generación: 20-07-2021 a las 07:15:16
 -- Versión del servidor: 10.4.18-MariaDB
 -- Versión de PHP: 8.0.3
 
@@ -34,9 +34,23 @@ CREATE TABLE `caja` (
   `Hora` time NOT NULL,
   `Fondo` double NOT NULL,
   `total_Ingreso` double NOT NULL DEFAULT 0,
+  `totalDia` double NOT NULL,
   `Corte` double NOT NULL DEFAULT 0,
-  `Diferencia` double NOT NULL DEFAULT 0
+  `horaCorte` time DEFAULT NULL,
+  `Diferencia` double NOT NULL DEFAULT 0,
+  `Estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `caja`
+--
+
+INSERT INTO `caja` (`id_Caja`, `id_User`, `Fecha`, `Hora`, `Fondo`, `total_Ingreso`, `totalDia`, `Corte`, `horaCorte`, `Diferencia`, `Estado`) VALUES
+(1, 5, '2021-07-06', '09:47:01', 100, 708.18, 808.18, 809, '22:14:53', 0.82, 0),
+(2, 3, '2021-07-07', '09:13:00', 100, 0, 0, 0, NULL, 0, 1),
+(3, 5, '2021-07-12', '12:28:39', 150, 0, 0, 0, NULL, 0, 1),
+(4, 2, '2021-07-15', '09:23:07', 150, 0, 0, 0, NULL, 0, 1),
+(5, 2, '2021-07-16', '07:48:53', 150, 0, 0, 0, NULL, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -87,12 +101,21 @@ CREATE TABLE `compra` (
 
 CREATE TABLE `credito` (
   `id_Credito` int(11) NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
   `monto_Credito` float NOT NULL,
   `monto_Abonado` float NOT NULL,
-  `Status` int(11) NOT NULL,
+  `Estado` int(11) NOT NULL,
   `id_Cliente` int(11) DEFAULT NULL,
   `id_Venta` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `credito`
+--
+
+INSERT INTO `credito` (`id_Credito`, `Fecha`, `Hora`, `monto_Credito`, `monto_Abonado`, `Estado`, `id_Cliente`, `id_Venta`) VALUES
+(3, '2021-07-12', '12:29:40', 60, 30, 1, 3, 8);
 
 -- --------------------------------------------------------
 
@@ -121,9 +144,18 @@ CREATE TABLE `operacion_credito` (
   `Fecha` date NOT NULL,
   `Hora` time NOT NULL,
   `Monto` double NOT NULL,
+  `Efectivo` double NOT NULL,
+  `Cambio` double NOT NULL,
   `id_Credito` int(11) NOT NULL,
   `id_User` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `operacion_credito`
+--
+
+INSERT INTO `operacion_credito` (`id_Abono`, `Fecha`, `Hora`, `Monto`, `Efectivo`, `Cambio`, `id_Credito`, `id_User`) VALUES
+(8, '2021-07-12', '12:30:28', 30, 50, 20, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -146,19 +178,19 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_Producto`, `Nombre`, `Cantidad`, `p_Compra`, `p_ventaN`, `p_VentaMe`, `p_VentaMa`) VALUES
-(75052478, 'Desodorante rexona', 25, 25, 45, 40, 35),
-(75065959, 'Libreta profesional new Wave', 15, 10, 10, 10, 10),
+(75052478, 'Desodorante rexona', 21, 25, 45, 40, 35),
+(75065959, 'Libreta profesional new Wave', 14, 10, 10, 10, 10),
 (738545010610, 'Salsa botanera', 10, 35, 45, 44, 43),
-(759684154058, 'Vaselina', 9, 10, 25, 20, 17),
+(759684154058, 'Vaselina', 8, 10, 25, 20, 17),
 (7501000264773, 'Papas chips jalapeño', 5, 10, 15, 14, 13),
-(7501040305320, 'Silicon', 89, 15, 17.5, 17, 16.5),
+(7501040305320, 'Silicon', 81, 15, 17.5, 17, 16.5),
 (7501055303786, 'Fresca 600 ml', 10, 10, 15, 14, 13),
 (7501072204226, 'Alimento campeon 800 gramas', 3, 45, 60, 55, 50),
 (7501072211927, 'Gatina 2 Kg sabor salmon para chachorros', 8, 50, 85, 80, 75),
-(7501130525102, 'Colorante mariposa ', 178, 16, 100, 10, 10),
-(7501310011067, 'Resina epoxica', 211, 15, 25.5, 20, 17.56),
-(7501791657693, 'Rastillos', 335, 15, 17.5, 17, 13.5),
-(7502212484676, 'hojas blancoas ', 10, 15.5, 50.5, 35.5, 30),
+(7501130525102, 'Colorante mariposa ', 168, 16, 100, 10, 10),
+(7501310011067, 'Resina epoxica', 226, 13, 25.5, 20, 17.56),
+(7501791657693, 'Rastillos', 322, 15, 17.5, 17, 13.5),
+(7502212484676, 'hojas blancoas ', 7, 15.5, 50.5, 35.5, 30),
 (7622210833792, 'Galletas oreo', 4, 10, 10, 10, 10),
 (7702031311218, 'Crema Lubriderm', 1, 80, 120, 110, 100);
 
@@ -192,6 +224,41 @@ CREATE TABLE `productos_venta` (
   `precio_Total` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
+--
+-- Volcado de datos para la tabla `productos_venta`
+--
+
+INSERT INTO `productos_venta` (`id_Venta`, `id_Producto`, `Nombre`, `Cantidad`, `precio_Unitario`, `precio_Total`) VALUES
+(7, 7502212484676, 'hojas blancoas', 1, 50.5, 50.5),
+(8, 7502212484676, 'hojas blancoas', 2, 30, 60),
+(9, 75052478, 'Desodorante rexona', 1, 35, 35),
+(9, 75052478, 'Desodorante rexona', 3, 35, 105),
+(10, 75065959, 'Libreta profesional new Wave', 1, 10, 10),
+(11, 75052478, 'Desodorante rexona', 1, 35, 35);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `productos_vsuspendida`
+--
+
+CREATE TABLE `productos_vsuspendida` (
+  `id_Venta` int(11) NOT NULL,
+  `id_Producto` bigint(20) NOT NULL,
+  `Nombre` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `p_Unitario` float NOT NULL,
+  `Cantidad` float NOT NULL,
+  `Subtotal` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `productos_vsuspendida`
+--
+
+INSERT INTO `productos_vsuspendida` (`id_Venta`, `id_Producto`, `Nombre`, `p_Unitario`, `Cantidad`, `Subtotal`) VALUES
+(1, 75065959, 'Libreta profesional new Wave', 10, 1, 10),
+(2, 75052478, 'Desodorante rexona', 35, 1, 35);
+
 -- --------------------------------------------------------
 
 --
@@ -212,7 +279,7 @@ CREATE TABLE `proveedor` (
 --
 
 INSERT INTO `proveedor` (`id_Proveedor`, `Nombre`, `Direccion`, `Telefono`, `Email`, `RFC`) VALUES
-(1, 'Bodega del perro', 'sdadasd12312fsd asadasd dasd a', 2147483647, 'editedlook@hotmail.com', 'sadasdasdas12312'),
+(1, 'Bodega del perro', 'Rivera del atoyac #2102', 225189926, 'editedlook@hotmail.com', 'sadasdasdas12312'),
 (2, 'sadasfa', '312312assd', 12312231, 'ssdfsdsd@dfad123.com', '312312ssdfdd');
 
 -- --------------------------------------------------------
@@ -228,16 +295,21 @@ CREATE TABLE `usuario` (
   `Nombre` varchar(50) COLLATE utf8mb4_spanish2_ci NOT NULL,
   `Puesto` int(11) NOT NULL,
   `Telefono` int(11) NOT NULL,
-  `Email` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL
+  `Email` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `Estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
 
 --
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`id_User`, `Usuario`, `Password`, `Nombre`, `Puesto`, `Telefono`, `Email`) VALUES
-(1, 'Edgar', '123456', 'Edgar Gabriel', 1, 265189, 'saasfsaf@gmail.com'),
-(2, 'Carmen', '123456', 'Carmen', 3, 26511231289, 'carmen@gmail.com');
+INSERT INTO `usuario` (`id_User`, `Usuario`, `Password`, `Nombre`, `Puesto`, `Telefono`, `Email`, `Estado`) VALUES
+(1, 'Edgar', '123456', 'Edgar Gabriel', 1, 265189, 'saasfsaf@gmail.com', 1),
+(2, 'Carmen', '123456', 'Carmen', 3, 2147483647, 'carmen@gmail.com', 1),
+(3, 'Juan', '123456', 'Juan Perez', 2, 1231556, '  asd@gmail.com', 1),
+(4, 'Pedro', '123456', 'Pedro Rodriguez', 3, 21516232, '    dsada@gmail.com', 1),
+(5, 'Luis', '123456', 'Luis Fernandez', 3, 222222, 'asdasd@gmail.com', 1),
+(6, 'Felipe', '123456', 'Felipe Lopez Perez', 3, 2147483647, 'fel@gmail.com', 1);
 
 -- --------------------------------------------------------
 
@@ -256,6 +328,49 @@ CREATE TABLE `venta` (
   `Cambio` float NOT NULL,
   `forma_Pago` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `venta`
+--
+
+INSERT INTO `venta` (`id_Venta`, `Fecha`, `Hora`, `id_User`, `id_Cliente`, `Total`, `Pago`, `Cambio`, `forma_Pago`) VALUES
+(1, '2021-07-05', '09:49:08', 5, 1, 117.5, 120, 2.5, 0),
+(2, '2021-07-06', '09:49:42', 5, 3, 41.06, 0, 0, 1),
+(3, '2021-07-06', '09:50:19', 5, 1, 255, 300, 45, 0),
+(4, '2021-07-06', '09:51:25', 5, 1, 160.5, 170, 9.5, 0),
+(5, '2021-07-06', '09:57:43', 5, 1, 200, 200, 0, 0),
+(6, '2021-07-06', '11:44:33', 5, 4, 61.62, 0, 0, 1),
+(7, '2021-07-12', '12:29:12', 5, 1, 50.5, 100, 49.5, 0),
+(8, '2021-07-12', '12:29:40', 5, 3, 60, 0, 0, 1),
+(9, '2021-07-16', '10:51:25', 2, 4, 140, 150, 10, 0),
+(10, '2021-07-16', '10:54:53', 2, 1, 10, 20, 10, 0),
+(11, '2021-07-16', '10:55:08', 2, 4, 35, 50, 15, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `venta_suspendida`
+--
+
+CREATE TABLE `venta_suspendida` (
+  `id_Venta` int(11) NOT NULL,
+  `nombreCliente` varchar(30) COLLATE utf8mb4_spanish2_ci NOT NULL,
+  `id_Cliente` int(11) NOT NULL,
+  `Descuento` int(11) NOT NULL,
+  `Total` float NOT NULL,
+  `Fecha` date NOT NULL,
+  `Hora` time NOT NULL,
+  `id_User` int(11) NOT NULL,
+  `Estado` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_spanish2_ci;
+
+--
+-- Volcado de datos para la tabla `venta_suspendida`
+--
+
+INSERT INTO `venta_suspendida` (`id_Venta`, `nombreCliente`, `id_Cliente`, `Descuento`, `Total`, `Fecha`, `Hora`, `id_User`, `Estado`) VALUES
+(1, 'Juan', 1, 0, 10, '2021-07-16', '09:15:56', 5, 0),
+(2, 'Edgar', 4, 2, 35, '2021-07-16', '10:48:08', 5, 0);
 
 --
 -- Índices para tablas volcadas
@@ -326,6 +441,13 @@ ALTER TABLE `productos_venta`
   ADD KEY `seVende` (`id_Producto`);
 
 --
+-- Indices de la tabla `productos_vsuspendida`
+--
+ALTER TABLE `productos_vsuspendida`
+  ADD KEY `IX_Relationship1` (`id_Producto`),
+  ADD KEY `IX_Relationship2` (`id_Venta`);
+
+--
 -- Indices de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
@@ -347,8 +469,21 @@ ALTER TABLE `venta`
   ADD KEY `IX_Relationship18` (`id_Cliente`);
 
 --
+-- Indices de la tabla `venta_suspendida`
+--
+ALTER TABLE `venta_suspendida`
+  ADD PRIMARY KEY (`id_Venta`),
+  ADD KEY `IX_Relationship4` (`id_User`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
+
+--
+-- AUTO_INCREMENT de la tabla `caja`
+--
+ALTER TABLE `caja`
+  MODIFY `id_Caja` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
@@ -366,7 +501,7 @@ ALTER TABLE `compra`
 -- AUTO_INCREMENT de la tabla `credito`
 --
 ALTER TABLE `credito`
-  MODIFY `id_Credito` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Credito` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `operacion_caja`
@@ -378,7 +513,7 @@ ALTER TABLE `operacion_caja`
 -- AUTO_INCREMENT de la tabla `operacion_credito`
 --
 ALTER TABLE `operacion_credito`
-  MODIFY `id_Abono` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_Abono` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
@@ -387,10 +522,22 @@ ALTER TABLE `proveedor`
   MODIFY `id_Proveedor` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  MODIFY `id_User` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT de la tabla `venta`
 --
 ALTER TABLE `venta`
-  MODIFY `id_Venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_Venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT de la tabla `venta_suspendida`
+--
+ALTER TABLE `venta_suspendida`
+  MODIFY `id_Venta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restricciones para tablas volcadas
@@ -444,11 +591,24 @@ ALTER TABLE `productos_venta`
   ADD CONSTRAINT `seVende` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`);
 
 --
+-- Filtros para la tabla `productos_vsuspendida`
+--
+ALTER TABLE `productos_vsuspendida`
+  ADD CONSTRAINT `Relationship1` FOREIGN KEY (`id_Producto`) REFERENCES `producto` (`id_Producto`),
+  ADD CONSTRAINT `Relationship2` FOREIGN KEY (`id_Venta`) REFERENCES `venta_suspendida` (`id_Venta`);
+
+--
 -- Filtros para la tabla `venta`
 --
 ALTER TABLE `venta`
   ADD CONSTRAINT `Realiza` FOREIGN KEY (`id_User`) REFERENCES `usuario` (`id_User`),
   ADD CONSTRAINT `compra` FOREIGN KEY (`id_Cliente`) REFERENCES `cliente` (`id_Cliente`);
+
+--
+-- Filtros para la tabla `venta_suspendida`
+--
+ALTER TABLE `venta_suspendida`
+  ADD CONSTRAINT `Relationship4` FOREIGN KEY (`id_User`) REFERENCES `usuario` (`id_User`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

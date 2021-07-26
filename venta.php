@@ -194,9 +194,11 @@
                   <th>Codigo</th>
                   <th>Nombre</th>
                   <th>Existencias</th>
-                  <th>Precio Cliente</th>
-                  <th>Precio Medico</th>
+                  <th>Precio Lista </th>
+                  <th>Precio Publico</th>
+                  <th>Precio Medio Mayoreo</th>
                   <th>Precio Mayoreo</th>
+                  <th>Seleccionar</th>
                 </tr>
               </thead>
               <tbody id="cuerpo">

@@ -1,12 +1,13 @@
-﻿   CREATE TABLE `Producto`
+﻿  CREATE TABLE `Producto`
 (
   `id_Producto` Bigint NOT NULL,
   `Nombre` Varchar(50) NOT NULL,
   `Cantidad` Int NOT NULL,
   `p_Compra` Double NOT NULL,
-  `p_ventaN` Double NOT NULL,
-  `p_VentaMe` Double NOT NULL,
-  `p_VentaMa` Double NOT NULL
+  `P_CostoLista` Double DEFAULT 0.0,
+  `PVPublicoGeneral` Double NOT NULL,
+  `PVMedioMayoreo` Double NOT NULL,
+  `PVMayoreo` Double NOT NULL
 )
 ;
 
@@ -37,7 +38,7 @@ CREATE TABLE `Proveedor`
   `Direccion` Varchar(30) NOT NULL,
   `Telefono` Int NOT NULL,
   `Email` Varchar(30) NOT NULL,
-  `RFC` Varchar(20) NOT NULL,
+  `RFC` Varchar(20),
   PRIMARY KEY (`id_Proveedor`)
 )
 ;
@@ -46,17 +47,16 @@ CREATE TABLE `Proveedor`
 
 CREATE TABLE `Usuario`
 (
-  `id_User` Int NOT NULL,
+  `id_User` Int NOT NULL AUTO_INCREMENT,
   `Usuario` Varchar(20) NOT NULL,
   `Password` Varchar(30) NOT NULL,
   `Nombre` Varchar(50) NOT NULL,
   `Puesto` Int NOT NULL,
   `Telefono` Int NOT NULL,
-  `Email` Varchar(30) NOT NULL
+  `Email` Varchar(30) NOT NULL,
+  `Estado` Int NOT NULL,
+  PRIMARY KEY (`id_User`)
 )
-;
-
-ALTER TABLE `Usuario` ADD PRIMARY KEY (`id_User`)
 ;
 
 ALTER TABLE `Usuario` ADD UNIQUE `Usuario` (`Usuario`)
@@ -74,6 +74,7 @@ CREATE TABLE `Venta`
   `Total` Float NOT NULL,
   `Pago` Float NOT NULL,
   `Cambio` Float NOT NULL,
+  `forma_Pago` Int NOT NULL,
   PRIMARY KEY (`id_Venta`)
 )
 ;
@@ -89,7 +90,11 @@ CREATE INDEX `IX_Relationship18` ON `Venta` (`id_Cliente`)
 CREATE TABLE `Credito`
 (
   `id_Credito` Int NOT NULL AUTO_INCREMENT,
-  `monto_Credito` Double NOT NULL,
+  `Fecha` Date NOT NULL,
+  `Hora` Time NOT NULL,
+  `monto_Credito` Float NOT NULL,
+  `monto_Abonado` Float NOT NULL,
+  `Estado` Int NOT NULL,
   `id_Cliente` Int,
   `id_Venta` Int,
   PRIMARY KEY (`id_Credito`)
@@ -110,9 +115,15 @@ CREATE TABLE `operacion_Credito`
   `Fecha` Date NOT NULL,
   `Hora` Time NOT NULL,
   `Monto` Double NOT NULL,
+  `Efectivo` Double NOT NULL,
+  `Cambio` Double NOT NULL,
   `id_Credito` Int NOT NULL,
-  PRIMARY KEY (`id_Abono`,`id_Credito`)
+  `id_User` Int NOT NULL,
+  PRIMARY KEY (`id_Abono`)
 )
+;
+
+CREATE INDEX `IX_Relationship1` ON `operacion_Credito` (`id_User`)
 ;
 
 -- Table Compra
@@ -145,7 +156,7 @@ CREATE TABLE `productos_Venta`
 )
 ;
 
-ALTER TABLE `productos_Venta` 
+ALTER TABLE `productos_Venta`
 ;
 
 -- Table productos_Compra
@@ -165,26 +176,27 @@ CREATE TABLE `productos_Compra`
 
 CREATE TABLE `Caja`
 (
-  `id_Caja` Int NOT NULL,
+  `id_Caja` Int NOT NULL AUTO_INCREMENT,
   `id_User` Int NOT NULL,
   `Fecha` Date NOT NULL,
   `Hora` Time NOT NULL,
   `Fondo` Double NOT NULL,
   `total_Ingreso` Double NOT NULL DEFAULT 0.0,
+  `totalDia` Double NOT NULL,
   `Corte` Double NOT NULL DEFAULT 0.0,
-  `Diferencia` Double NOT NULL DEFAULT 0.0
+  `horaCorte` Time,
+  `Diferencia` Double NOT NULL DEFAULT 0.0,
+  `Estado` Int NOT NULL,
+  PRIMARY KEY (`id_Caja`)
 )
 ;
 
 CREATE INDEX `IX_Relationship19` ON `Caja` (`id_User`)
 ;
 
-ALTER TABLE `Caja` ADD PRIMARY KEY (`id_Caja`)
-;
+-- Table operacion_Caja
 
--- Table Operaciones
-
-CREATE TABLE `Operaciones`
+CREATE TABLE `operacion_Caja`
 (
   `Id_Operacion` Int NOT NULL AUTO_INCREMENT,
   `Fecha` Date NOT NULL,
@@ -197,10 +209,49 @@ CREATE TABLE `Operaciones`
 )
 ;
 
-CREATE INDEX `IX_Relationship21` ON `Operaciones` (`id_User`)
+CREATE INDEX `IX_Relationship21` ON `operacion_Caja` (`id_User`)
 ;
 
-CREATE INDEX `IX_Relationship22` ON `Operaciones` (`id_Caja`)
+CREATE INDEX `IX_Relationship22` ON `operacion_Caja` (`id_Caja`)
+;
+
+-- Table venta_Suspendida
+
+CREATE TABLE `venta_Suspendida`
+(
+  `id_Venta` Int NOT NULL AUTO_INCREMENT,
+  `nombreCliente` Varchar(30) NOT NULL,
+  `id_Cliente` Int NOT NULL,
+  `Descuento` Int NOT NULL,
+  `Total` Float NOT NULL,
+  `Fecha` Date NOT NULL,
+  `Hora` Time NOT NULL,
+  `id_User` Int NOT NULL,
+  `Estado` Int NOT NULL,
+  PRIMARY KEY (`id_Venta`)
+)
+;
+
+CREATE INDEX `IX_Relationship4` ON `venta_Suspendida` (`id_User`)
+;
+
+-- Table productos_vSuspendida
+
+CREATE TABLE `productos_vSuspendida`
+(
+  `id_Venta` Int NOT NULL,
+  `id_Producto` Bigint NOT NULL,
+  `Nombre` Varchar(50) NOT NULL,
+  `p_Unitario` Float NOT NULL,
+  `Cantidad` Float NOT NULL,
+  `Subtotal` Float NOT NULL
+)
+;
+
+CREATE INDEX `IX_Relationship1` ON `productos_vSuspendida` (`id_Producto`)
+;
+
+CREATE INDEX `IX_Relationship2` ON `productos_vSuspendida` (`id_Venta`)
 ;
 
 -- Create foreign keys (relationships) section -------------------------------------------------
@@ -238,9 +289,21 @@ ALTER TABLE `Venta` ADD CONSTRAINT `compra` FOREIGN KEY (`id_Cliente`) REFERENCE
 ALTER TABLE `Caja` ADD CONSTRAINT `Tiene_su` FOREIGN KEY (`id_User`) REFERENCES `Usuario` (`id_User`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ;
 
-ALTER TABLE `Operaciones` ADD CONSTRAINT `Puede_realizar` FOREIGN KEY (`id_User`) REFERENCES `Usuario` (`id_User`) ON DELETE RESTRICT ON UPDATE RESTRICT
+ALTER TABLE `operacion_Caja` ADD CONSTRAINT `Puede_realizar` FOREIGN KEY (`id_User`) REFERENCES `Usuario` (`id_User`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ;
 
-ALTER TABLE `Operaciones` ADD CONSTRAINT `Tiene_Op` FOREIGN KEY (`id_Caja`) REFERENCES `Caja` (`id_Caja`) ON DELETE RESTRICT ON UPDATE RESTRICT
+ALTER TABLE `operacion_Caja` ADD CONSTRAINT `Tiene_Op` FOREIGN KEY (`id_Caja`) REFERENCES `Caja` (`id_Caja`) ON DELETE RESTRICT ON UPDATE RESTRICT
+;
+
+ALTER TABLE `operacion_Credito` ADD CONSTRAINT `Realiz` FOREIGN KEY (`id_User`) REFERENCES `Usuario` (`id_User`) ON DELETE RESTRICT ON UPDATE RESTRICT
+;
+
+ALTER TABLE `productos_vSuspendida` ADD CONSTRAINT `Relationship1` FOREIGN KEY (`id_Producto`) REFERENCES `Producto` (`id_Producto`) ON DELETE RESTRICT ON UPDATE RESTRICT
+;
+
+ALTER TABLE `productos_vSuspendida` ADD CONSTRAINT `Relationship2` FOREIGN KEY (`id_Venta`) REFERENCES `venta_Suspendida` (`id_Venta`) ON DELETE RESTRICT ON UPDATE RESTRICT
+;
+
+ALTER TABLE `venta_Suspendida` ADD CONSTRAINT `Relationship4` FOREIGN KEY (`id_User`) REFERENCES `Usuario` (`id_User`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ;
 
