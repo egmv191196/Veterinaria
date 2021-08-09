@@ -30,9 +30,7 @@
                     echo json_encode($producto);
                 }else {
                     echo 2;
-                }
-
-                
+                }  
             }else {
                 echo 0;
             }   
@@ -110,9 +108,37 @@
             $res=mysqli_query($conexion,$consulta);
             $datos = mysqli_fetch_array($res);
             $id_Venta=$datos[0];
+            //Verificar Linea credito
+            $consulta = "SELECT * FROM lineacredito WHERE id_Cliente=$cliente";
+            $res=mysqli_query($conexion,$consulta);
+            $numCreditos=mysqli_num_rows($res);
+            if ($numCreditos==0) {
+                $consulta = "INSERT INTO lineacredito (id_creditoTotal, montoCredito, montoAbonado, montoRestante, id_Cliente)
+                VALUES (NULL,$Total,0.0,$Total,$cliente)";
+                $res=mysqli_query($conexion,$consulta);
+                if ($res==1) {
+                    $consulta = "SELECT * FROM lineacredito WHERE id_Cliente=$cliente";
+                    $res=mysqli_query($conexion,$consulta);
+                    $datos = mysqli_fetch_array($res);
+                    $idLineaCredito=$datos[0];
+                }
+            }else {
+                $consulta = "SELECT * FROM lineacredito WHERE id_Cliente=$cliente";
+                $res=mysqli_query($conexion,$consulta);
+                $datos = mysqli_fetch_array($res);
+                $idLineaCredito=$datos[0];
+                $totalDeuda=$datos[1];
+                $totalRestante=$datos[3];
+                $totalDeuda=$totalDeuda+$Total;
+                $totalRestante=$totalRestante+$Total;
+                $consulta= "UPDATE lineacredito SET montoCredito=$totalDeuda, montoRestante=$totalRestante WHERE id_creditoTotal=$idLineaCredito";
+                mysqli_query($conexion,$consulta);
+            }
+            ///--------------------------------------------
+            
             //Agregar a credito
-            $consulta="INSERT INTO credito(id_Credito,Fecha, Hora, monto_Credito, monto_Abonado, Estado, id_Cliente, id_Venta) VALUES
-                (NULL, '$Fecha','$Hora', $Total, 0.0, 1, $cliente, $id_Venta)";
+            $consulta="INSERT INTO creditoventa(id_Credito,Fecha, Hora, monto_Credito, id_Venta, id_creditoTotal) VALUES
+                (NULL, '$Fecha','$Hora', $Total, $id_Venta, $idLineaCredito)";
             $res=mysqli_query($conexion,$consulta);
             if ($res==1) {
                 $consulta="INSERT INTO productos_venta (id_Venta, id_Producto,Nombre, Cantidad, precio_Unitario, precio_Total) VALUES ";
@@ -147,7 +173,7 @@
         $res= mysqli_query($conexion,$consulta);
         $Resultados=array();
         while ($row = mysqli_fetch_array($res)){
-            $valores=[$row[0], $row[1], $row[2],$row[4],$row[5],$row[6],$row[7]];
+            $valores=[$row[0], $row[2], $row[3],$row[5],$row[6],$row[7],$row[8]];
             array_push($Resultados,$valores);
         }
         echo json_encode($Resultados);

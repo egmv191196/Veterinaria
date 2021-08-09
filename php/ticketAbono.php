@@ -3,9 +3,9 @@
     require_once('./conexion.php'); 
     $id_Abono=$_GET['id_Abono'];
     //Numero de productos
-    $consulta = "SELECT * FROM operacion_credito JOIN credito JOIN usuario JOIN cliente 
-    WHERE operacion_credito.id_Abono=$id_Abono AND operacion_credito.id_Credito=credito.id_Credito 
-    AND operacion_credito.id_User=usuario.id_User AND credito.id_Cliente=cliente.id_Cliente";
+    $consulta = "SELECT * FROM operacion_credito JOIN lineacredito JOIN usuario JOIN cliente 
+    WHERE operacion_credito.id_Abono=$id_Abono AND operacion_credito.id_Credito=lineacredito.id_CreditoTotal 
+    AND operacion_credito.id_User=usuario.id_User AND lineacredito.id_Cliente=cliente.id_Cliente";
     $res = mysqli_query($conexion,$consulta);
     $row = mysqli_fetch_array($res);
     $Fecha=$row[1];
@@ -13,11 +13,11 @@
     $Monto=$row[3];
     $Efectivo=$row[4];
     $Cambio=$row[5];
-    $montoCredito=$row[11];
-    $montoAbonado=$row[12];
+    $montoCredito=$row[9];
+    $montoAbonado=$row[10];
     $montoRestante=$montoCredito-$montoAbonado;
-    $empleado=$row[19];
-    $cliente=$row[25];
+    $empleado=$row[14];
+    $cliente=$row[22];
 
     $pdf = new FPDF('P','mm',array(80,115)); // Tamaño tickt 80mm x 150 mm (largo aprox)
     $pdf->AddPage();

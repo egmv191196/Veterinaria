@@ -75,19 +75,17 @@
                     <tr>
                         <th>ID Credito</th>
                         <th>Cliente</th>
-                        <th>Ticket de venta</th>
                         <th>Total Credito</th>
                         <th>Monto abonado</th>
-                        <th>Fecha</th>
-                        <th>Hora</th>
+                        <th>Monto Restante</th>
                         <th>Abono</th>
                     </tr>
                     </thead>
                     <tbody>
                         <?php
                           require_once('./php/conexion.php');
-                          $result= mysqli_query($conexion, "SELECT COUNT(*) AS Total FROM credito JOIN cliente 
-                          WHERE credito.Estado=1 AND credito.id_Cliente=cliente.id_Cliente ORDER BY id_Credito DESC ");
+                          $result= mysqli_query($conexion, "SELECT COUNT(*) AS Total FROM lineacredito JOIN cliente 
+                          WHERE lineacredito.montoRestante>0 AND lineacredito.id_Cliente=cliente.id_Cliente ORDER BY id_CreditoTotal DESC");
                           $row = mysqli_fetch_array($result);
                           $totalProductos=$row[0];
                           $porPagina=15;
@@ -98,17 +96,15 @@
                           }
                           $desde=($pagina-1)*$porPagina;
                           $totalPaginas=ceil($totalProductos/$porPagina);
-                          $result= mysqli_query($conexion, "SELECT credito.*, cliente.Nombre FROM credito JOIN cliente 
-                          WHERE credito.Estado=1 AND credito.id_Cliente=cliente.id_Cliente ORDER BY id_Credito DESC LIMIT $desde,$porPagina");
+                          $result= mysqli_query($conexion, "SELECT lineacredito.*, cliente.Nombre FROM lineacredito JOIN cliente 
+                          WHERE lineacredito.montoRestante>0 AND lineacredito.id_Cliente=cliente.id_Cliente ORDER BY id_CreditoTotal DESC LIMIT $desde,$porPagina");
                           while ($row = mysqli_fetch_array($result)) {
                               echo '<tr style="text-align: center">';
-                              echo '<td>'.$row['id_Credito'].'</td>';
-                              echo '<td>'.$row['Nombre'].'</td>';
-                              echo '<td>'.$row['id_Venta'].'</td>';
-                              echo '<td>'.$row['monto_Credito'].'</td>';
-                              echo '<td>'.$row['monto_Abonado'].'</td>';
-                              echo '<td>'.$row['Fecha'].'</td>';
-                              echo '<td>'.$row['Hora'].'</td>';
+                              echo '<td>'.$row[0].'</td>';
+                              echo '<td>'.$row[5].'</td>';
+                              echo '<td>'.number_format($row[1],2).'</td>';
+                              echo '<td> '.number_format($row[2],2).'</td>';
+                              echo '<td> '.number_format($row[3],2).'</td>';
                               echo '<td> <a class="btn btn-success" onclick="venAbono(this);"><i class="fa fa-money"></i></a> </td>';
                               echo '</tr>';
                           }
@@ -193,37 +189,37 @@
           </div>
         </div>
 
-        <div class="modal fade" id="pagarAbono">
-          <div class="modal-dialog ">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h2 class="modal-title">Pago credito</h2>
-                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              </div>
-              <div class="modal-body">
-                <div class="row">
-                      <label class="label col-4">ID del credito</label>
-                      <input name="id_CreditoModal" class="form-control col-8" id="id_CreditoModal" type="decimal(9,2)" placeholder="Total Credito" disabled>
-                </div>
-                <div class="row">
-                      <label class="label col-4">Total a cobrar</label>
-                      <input name="total_Pagar" class="form-control col-8" id="total_Pagar" type="decimal(9,2)" placeholder="Monto a cobrar" disabled>
-                </div>
-                  <div class="row">
-                      <label class="label col-4">Efectivo</label>
-                      <input class="form-control col-8" name="efectivo_Modal"  id="efectivo_Modal" onkeyup="calcular_Cambio();" type="decimal(9,2)" placeholder="Total abonado" >
-                  </div>
-                  <div class="row">
-                      <label class="label col-4">Cambio</label>
-                      <input name="cambio_Modal" class="form-control col-8" id="cambio_Modal" type="decimal(9,2)" placeholder="Restante" disabled>
-                  </div>
-                  <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
-                  <button class="btn btn-success float-right m-2" onclick="pagarAbono();">Pagar</button>
-                  <button type="button"class="btn btn-primary float-right m-2" data-dismiss="modal">Cerrar  </button>
-              </div>
+    <div class="modal fade" id="pagarAbono">
+      <div class="modal-dialog ">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title">Pago credito</h2>
+            <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                  <label class="label col-4">ID del credito</label>
+                  <input name="id_CreditoModal" class="form-control col-8" id="id_CreditoModal" type="decimal(9,2)" placeholder="Total Credito" disabled>
             </div>
+            <div class="row">
+                  <label class="label col-4">Total a cobrar</label>
+                  <input name="total_Pagar" class="form-control col-8" id="total_Pagar" type="decimal(9,2)" placeholder="Monto a cobrar" disabled>
+            </div>
+              <div class="row">
+                  <label class="label col-4">Efectivo</label>
+                  <input class="form-control col-8" name="efectivo_Modal"  id="efectivo_Modal" onkeyup="calcular_Cambio();" type="decimal(9,2)" placeholder="Total abonado" >
+              </div>
+              <div class="row">
+                  <label class="label col-4">Cambio</label>
+                  <input name="cambio_Modal" class="form-control col-8" id="cambio_Modal" type="decimal(9,2)" placeholder="Restante" disabled>
+              </div>
+              <input type="hidden" name="Operacion" id="Operacion" value="Insertar" />
+              <button class="btn btn-success float-right m-2" onclick="pagarAbono();">Pagar</button>
+              <button type="button"class="btn btn-primary float-right m-2" data-dismiss="modal">Cerrar  </button>
           </div>
         </div>
+      </div>
+    </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>

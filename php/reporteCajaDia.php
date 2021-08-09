@@ -22,18 +22,17 @@ $totalAbono=$row[0];
 $totalIngreso=$totalAbono+$TotalVenta;
 
 //Creditos
-$consulta = "SELECT COUNT(id_Credito) FROM credito WHERE Fecha='$Fecha'";
+$consulta = "SELECT COUNT(id_Credito) FROM creditoVenta WHERE Fecha='$Fecha'";
 $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $numCreditos=$row[0];
 
 //saldo de credito restantes
-$consulta = "SELECT SUM(monto_Credito),SUM(monto_Abonado) FROM credito WHERE Fecha='$Fecha' AND Estado=1";
+$consulta = "SELECT SUM(montoRestante) FROM lineacredito ";
 $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $totalCredito=$row[0];
-$totalAbonado=$row[1];
-$totalRestante=$totalCredito-$totalAbonado;
+$totalRestante=$totalCredito;
 
 //
 $pdf = new FPDF('P','mm',array(216,279)); // Tamaño tickt 80mm x 150 mm (largo aprox)
@@ -101,35 +100,5 @@ $pdf->Cell(150, 6, 'Creditos Ortorgados ', 0,0);
 $pdf->Cell(50, 6, $numCreditos, 0,1);
 $pdf->Cell(150, 6, 'Monto total creditos pendientes', 0,0);
 $pdf->Cell(50, 6, '$'.number_format($totalRestante, 2, '.', ''), 0,1);
-// PRODUCTOS
-$pdf->Ln(1);
-$pdf->SetFont('Helvetica', 'B', 12);
-$pdf->Cell(200, 7, 'Productos', 0,1,'C');
-$pdf->Cell(150, 6, 'Concepto', 0,0);
-$pdf->Cell(50, 6, 'Cantidad', 0,1);
-$pdf->Ln(1);
-$pdf->SetLineWidth(.5);
-$pdf->Cell(200,0,'','T');
-$pdf->Ln(1);
-$pdf->SetFont('Helvetica', '', 12);
-$pdf->Cell(150, 5, 'Cantidad de productos vendidos ', 0,0);
-$pdf->Cell(50, 5, $numProductos, 0,1);
-$pdf->Cell(200, 5, 'Productos mas vendidos', 0,1);
-$pdf->SetFont('Helvetica', 'B', 12);
-$pdf->Cell(20, 5, 'Numero', 0,0  );
-$pdf->Cell(130, 5, 'Descripcion', 0,0  );
-$pdf->Cell(50, 5, 'Cantidad', 0,1);
-$pdf->SetFont('Helvetica', '', 10);
-//Productos mas vendidos
-$consulta = "SELECT DISTINCT productos_venta.id_Producto,productos_venta.Nombre, SUM(Cantidad) AS total FROM productos_venta JOIN Venta 
-WHERE venta.Fecha='$Fecha' AND productos_venta.id_Venta=venta.id_Venta GROUP BY productos_venta.id_Producto ORDER BY total DESC LIMIT 15";
-$res = mysqli_query($conexion,$consulta);
-$i=1;
-while ($row = mysqli_fetch_array($res)) {
-    $pdf->Cell(20, 5, $i.'-', 0,0  );
-    $pdf->Cell(130, 5, $row[1], 0,0  );
-    $pdf->Cell(50, 5, $row[2], 0,1);
-    $i++;
-}
 $pdf->Output('Nota','i');
 ?>

@@ -55,7 +55,12 @@
     </div>	
     <div class="header">
         <div class="col-12">
-            <h1>Caja <i class="fa fa-list"></i></h1>
+          <div class="row">
+            <h1 class="col-8">Caja <i class="fa fa-list"></i></h1>
+            <label class="col-1" for="cantidad"># de ticket</label>
+            <div class="col-2"><input id="folio" autocomplete="off" name="folio" type="number" onchange="imprimirTicket();" class="form-control" placeholder="# de Ticket">  </div>
+            <a type="button" class="form-control col-1 btn btn-success " onclick="imprimirTicket();"><i class="fa fa-print"></i></a>
+          </div>
             <div class="table-responsive">
                 <table class="table table-bordered">
                     <thead>

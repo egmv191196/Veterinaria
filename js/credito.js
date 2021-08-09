@@ -10,10 +10,10 @@ $(document).ready(function() {
 function venAbono(id){
     $('#id_Credito').val($(id).parents("tr").find("td")[0].innerHTML);  
     $('#nom_Cliente').val($(id).parents("tr").find("td")[1].innerHTML); 
-    $('#total_Credito').val($(id).parents("tr").find("td")[3].innerHTML); 
-    $('#total_Abonado').val($(id).parents("tr").find("td")[4].innerHTML);
-    var total=parseFloat($(id).parents("tr").find("td")[3].innerHTML);
-    var abonado=parseFloat($(id).parents("tr").find("td")[4].innerHTML);
+    $('#total_Credito').val($(id).parents("tr").find("td")[2].innerHTML); 
+    $('#total_Abonado').val($(id).parents("tr").find("td")[3].innerHTML);
+    var total=parseFloat($(id).parents("tr").find("td")[2].innerHTML);
+    var abonado=parseFloat($(id).parents("tr").find("td")[3].innerHTML);
     restante=total-abonado;
     $('#restante').val(restante);  
     $("#venAbono").modal();       

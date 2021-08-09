@@ -105,8 +105,8 @@
         $Cambio=$_POST['Cambio'];
         $id_Credito = $_POST['id_Credito'];
         $restante = $_POST['restante'];
-        $consulta= "INSERT INTO operacion_credito(id_Abono, Fecha, Hora, Monto, Efectivo, Cambio, id_Credito, id_User) VALUES
-        (NULL,'$fecha','$hora',$Monto, $Efectivo,$Cambio,$id_Credito,$empleado)"; 
+        $consulta= "INSERT INTO operacion_credito(id_Abono, Fecha, Hora, Monto, Efectivo, Cambio, id_User, id_Credito) VALUES
+        (NULL,'$fecha','$hora',$Monto, $Efectivo,$Cambio,$empleado,$id_Credito)"; 
         $res= mysqli_query($conexion,$consulta);
         if($res==1){
             $consulta = "SELECT id_Abono FROM operacion_credito WHERE id_Credito=$id_Credito ORDER BY id_Abono DESC";
@@ -114,11 +114,11 @@
             $datos = mysqli_fetch_array($res);
             $id_Abono=$datos[0];
             if ($restante==0) {
-                $consulta = "SELECT monto_Credito FROM credito WHERE id_Credito=$id_Credito";
+                $consulta = "SELECT montoCredito FROM lineacredito WHERE id_CreditoTotal=$id_Credito";
                 $res=mysqli_query($conexion,$consulta);
                 $datos = mysqli_fetch_array($res);
-                $Monto_Pagado=$datos[0];
-                $consulta = "UPDATE credito SET monto_Abonado=$Monto_Pagado, Estado=0 WHERE id_Credito=$id_Credito";
+                $MontoTotal=$datos[0];
+                $consulta = "UPDATE lineacredito SET montoAbonado=$MontoTotal, montoRestante=0 WHERE id_CreditoTotal=$id_Credito";
                 $res=mysqli_query($conexion,$consulta);
                 if ($res==1) {
                     echo $id_Abono;
@@ -126,18 +126,20 @@
                     echo 0;
                 }   
             }else {
-                $consulta = "SELECT monto_Abonado FROM credito WHERE id_Credito=$id_Credito";
+                $consulta = "SELECT montoAbonado, montoCredito FROM lineacredito WHERE id_CreditoTotal=$id_Credito";
                 $res=mysqli_query($conexion,$consulta);
                 $datos = mysqli_fetch_array($res);
                 $Monto_Abonado=$datos[0];
+                $MontoTotal=$datos[1];
                 $Nuevo_MAbonado=$Monto_Abonado+$Monto;
-                $consulta = "UPDATE credito SET monto_Abonado=$Nuevo_MAbonado WHERE id_Credito=$id_Credito";
+                $montoRestante=$MontoTotal-$Nuevo_MAbonado;
+                $consulta = "UPDATE lineacredito SET montoAbonado=$Nuevo_MAbonado, montoRestante=$montoRestante WHERE id_CreditoTotal=$id_Credito";
                 //echo $consulta;
                 $res=mysqli_query($conexion,$consulta);
                 if ($res==1) {
                     echo $id_Abono;
                 }else{
-                    echo 0;
+                    echo  0;
                 } 
             }
             //echo $consulta;

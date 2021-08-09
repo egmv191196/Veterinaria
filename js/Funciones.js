@@ -99,7 +99,8 @@ function updatePro(){
         type: "POST",
         url: "./php/Producto.php",
         data: datos,
-    }).done(function(response){   
+    }).done(function(response){ 
+        //alert(response);  
         if(response == 1 ){
             alert("Producto modificado correctamente");
             location.href ="./productos.php";
@@ -113,13 +114,13 @@ function updatePro(){
 }
 function editProducto(id) {
     $('#id_Producto').val($(id).parents("tr").find("td")[0].innerHTML);  
-    $('#Nombre').val($(id).parents("tr").find("td")[1].innerHTML); 
-    $('#p_Compra').val($(id).parents("tr").find("td")[2].innerHTML);
-    $('#p_Lista').val($(id).parents("tr").find("td")[3].innerHTML);  
-    $('#p_VentaC').val($(id).parents("tr").find("td")[4].innerHTML); 
-    $('#p_VentaM').val($(id).parents("tr").find("td")[5].innerHTML);  
-    $('#p_VentaMa').val($(id).parents("tr").find("td")[6].innerHTML);
-    $('#stock').val($(id).parents("tr").find("td")[7].innerHTML);
+    $('#Nombre').val($(id).parents("tr").find("td")[2].innerHTML); 
+    $('#p_Compra').val($(id).parents("tr").find("td")[3].innerHTML);
+    $('#p_Lista').val($(id).parents("tr").find("td")[4].innerHTML);  
+    $('#p_VentaC').val($(id).parents("tr").find("td")[5].innerHTML); 
+    $('#p_VentaM').val($(id).parents("tr").find("td")[6].innerHTML);  
+    $('#p_VentaMa').val($(id).parents("tr").find("td")[7].innerHTML);
+    $('#stock').val($(id).parents("tr").find("td")[8].innerHTML);
     $("#VenActualizar").modal();
 }
 //-------Proveedor-------
@@ -269,6 +270,10 @@ function updateCliente(){
 function reimprimirTicket(id){
     id_Ticket= $(id).parents("tr").find("td")[0].innerHTML;
     window.open('./php/ticketv.php?id_Venta='+id_Ticket, '_blank');
+}
+function imprimirTicket(){
+    id_Ticket= $('#folio').val();
+    window.open('./php/ticketv.php?id_Venta='+id_Ticket, '_blank');   
 }
 
 // Funciones con document ready

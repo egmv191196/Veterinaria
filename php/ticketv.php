@@ -86,7 +86,7 @@ if ($forma_Pago==0) {
     $pdf->Cell(10, 3,'$'.number_format($cambiO, 2, '.', ''),0,'L');
     $pdf->Ln(1);
 }else {
-    $consulta = "SELECT id_Credito FROM credito WHERE id_Venta=$id_Venta";
+    $consulta = "SELECT id_Credito FROM creditoVenta WHERE id_Venta=$id_Venta";
     $res = mysqli_query($conexion,$consulta);
     $row = mysqli_fetch_array($res);
     $id_Credito=$row[0];

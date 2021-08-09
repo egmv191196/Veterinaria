@@ -7,6 +7,7 @@ $(document).ready(function() {
       })
 });
 function asignarFondoModal(){
+    alert("Error");
     $("#asignarFondoModal").modal();  
 }
 function asignarFondo(){
@@ -123,6 +124,10 @@ function bajoStock(){
     window.open('./php/bajoStock.php', '_blank');
     location.reload();
 }
+function altoStock(){
+    window.open('./php/altoStock.php', '_blank');
+    location.reload();
+}
 function historialCompraModal(){
     $("#codigoModal").modal();
 }
@@ -131,4 +136,9 @@ function historialCompra(){
     window.open('./php/historialCompra.php?codigo='+codigo, '_blank');
     location.reload();
 
+}
+function reporteCliente(){
+    idCliente=$('#id_ClienteModal').val();
+    window.open('./php/reporteCliente.php?id_Cliente='+idCliente, '_blank');
+    location.reload();
 }

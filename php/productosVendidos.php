@@ -22,18 +22,17 @@ $totalAbono=$row[0];
 $totalIngreso=$totalAbono+$TotalVenta;
 
 //Creditos
-$consulta = "SELECT COUNT(id_Credito) FROM credito WHERE Fecha='$Fecha'";
+$consulta = "SELECT COUNT(id_Credito) FROM creditoVenta WHERE Fecha='$Fecha'";
 $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $numCreditos=$row[0];
 
 //saldo de credito restantes
-$consulta = "SELECT SUM(monto_Credito),SUM(monto_Abonado) FROM credito WHERE Fecha='$Fecha' AND Estado=1";
+$consulta = "SELECT SUM(monto_Credito) FROM creditoVenta WHERE Fecha='$Fecha'";
 $res = mysqli_query($conexion,$consulta);
 $row = mysqli_fetch_array($res);
 $totalCredito=$row[0];
-$totalAbonado=$row[1];
-$totalRestante=$totalCredito-$totalAbonado;
+$totalRestante=$totalCredito;
 
 //
 $pdf = new FPDF('P','mm',array(216,279)); // Tamaño tickt 80mm x 150 mm (largo aprox)

@@ -39,7 +39,7 @@ $pdf->SetLineWidth(.5);
 $pdf->Cell(200,0,'','T');
 $pdf->Ln(1);
 $pdf->SetFont('Helvetica', '', 12);
-$consulta = "SELECT * FROM producto WHERE Cantidad<30 ORDER by Cantidad ASC";
+$consulta = "SELECT * FROM producto ORDER by Cantidad DESC LIMIT 85";
 $res = mysqli_query($conexion,$consulta);
 while ($row = mysqli_fetch_array($res)) {
     $pdf->Cell(50, 5, $row[0], 0,0  );

@@ -67,6 +67,7 @@
                 <thead>
                 <tr style="text-align: center">
                     <th>Código </th>
+                    <th>Laboratorio</th>
                     <th>Nombre</th>
                     <th>Precio de compra</th>
                     <th>Precio lista</th>
@@ -97,12 +98,13 @@
                         echo '<tr style="text-align: center">';
                         echo '<td>'.$row[0].'</td>';
                         echo '<td>'.$row[1].'</td>';
-                        echo '<td>'.$row[3].'</td>';
+                        echo '<td>'.$row[2].'</td>';
                         echo '<td>'.$row[4].'</td>';
                         echo '<td>'.$row[5].'</td>';
                         echo '<td>'.$row[6].'</td>';
                         echo '<td>'.$row[7].'</td>';
-                        echo '<td>'.$row[2].'</td>';
+                        echo '<td>'.$row[8].'</td>';
+                        echo '<td>'.$row[3].'</td>';                 
                         echo '<td> <a class="btn btn-warning" onclick="editProducto(this);"><i class="fa fa-edit"></i></a> </td>';
                         echo '<td> <form action="#" method="post">';
                         echo '<button type="submit" class="btn btn-danger" onclick="delProducto(this);"> <i class="fa fa-trash"></i> </button>';
@@ -248,7 +250,7 @@
                       <div class="form-group">
                           <label class="label">Existencia</label>
                           <input required autocomplete="off" name="stock" class="form-control" id="stock"
-                                type="decimal(9,2)" placeholder="Existencia" readonly>
+                                type="decimal(9,2)" placeholder="Existencia">
                       </div>
                     </div>
                     <div class="col-sm">
@@ -261,7 +263,7 @@
                     <div class="col-sm">
                       <div class="form-group">
                         <label class="label">Precio lista</label>
-                        <input required autocomplete="off" name="p_Compra" class="form-control" id="p_Lista"
+                        <input required autocomplete="off" name="p_Lista" class="form-control" id="p_Lista"
                               type="decimal(9,2)" placeholder="Precio de compra">
                       </div>
                     </div>

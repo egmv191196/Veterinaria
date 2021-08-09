@@ -26,11 +26,12 @@
         $id_Producto=$_POST['id_Producto'];
         $Nombre=$_POST['Nombre'];
         $p_Compra=$_POST['p_Compra'];
+        $p_Compralista=$_POST['p_Lista'];
         $p_VentaN=$_POST['p_VentaC'];
         $p_VentaM=$_POST['p_VentaM'];
         $p_VentaMa=$_POST['p_VentaMa'];
         $stock=$_POST['stock'];
-        $consulta = "UPDATE producto SET Nombre='$Nombre', Cantidad=$stock , p_Compra=$p_Compra , PVPublicoGeneral=$p_VentaN , PVMedioMayoreo=$p_VentaM , PVMayoreo=$p_VentaMa
+        $consulta = "UPDATE producto SET Nombre='$Nombre', Cantidad=$stock, p_Compra=$p_Compra, p_CostoLista=$p_Compralista, PVPublicoGeneral=$p_VentaN , PVMedioMayoreo=$p_VentaM , PVMayoreo=$p_VentaMa
          WHERE id_Producto=$id_Producto";
         echo mysqli_query($conexion,$consulta);
     }else if($Operacion=="Verificar"){
