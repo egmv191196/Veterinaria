@@ -58,7 +58,13 @@
       <div class="col-sm">
       <h1>Productos <i class="fas fa-box-open"></i></h1>
       </div>
-      <div class="col-sm">
+      <div class="col-2">
+        <input required autocomplete="off" name="Nombre" id="nombreBusqueda" class="form-control" type="text" placeholder="Ingresa el Nombre" onchange="editProductoBusqueda();">         
+      </div>
+      <div class="col-1">
+        <a href="" class="btn btn-success mb-2 float-right" data-toggle="modal" onclick="editProductoBusqueda();">Buscar</a>
+      </div>
+      <div class="col-1">
         <a href="#VenRegistrar" class="btn btn-success mb-2 float-right" data-toggle="modal">Agregar</a>
       </div>
     </div>
@@ -85,7 +91,7 @@
                     $result= mysqli_query($conexion, "SELECT COUNT(*) AS Total FROM producto");
                     $row = mysqli_fetch_array($result);
                     $totalProductos=$row[0];
-                    $porPagina=10;
+                    $porPagina=25;
                     if(empty($_GET['pagina'])){
                       $pagina=1;
                     }else{
@@ -302,6 +308,30 @@
         </div>           
       <!-- Optional JavaScript -->
   </div>
+    <div class="modal fade" id="listaBusqueda">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title ">Lista de productos</h2>
+            <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Laboratorio</th>
+                  <th>Nombre</th>
+                  <th>Seleccionar</th>
+                </tr>
+              </thead>
+              <tbody id="cuerpo">
+              </tbody>
+            </table>
+          </div> 
+          </div>
+        </div>
+      </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>

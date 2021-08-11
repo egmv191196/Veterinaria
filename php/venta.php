@@ -241,5 +241,26 @@
             array_push($Resultados,$valores);
         }
         echo json_encode($Resultados);
+    }else if ($Operacion=="ticketPorFecha") {
+        $Fecha = $_POST['Fecha'];
+        $date1=date("Y-m-d",strtotime($Fecha));
+        $consulta= "SELECT * FROM venta WHERE Fecha='$date1'"; 
+        $res= mysqli_query($conexion,$consulta);
+        $Resultados=array();
+        while ($row = mysqli_fetch_array($res)){
+            $valores=[$row[0], $row[1], $row[2],$row[5]];
+            array_push($Resultados,$valores);
+        }
+        echo json_encode($Resultados);
+    }else if ($Operacion=="BuscarPornombreEdit") {
+        $texto = $_POST['texto'];
+        $consulta= "SELECT * FROM producto WHERE Nombre LIKE '%$texto%'"; 
+        $res= mysqli_query($conexion,$consulta);
+        $Resultados=array();
+        while ($row = mysqli_fetch_array($res)){
+            $valores=[$row[0],$row[1], $row[2], $row[3],$row[5],$row[6],$row[7],$row[8]];
+            array_push($Resultados,$valores);
+        }
+        echo json_encode($Resultados);
     }
 ?> 

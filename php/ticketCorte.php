@@ -13,7 +13,7 @@ $totalDia=$row[6];
 $Entregado=$row[7];
 $horaCorte=$row[8];
 $Diferencia=$row[9];
-$Nombre=$row[10];
+$Nombre=$row[11];
 $pdf = new FPDF('P','mm',array(80,150)); // Tamaño tickt 80mm x 150 mm (largo aprox)
 $pdf->AddPage();
 $pdf->SetMargins(2, 5, 2);

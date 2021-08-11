@@ -83,6 +83,12 @@
                             <a href="" class="list-group-item list-group-item-action mt-1" data-toggle="modal" data-target="#seleccionarCliente">Reporte de credito del cliente</a>
                         </div>
                     </div>
+                    <div class="col-sm text-center">
+                        <h3>Tickets</h3>
+                        <div class="list-group">
+                            <a href="" class="list-group-item list-group-item-action mt-1" data-toggle="modal" data-target="#seleccionarDia">Buscar Ticket por dia</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     
@@ -262,6 +268,58 @@
                         <button type="button" class="btn btn-success float-right m-2" onclick="reporteCliente();">Generar Reporte</button>
                         <button type="button"class="btn btn-danger float-right m-2" data-dismiss="modal">Cerrar</button>
                     </div>
+                </div> 
+                </div>
+            </div>
+        </div>
+        <!-- Modal para seleccionar dia -->
+        <div class="modal fade" id="seleccionarDia">
+            <div class="modal-dialog ">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h2 class="modal-title ">Seleccionar fecha</h2>
+                <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4 text-right">
+                            <label class="label ">Selecciona fecha</label>
+                        </div>
+                        
+                        <div class="col-7">
+                        <input class="form-control" type="date" id="fecha" > 
+                        </div>
+                    </div>
+                    <div class="form-group m-2">
+                        <button type="button" class="btn btn-success float-right m-2" onclick="fecha();">Generar Reporte</button>
+                        <button type="button"class="btn btn-danger float-right m-2" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div> 
+                </div>
+            </div>
+        </div>
+        <!-- Modal para seleccionar dia -->
+        <div class="modal fade" id="listarTickets">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title ">Lista de productos</h2>
+                    <button tyle="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                        <th># Ticket</th>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Total</th>
+                        <th>Reimprimir</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpo">
+                    </tbody>
+                    </table>
                 </div> 
                 </div>
             </div>

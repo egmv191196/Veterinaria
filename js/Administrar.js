@@ -38,7 +38,8 @@ function editUser(id){
         if(response != 0 ){
             var user=JSON.parse(response);
             $('#editIDEmpleado').val(user.Id);
-            $('#editnombreEmpleado').val(user.Nombre);  
+            $('#editnombreEmpleado').val(user.Nombre);
+            $('#editPass').val(user.Pass);    
             $('#edittelefono').val(user.Telefono); 
             $('#editCorreo').val(user.Correo); 
             $('#editPuesto').val(user.Puesto); 
@@ -58,6 +59,7 @@ function updateUser(){
         "Operacion" : 'Actualizar',
         Id_User : $('#editIDEmpleado').val(),
         Nombre : $('#editnombreEmpleado').val(),
+        Pass : $('#editPass').val(),
         Telefono : $('#edittelefono').val(),
         Correo : $('#editCorreo').val(),
         Usuario : $('#editUsuario').val(),

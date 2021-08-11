@@ -21,8 +21,7 @@
         $id_Producto=$_POST['id_Producto'];
         $consulta = "DELETE FROM producto WHERE id_Producto='$id_Producto'";
         echo mysqli_query($conexion,$consulta);
-    }
-    else if($Operacion=="Modificar"){
+    }else if($Operacion=="Modificar"){
         $id_Producto=$_POST['id_Producto'];
         $Nombre=$_POST['Nombre'];
         $p_Compra=$_POST['p_Compra'];
@@ -44,6 +43,13 @@
         else{
             echo 0; //No existe el producto
         }
+    }else if($Operacion=="datosProducto"){
+        $id = $_POST['id'];
+        $consulta= "SELECT * FROM producto WHERE id_Producto=$id"; 
+        $res= mysqli_query($conexion,$consulta);
+        $row = mysqli_fetch_array($res);
+        $valores=[$row[0], $row[2], $row[3],$row[4],$row[5],$row[6],$row[7],$row[8]];
+        echo json_encode($valores);
     }
     
 ?> 

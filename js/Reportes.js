@@ -142,3 +142,32 @@ function reporteCliente(){
     window.open('./php/reporteCliente.php?id_Cliente='+idCliente, '_blank');
     location.reload();
 }
+function fecha1(){
+
+}
+function fecha(){
+    fechaInicio = $('#fecha').val();
+    var datos = {
+        "Operacion" : 'ticketPorFecha',
+        Fecha : fechaInicio
+    };
+    $.ajax({
+        type: "POST",
+        url: "./php/venta.php",
+        data: datos,
+    }).done(function(response){
+        $("#cuerpo tr").remove(); 
+        var datos=JSON.parse(response);
+        for ( i = 0; i < datos.length; i++) {
+            document.getElementById("cuerpo").insertRow(i).innerHTML = '<tr><td>'+datos[i][0]+'</td> <td>'+
+            datos[i][1]+'</td> <td>'+datos[i][2]+'</td> <td>$ '+datos[i][3]+'</td> <td><button class="btn btn-success mb-2 ml-2 mr-2" onclick="reimprimirTicket(this);">Seleccionar</button> </td> <tr>';
+        } 
+        $("#listarTickets").modal(); 
+    }).fail(function(response){
+        alert("Hubo un error en el server, reintentelo de nuevo");
+    });
+}
+function reimprimirTicket(id){
+    id_Ticket= $(id).parents("tr").find("td")[0].innerHTML;
+    window.open('./php/ticketv.php?id_Venta='+id_Ticket, '_blank');
+}

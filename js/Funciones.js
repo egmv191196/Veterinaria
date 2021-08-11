@@ -123,6 +123,60 @@ function editProducto(id) {
     $('#stock').val($(id).parents("tr").find("td")[8].innerHTML);
     $("#VenActualizar").modal();
 }
+function editProducto2(id) {
+    id_Producto=$(id).parents("tr").find("td")[0].innerHTML;
+    //alert(id_Producto);
+    var datos = {
+        "Operacion" : 'datosProducto',
+        id : id_Producto
+    };
+    $.ajax({
+        type: "POST",
+        url: "./php/Producto.php",
+        data: datos,
+    }).done(function(response){
+        //alert(response);
+        var datos=JSON.parse(response);
+        alert(datos[1])
+        $('#id_Producto').val(datos[0]);  
+        $('#Nombre').val(datos[1]);
+        $('#stock').val(datos[2]); 
+        $('#p_Compra').val(datos[3]);
+        $('#p_Lista').val(datos[4]);  
+        $('#p_VentaC').val(datos[5]); 
+        $('#p_VentaM').val(datos[6]);  
+        $('#p_VentaMa').val(datos[7]);
+        $("#VenActualizar").modal(); 
+        $("#listaBusqueda").hide(); 
+    }).fail(function(response){
+        alert("Hubo un error en el server, reintentelo de nuevo");
+    });
+}
+function editProductoBusqueda(){
+    Nombre=$('#nombreBusqueda').val(); 
+    //alert(Nombre);
+    var datos = {
+        "Operacion" : 'BuscarPornombreEdit',
+        texto : Nombre
+    };
+    $.ajax({
+        type: "POST",
+        url: "./php/venta.php",
+        data: datos,
+    }).done(function(response){
+        $("#cuerpo tr").remove(); 
+        var datos=JSON.parse(response);
+        for ( i = 0; i < datos.length; i++) {
+            document.getElementById("cuerpo").insertRow(i).innerHTML = '<tr><td>'+datos[i][0]+'</td> <td>'+
+            datos[i][1]+'</td><td>'+datos[i][2]+'</td><td><button class="btn btn-success mb-2 ml-2 mr-2" onclick="editProducto2(this);">Seleccionar</button> </td> <tr>';
+        }
+        $('#Nombre').val(''); 
+        $("#listaBusqueda").modal(); 
+    }).fail(function(response){
+        alert("Hubo un error en el server, reintentelo de nuevo");
+    });
+
+}
 //-------Proveedor-------
 function addProveedor(){
     var datos=$('#addProv').serialize();

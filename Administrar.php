@@ -227,6 +227,14 @@
                 </div>
                 <div class="row">
                     <div class="col-3 text-right">
+                        <label class="label">Contraseña:</label>
+                    </div>
+                    <div class="col-9">
+                      <input class="form-control" id="editPass"  type="text">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3 text-right">
                         <label class="label">Telefono:</label>
                     </div>
                     <div class="col-9">
